@@ -160,6 +160,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Cata.cs" />
     <Compile Include="Models\Catacion.cs" />
     <Compile Include="Models\Catador.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
