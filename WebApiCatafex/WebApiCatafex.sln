@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiCatafex", "WebApiCatafex\WebApiCatafex.csproj", "{2F5AD362-3A83-499B-BF2E-7688905CFFF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistencia", "Persistencia\Persistencia.csproj", "{C5C0D098-119B-4EF5-AD1E-4F3444603D05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2F5AD362-3A83-499B-BF2E-7688905CFFF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F5AD362-3A83-499B-BF2E-7688905CFFF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F5AD362-3A83-499B-BF2E-7688905CFFF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5C0D098-119B-4EF5-AD1E-4F3444603D05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5C0D098-119B-4EF5-AD1E-4F3444603D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5C0D098-119B-4EF5-AD1E-4F3444603D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5C0D098-119B-4EF5-AD1E-4F3444603D05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
