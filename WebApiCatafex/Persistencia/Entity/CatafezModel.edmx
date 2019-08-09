@@ -1,0 +1,650 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CATAFEXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ADMINISTRADOR">
+          <Key>
+            <PropertyRef Name="CEDULA" />
+          </Key>
+          <Property Name="CEDULA" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CORREO" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CONTRASEÑA" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="NOMBRE" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ATRIBUTOSCAFE">
+          <Key>
+            <PropertyRef Name="TIPOCAFE" />
+          </Key>
+          <Property Name="TIPOCAFE" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DATOS" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CAFE">
+          <Key>
+            <PropertyRef Name="CODCAFE" />
+          </Key>
+          <Property Name="CODCAFE" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TIPOCAFE" Type="varchar" MaxLength="100" />
+          <Property Name="CODEVENTO" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PROCEDENCIA" Type="varchar" MaxLength="100" />
+          <Property Name="ORIGEN" Type="varchar" MaxLength="100" />
+          <Property Name="NOMBRE" Type="varchar" MaxLength="100" />
+          <Property Name="PUNTOTUESTE" Type="int" />
+          <Property Name="GRADOMOLIENDA" Type="int" />
+        </EntityType>
+        <EntityType Name="CATA">
+          <Key>
+            <PropertyRef Name="CODCATACION" />
+            <PropertyRef Name="VEZCATADA" />
+          </Key>
+          <Property Name="CODCATACION" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="VEZCATADA" Type="int" Nullable="false" />
+          <Property Name="RANCIDEZ" Type="int" />
+          <Property Name="DULCE" Type="int" />
+          <Property Name="ACIDEZ" Type="int" />
+          <Property Name="AROMA" Type="int" />
+          <Property Name="AMARGO" Type="int" />
+          <Property Name="FRAGANCIA" Type="int" />
+          <Property Name="SABORESIDUAL" Type="int" />
+          <Property Name="CUERPO" Type="int" />
+          <Property Name="IMPRESIONGLOBAL" Type="int" />
+          <Property Name="OBSERVACIONES" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="CATACION">
+          <Key>
+            <PropertyRef Name="CODCATACION" />
+          </Key>
+          <Property Name="CODCATACION" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CODPANEL" Type="varchar" MaxLength="100" />
+          <Property Name="CODCATADOR" Type="varchar" MaxLength="100" />
+          <Property Name="CODCAFE" Type="varchar" MaxLength="100" />
+          <Property Name="CANTIDAD" Type="int" />
+        </EntityType>
+        <EntityType Name="CATADOR">
+          <Key>
+            <PropertyRef Name="CODIGO" />
+          </Key>
+          <Property Name="CEDULA" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CORREO" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CONTRASEÑA" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="NOMBRE" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CODIGO" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="NIVELEXP" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EVENTO">
+          <Key>
+            <PropertyRef Name="CODEVENTO" />
+          </Key>
+          <Property Name="CODEVENTO" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="NOMBRE" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FECHA" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PANEL">
+          <Key>
+            <PropertyRef Name="CODPANEL" />
+          </Key>
+          <Property Name="CODPANEL" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CODEVENTO" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TIPOCAFE" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="HORA" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REPORTE">
+          <Key>
+            <PropertyRef Name="CODREPORTE" />
+          </Key>
+          <Property Name="CODREPORTE" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="RUTAGRAFICO" Type="varchar" MaxLength="100" />
+          <Property Name="OBSERVACIONES" Type="varchar" MaxLength="500" />
+          <Property Name="CODPANEL" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK__CAFE__CODEVENTO__2F9A1060">
+          <End Role="EVENTO" Type="Self.EVENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAFE" Type="Self.CAFE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENTO">
+              <PropertyRef Name="CODEVENTO" />
+            </Principal>
+            <Dependent Role="CAFE">
+              <PropertyRef Name="CODEVENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CAFE__TIPOCAFE__2EA5EC27">
+          <End Role="ATRIBUTOSCAFE" Type="Self.ATRIBUTOSCAFE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAFE" Type="Self.CAFE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATRIBUTOSCAFE">
+              <PropertyRef Name="TIPOCAFE" />
+            </Principal>
+            <Dependent Role="CAFE">
+              <PropertyRef Name="TIPOCAFE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CATA__CODCATACIO__43A1090D">
+          <End Role="CATACION" Type="Self.CATACION" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CATA" Type="Self.CATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATACION">
+              <PropertyRef Name="CODCATACION" />
+            </Principal>
+            <Dependent Role="CATA">
+              <PropertyRef Name="CODCATACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CATACION__CODCAF__40C49C62">
+          <End Role="CAFE" Type="Self.CAFE" Multiplicity="0..1" />
+          <End Role="CATACION" Type="Self.CATACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAFE">
+              <PropertyRef Name="CODCAFE" />
+            </Principal>
+            <Dependent Role="CATACION">
+              <PropertyRef Name="CODCAFE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CATACION__CODCAT__3FD07829">
+          <End Role="CATADOR" Type="Self.CATADOR" Multiplicity="0..1" />
+          <End Role="CATACION" Type="Self.CATACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATADOR">
+              <PropertyRef Name="CODIGO" />
+            </Principal>
+            <Dependent Role="CATACION">
+              <PropertyRef Name="CODCATADOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CATACION__CODPAN__3EDC53F0">
+          <End Role="PANEL" Type="Self.PANEL" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CATACION" Type="Self.CATACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PANEL">
+              <PropertyRef Name="CODPANEL" />
+            </Principal>
+            <Dependent Role="CATACION">
+              <PropertyRef Name="CODPANEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PANEL__CODEVENTO__32767D0B">
+          <End Role="EVENTO" Type="Self.EVENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PANEL" Type="Self.PANEL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENTO">
+              <PropertyRef Name="CODEVENTO" />
+            </Principal>
+            <Dependent Role="PANEL">
+              <PropertyRef Name="CODEVENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__REPORTE__CODPANE__3552E9B6">
+          <End Role="PANEL" Type="Self.PANEL" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="REPORTE" Type="Self.REPORTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PANEL">
+              <PropertyRef Name="CODPANEL" />
+            </Principal>
+            <Dependent Role="REPORTE">
+              <PropertyRef Name="CODPANEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CATAFEXModelStoreContainer">
+          <EntitySet Name="ADMINISTRADOR" EntityType="Self.ADMINISTRADOR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ATRIBUTOSCAFE" EntityType="Self.ATRIBUTOSCAFE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CAFE" EntityType="Self.CAFE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CATA" EntityType="Self.CATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CATACION" EntityType="Self.CATACION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CATADOR" EntityType="Self.CATADOR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EVENTO" EntityType="Self.EVENTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PANEL" EntityType="Self.PANEL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REPORTE" EntityType="Self.REPORTE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__CAFE__CODEVENTO__2F9A1060" Association="Self.FK__CAFE__CODEVENTO__2F9A1060">
+            <End Role="EVENTO" EntitySet="EVENTO" />
+            <End Role="CAFE" EntitySet="CAFE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CAFE__TIPOCAFE__2EA5EC27" Association="Self.FK__CAFE__TIPOCAFE__2EA5EC27">
+            <End Role="ATRIBUTOSCAFE" EntitySet="ATRIBUTOSCAFE" />
+            <End Role="CAFE" EntitySet="CAFE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CATA__CODCATACIO__43A1090D" Association="Self.FK__CATA__CODCATACIO__43A1090D">
+            <End Role="CATACION" EntitySet="CATACION" />
+            <End Role="CATA" EntitySet="CATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CATACION__CODCAF__40C49C62" Association="Self.FK__CATACION__CODCAF__40C49C62">
+            <End Role="CAFE" EntitySet="CAFE" />
+            <End Role="CATACION" EntitySet="CATACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CATACION__CODCAT__3FD07829" Association="Self.FK__CATACION__CODCAT__3FD07829">
+            <End Role="CATADOR" EntitySet="CATADOR" />
+            <End Role="CATACION" EntitySet="CATACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CATACION__CODPAN__3EDC53F0" Association="Self.FK__CATACION__CODPAN__3EDC53F0">
+            <End Role="PANEL" EntitySet="PANEL" />
+            <End Role="CATACION" EntitySet="CATACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PANEL__CODEVENTO__32767D0B" Association="Self.FK__PANEL__CODEVENTO__32767D0B">
+            <End Role="EVENTO" EntitySet="EVENTO" />
+            <End Role="PANEL" EntitySet="PANEL" />
+          </AssociationSet>
+          <AssociationSet Name="FK__REPORTE__CODPANE__3552E9B6" Association="Self.FK__REPORTE__CODPANE__3552E9B6">
+            <End Role="PANEL" EntitySet="PANEL" />
+            <End Role="REPORTE" EntitySet="REPORTE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CATAFEXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ADMINISTRADOR">
+          <Key>
+            <PropertyRef Name="CEDULA" />
+          </Key>
+          <Property Name="CEDULA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CORREO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CONTRASEÑA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NOMBRE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ATRIBUTOSCAFE">
+          <Key>
+            <PropertyRef Name="TIPOCAFE" />
+          </Key>
+          <Property Name="TIPOCAFE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DATOS" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CAFE" Relationship="Self.FK__CAFE__TIPOCAFE__2EA5EC27" FromRole="ATRIBUTOSCAFE" ToRole="CAFE" />
+        </EntityType>
+        <EntityType Name="CAFE">
+          <Key>
+            <PropertyRef Name="CODCAFE" />
+          </Key>
+          <Property Name="CODCAFE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TIPOCAFE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CODEVENTO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PROCEDENCIA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ORIGEN" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NOMBRE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PUNTOTUESTE" Type="Int32" />
+          <Property Name="GRADOMOLIENDA" Type="Int32" />
+          <NavigationProperty Name="ATRIBUTOSCAFE" Relationship="Self.FK__CAFE__TIPOCAFE__2EA5EC27" FromRole="CAFE" ToRole="ATRIBUTOSCAFE" />
+          <NavigationProperty Name="EVENTO" Relationship="Self.FK__CAFE__CODEVENTO__2F9A1060" FromRole="CAFE" ToRole="EVENTO" />
+          <NavigationProperty Name="CATACION" Relationship="Self.FK__CATACION__CODCAF__40C49C62" FromRole="CAFE" ToRole="CATACION" />
+        </EntityType>
+        <EntityType Name="CATA">
+          <Key>
+            <PropertyRef Name="CODCATACION" />
+            <PropertyRef Name="VEZCATADA" />
+          </Key>
+          <Property Name="CODCATACION" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VEZCATADA" Type="Int32" Nullable="false" />
+          <Property Name="RANCIDEZ" Type="Int32" />
+          <Property Name="DULCE" Type="Int32" />
+          <Property Name="ACIDEZ" Type="Int32" />
+          <Property Name="AROMA" Type="Int32" />
+          <Property Name="AMARGO" Type="Int32" />
+          <Property Name="FRAGANCIA" Type="Int32" />
+          <Property Name="SABORESIDUAL" Type="Int32" />
+          <Property Name="CUERPO" Type="Int32" />
+          <Property Name="IMPRESIONGLOBAL" Type="Int32" />
+          <Property Name="OBSERVACIONES" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CATACION" Relationship="Self.FK__CATA__CODCATACIO__43A1090D" FromRole="CATA" ToRole="CATACION" />
+        </EntityType>
+        <EntityType Name="CATACION">
+          <Key>
+            <PropertyRef Name="CODCATACION" />
+          </Key>
+          <Property Name="CODCATACION" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CODPANEL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CODCATADOR" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CODCAFE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CANTIDAD" Type="Int32" />
+          <NavigationProperty Name="CAFE" Relationship="Self.FK__CATACION__CODCAF__40C49C62" FromRole="CATACION" ToRole="CAFE" />
+          <NavigationProperty Name="CATA" Relationship="Self.FK__CATA__CODCATACIO__43A1090D" FromRole="CATACION" ToRole="CATA" />
+          <NavigationProperty Name="CATADOR" Relationship="Self.FK__CATACION__CODCAT__3FD07829" FromRole="CATACION" ToRole="CATADOR" />
+          <NavigationProperty Name="PANEL" Relationship="Self.FK__CATACION__CODPAN__3EDC53F0" FromRole="CATACION" ToRole="PANEL" />
+        </EntityType>
+        <EntityType Name="CATADOR">
+          <Key>
+            <PropertyRef Name="CODIGO" />
+          </Key>
+          <Property Name="CEDULA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CORREO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CONTRASEÑA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NOMBRE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CODIGO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NIVELEXP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CATACION" Relationship="Self.FK__CATACION__CODCAT__3FD07829" FromRole="CATADOR" ToRole="CATACION" />
+        </EntityType>
+        <EntityType Name="EVENTO">
+          <Key>
+            <PropertyRef Name="CODEVENTO" />
+          </Key>
+          <Property Name="CODEVENTO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NOMBRE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FECHA" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CAFE" Relationship="Self.FK__CAFE__CODEVENTO__2F9A1060" FromRole="EVENTO" ToRole="CAFE" />
+          <NavigationProperty Name="PANEL" Relationship="Self.FK__PANEL__CODEVENTO__32767D0B" FromRole="EVENTO" ToRole="PANEL" />
+        </EntityType>
+        <EntityType Name="PANEL">
+          <Key>
+            <PropertyRef Name="CODPANEL" />
+          </Key>
+          <Property Name="CODPANEL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CODEVENTO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TIPOCAFE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HORA" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="CATACION" Relationship="Self.FK__CATACION__CODPAN__3EDC53F0" FromRole="PANEL" ToRole="CATACION" />
+          <NavigationProperty Name="EVENTO" Relationship="Self.FK__PANEL__CODEVENTO__32767D0B" FromRole="PANEL" ToRole="EVENTO" />
+          <NavigationProperty Name="REPORTE" Relationship="Self.FK__REPORTE__CODPANE__3552E9B6" FromRole="PANEL" ToRole="REPORTE" />
+        </EntityType>
+        <EntityType Name="REPORTE">
+          <Key>
+            <PropertyRef Name="CODREPORTE" />
+          </Key>
+          <Property Name="CODREPORTE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RUTAGRAFICO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OBSERVACIONES" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CODPANEL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PANEL" Relationship="Self.FK__REPORTE__CODPANE__3552E9B6" FromRole="REPORTE" ToRole="PANEL" />
+        </EntityType>
+        <Association Name="FK__CAFE__TIPOCAFE__2EA5EC27">
+          <End Role="ATRIBUTOSCAFE" Type="Self.ATRIBUTOSCAFE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAFE" Type="Self.CAFE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATRIBUTOSCAFE">
+              <PropertyRef Name="TIPOCAFE" />
+            </Principal>
+            <Dependent Role="CAFE">
+              <PropertyRef Name="TIPOCAFE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CAFE__CODEVENTO__2F9A1060">
+          <End Role="EVENTO" Type="Self.EVENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CAFE" Type="Self.CAFE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENTO">
+              <PropertyRef Name="CODEVENTO" />
+            </Principal>
+            <Dependent Role="CAFE">
+              <PropertyRef Name="CODEVENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CATACION__CODCAF__40C49C62">
+          <End Role="CAFE" Type="Self.CAFE" Multiplicity="0..1" />
+          <End Role="CATACION" Type="Self.CATACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAFE">
+              <PropertyRef Name="CODCAFE" />
+            </Principal>
+            <Dependent Role="CATACION">
+              <PropertyRef Name="CODCAFE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CATA__CODCATACIO__43A1090D">
+          <End Role="CATACION" Type="Self.CATACION" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CATA" Type="Self.CATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATACION">
+              <PropertyRef Name="CODCATACION" />
+            </Principal>
+            <Dependent Role="CATA">
+              <PropertyRef Name="CODCATACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CATACION__CODCAT__3FD07829">
+          <End Role="CATADOR" Type="Self.CATADOR" Multiplicity="0..1" />
+          <End Role="CATACION" Type="Self.CATACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATADOR">
+              <PropertyRef Name="CODIGO" />
+            </Principal>
+            <Dependent Role="CATACION">
+              <PropertyRef Name="CODCATADOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CATACION__CODPAN__3EDC53F0">
+          <End Role="PANEL" Type="Self.PANEL" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CATACION" Type="Self.CATACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PANEL">
+              <PropertyRef Name="CODPANEL" />
+            </Principal>
+            <Dependent Role="CATACION">
+              <PropertyRef Name="CODPANEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PANEL__CODEVENTO__32767D0B">
+          <End Role="EVENTO" Type="Self.EVENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PANEL" Type="Self.PANEL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EVENTO">
+              <PropertyRef Name="CODEVENTO" />
+            </Principal>
+            <Dependent Role="PANEL">
+              <PropertyRef Name="CODEVENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__REPORTE__CODPANE__3552E9B6">
+          <End Role="PANEL" Type="Self.PANEL" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="REPORTE" Type="Self.REPORTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PANEL">
+              <PropertyRef Name="CODPANEL" />
+            </Principal>
+            <Dependent Role="REPORTE">
+              <PropertyRef Name="CODPANEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CatafexEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ADMINISTRADOR" EntityType="Self.ADMINISTRADOR" />
+          <EntitySet Name="ATRIBUTOSCAFE" EntityType="Self.ATRIBUTOSCAFE" />
+          <EntitySet Name="CAFE" EntityType="Self.CAFE" />
+          <EntitySet Name="CATA" EntityType="Self.CATA" />
+          <EntitySet Name="CATACION" EntityType="Self.CATACION" />
+          <EntitySet Name="CATADOR" EntityType="Self.CATADOR" />
+          <EntitySet Name="EVENTO" EntityType="Self.EVENTO" />
+          <EntitySet Name="PANEL" EntityType="Self.PANEL" />
+          <EntitySet Name="REPORTE" EntityType="Self.REPORTE" />
+          <AssociationSet Name="FK__CAFE__TIPOCAFE__2EA5EC27" Association="Self.FK__CAFE__TIPOCAFE__2EA5EC27">
+            <End Role="ATRIBUTOSCAFE" EntitySet="ATRIBUTOSCAFE" />
+            <End Role="CAFE" EntitySet="CAFE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CAFE__CODEVENTO__2F9A1060" Association="Self.FK__CAFE__CODEVENTO__2F9A1060">
+            <End Role="EVENTO" EntitySet="EVENTO" />
+            <End Role="CAFE" EntitySet="CAFE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CATACION__CODCAF__40C49C62" Association="Self.FK__CATACION__CODCAF__40C49C62">
+            <End Role="CAFE" EntitySet="CAFE" />
+            <End Role="CATACION" EntitySet="CATACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CATA__CODCATACIO__43A1090D" Association="Self.FK__CATA__CODCATACIO__43A1090D">
+            <End Role="CATACION" EntitySet="CATACION" />
+            <End Role="CATA" EntitySet="CATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CATACION__CODCAT__3FD07829" Association="Self.FK__CATACION__CODCAT__3FD07829">
+            <End Role="CATADOR" EntitySet="CATADOR" />
+            <End Role="CATACION" EntitySet="CATACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CATACION__CODPAN__3EDC53F0" Association="Self.FK__CATACION__CODPAN__3EDC53F0">
+            <End Role="PANEL" EntitySet="PANEL" />
+            <End Role="CATACION" EntitySet="CATACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PANEL__CODEVENTO__32767D0B" Association="Self.FK__PANEL__CODEVENTO__32767D0B">
+            <End Role="EVENTO" EntitySet="EVENTO" />
+            <End Role="PANEL" EntitySet="PANEL" />
+          </AssociationSet>
+          <AssociationSet Name="FK__REPORTE__CODPANE__3552E9B6" Association="Self.FK__REPORTE__CODPANE__3552E9B6">
+            <End Role="PANEL" EntitySet="PANEL" />
+            <End Role="REPORTE" EntitySet="REPORTE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CATAFEXModelStoreContainer" CdmEntityContainer="CatafexEntities">
+          <EntitySetMapping Name="ADMINISTRADOR">
+            <EntityTypeMapping TypeName="CATAFEXModel.ADMINISTRADOR">
+              <MappingFragment StoreEntitySet="ADMINISTRADOR">
+                <ScalarProperty Name="CEDULA" ColumnName="CEDULA" />
+                <ScalarProperty Name="CORREO" ColumnName="CORREO" />
+                <ScalarProperty Name="CONTRASEÑA" ColumnName="CONTRASEÑA" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ATRIBUTOSCAFE">
+            <EntityTypeMapping TypeName="CATAFEXModel.ATRIBUTOSCAFE">
+              <MappingFragment StoreEntitySet="ATRIBUTOSCAFE">
+                <ScalarProperty Name="TIPOCAFE" ColumnName="TIPOCAFE" />
+                <ScalarProperty Name="DATOS" ColumnName="DATOS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAFE">
+            <EntityTypeMapping TypeName="CATAFEXModel.CAFE">
+              <MappingFragment StoreEntitySet="CAFE">
+                <ScalarProperty Name="CODCAFE" ColumnName="CODCAFE" />
+                <ScalarProperty Name="TIPOCAFE" ColumnName="TIPOCAFE" />
+                <ScalarProperty Name="CODEVENTO" ColumnName="CODEVENTO" />
+                <ScalarProperty Name="PROCEDENCIA" ColumnName="PROCEDENCIA" />
+                <ScalarProperty Name="ORIGEN" ColumnName="ORIGEN" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="PUNTOTUESTE" ColumnName="PUNTOTUESTE" />
+                <ScalarProperty Name="GRADOMOLIENDA" ColumnName="GRADOMOLIENDA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CATA">
+            <EntityTypeMapping TypeName="CATAFEXModel.CATA">
+              <MappingFragment StoreEntitySet="CATA">
+                <ScalarProperty Name="CODCATACION" ColumnName="CODCATACION" />
+                <ScalarProperty Name="VEZCATADA" ColumnName="VEZCATADA" />
+                <ScalarProperty Name="RANCIDEZ" ColumnName="RANCIDEZ" />
+                <ScalarProperty Name="DULCE" ColumnName="DULCE" />
+                <ScalarProperty Name="ACIDEZ" ColumnName="ACIDEZ" />
+                <ScalarProperty Name="AROMA" ColumnName="AROMA" />
+                <ScalarProperty Name="AMARGO" ColumnName="AMARGO" />
+                <ScalarProperty Name="FRAGANCIA" ColumnName="FRAGANCIA" />
+                <ScalarProperty Name="SABORESIDUAL" ColumnName="SABORESIDUAL" />
+                <ScalarProperty Name="CUERPO" ColumnName="CUERPO" />
+                <ScalarProperty Name="IMPRESIONGLOBAL" ColumnName="IMPRESIONGLOBAL" />
+                <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CATACION">
+            <EntityTypeMapping TypeName="CATAFEXModel.CATACION">
+              <MappingFragment StoreEntitySet="CATACION">
+                <ScalarProperty Name="CODCATACION" ColumnName="CODCATACION" />
+                <ScalarProperty Name="CODPANEL" ColumnName="CODPANEL" />
+                <ScalarProperty Name="CODCATADOR" ColumnName="CODCATADOR" />
+                <ScalarProperty Name="CODCAFE" ColumnName="CODCAFE" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CATADOR">
+            <EntityTypeMapping TypeName="CATAFEXModel.CATADOR">
+              <MappingFragment StoreEntitySet="CATADOR">
+                <ScalarProperty Name="CEDULA" ColumnName="CEDULA" />
+                <ScalarProperty Name="CORREO" ColumnName="CORREO" />
+                <ScalarProperty Name="CONTRASEÑA" ColumnName="CONTRASEÑA" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+                <ScalarProperty Name="NIVELEXP" ColumnName="NIVELEXP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EVENTO">
+            <EntityTypeMapping TypeName="CATAFEXModel.EVENTO">
+              <MappingFragment StoreEntitySet="EVENTO">
+                <ScalarProperty Name="CODEVENTO" ColumnName="CODEVENTO" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PANEL">
+            <EntityTypeMapping TypeName="CATAFEXModel.PANEL">
+              <MappingFragment StoreEntitySet="PANEL">
+                <ScalarProperty Name="CODPANEL" ColumnName="CODPANEL" />
+                <ScalarProperty Name="CODEVENTO" ColumnName="CODEVENTO" />
+                <ScalarProperty Name="TIPOCAFE" ColumnName="TIPOCAFE" />
+                <ScalarProperty Name="HORA" ColumnName="HORA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REPORTE">
+            <EntityTypeMapping TypeName="CATAFEXModel.REPORTE">
+              <MappingFragment StoreEntitySet="REPORTE">
+                <ScalarProperty Name="CODREPORTE" ColumnName="CODREPORTE" />
+                <ScalarProperty Name="RUTAGRAFICO" ColumnName="RUTAGRAFICO" />
+                <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+                <ScalarProperty Name="CODPANEL" ColumnName="CODPANEL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
