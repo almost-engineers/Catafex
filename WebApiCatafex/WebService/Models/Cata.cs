@@ -6,6 +6,8 @@ using System.Web;
 namespace WebService.Models
 {
     public class Cata
-    {
+{
+
+ int           JorgeMk =5;
     }
 }
