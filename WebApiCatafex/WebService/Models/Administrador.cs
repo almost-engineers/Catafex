@@ -5,7 +5,9 @@ using System.Web;
 
 namespace WebService.Models
 {
-   public class Catador: Usuario
+    public class Administrador : Usuario
     {
+        string codigo { get; set; }
+        string nivelExp { get; set; }
     }
 }
