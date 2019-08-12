@@ -36,7 +36,8 @@ namespace Persistencia
         bool insertarEvento(/*Evento evento*/);
         string /*Evento*/ consultarEvento(string codEvento);
         string/*Panel*/ consultarPanel(string codPanel);
-        bool registrarCata(/*Cata*/);
+        bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo,
+            int impresionGlobal, int fragancia, int saborResidual, string observaciones);
         IList<string>/*Cata*/ consultarCatasAsignadas(string codCatador);
         bool insertarReporte(/*Reporte reporte*/);
 

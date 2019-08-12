@@ -23,14 +23,15 @@ namespace WebService.Controllers
             return null;
         }
         private Cata obtenerCata() {
-
+          
 
             return null;
         }
         private bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, 
             int impresionGlobal, int fragancia, int saborResidual, string observaciones) {
 
-            return true;
+            return repositorio.registrarCata( rancidez,  dulce,  acidez,  cuerpo,  aroma,  amargo,
+             impresionGlobal,  fragancia,  saborResidual,  observaciones);
         }
 
         public bool validarDatos() {
