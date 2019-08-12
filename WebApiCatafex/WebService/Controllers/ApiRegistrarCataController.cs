@@ -3,11 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebService.Models;
+using Persistencia;
 
 namespace WebService.Controllers
 {
     public class ApiRegistrarCataController : Controller
     {
+
+        Repositorio repositorio;
+        
+
+
+        public ApiRegistrarCataController() {
+            repositorio = FabricaRepositorio.crearRepositorio();
+        }
+        private IList<Cata> consultarCatacion() {
+       
+            return null;
+        }
+        private Cata obtenerCata() {
+
+
+            return null;
+        }
+        private bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, 
+            int impresionGlobal, int fragancia, int saborResidual, string observaciones) {
+
+            return true;
+        }
+
+        public bool validarDatos() {
+            return true;
+        }
         // GET: ApiRegistrarCata
         public ActionResult Index()
         {
@@ -85,5 +113,6 @@ namespace WebService.Controllers
                 return View();
             }
         }
+
     }
 }
