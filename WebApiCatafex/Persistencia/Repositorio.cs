@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Persistencia
 {
-    interface Repositorio
+    public interface Repositorio
     {
     }
 }

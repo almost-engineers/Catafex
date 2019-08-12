@@ -1,89 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using WebService.Models;
 
 namespace WebService.Controllers
 {
-    public class ApiGestionarPanelController : Controller
+    public class ApiGestionarPanelController : ApiController
     {
-        // GET: ApiGestionarPanel
-        public ActionResult Index()
+
+        private IList<Panel> paneles;
+        public ApiGestionarPanelController()
         {
-            return View();
+            this.paneles = new List<Panel>();
+            this.llenarLista();
+        }
+        private void llenarLista()
+        {
+            this.paneles.Add(new Panel("PA-01", "Verde", DateTime.Now));
+            this.paneles.Add(new Panel("PA-02", "Verde", DateTime.Now));
+        }
+        // GET: api/ApiGestionarPanel/consultarPaneles
+
+        [HttpGet]
+        public IEnumerable<Panel> consultarPaneles()
+        {
+            return this.paneles;
         }
 
-        // GET: ApiGestionarPanel/Details/5
-        public ActionResult Details(int id)
+        // GET: api/ApiGestionarPanel/5
+        public Panel consultarPanel(string codigo)
         {
-            return View();
+            foreach(Panel panel in this.paneles)
+            {
+                if (panel.codigo.Equals(codigo))
+                {
+                    return panel;
+                }
+            }
+            return null;
         }
 
-        // GET: ApiGestionarPanel/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ApiGestionarPanel/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        // POST: api/ApiGestionarPanel
+        public bool Post(string codigo, string tipoCafe, string hora)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
+                this.paneles.Add(new Panel(codigo, tipoCafe, Convert.ToDateTime(hora)));
+                return true;
+            }catch(Exception e)
             {
-                return View();
+                return false;
             }
         }
-
-        // GET: ApiGestionarPanel/Edit/5
-        public ActionResult Edit(int id)
+        
+        // PUT: api/ApiGestionarPanel/5
+        public void Put(int id, [FromBody]string value)
         {
-            return View();
         }
 
-        // POST: ApiGestionarPanel/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        // DELETE: api/ApiGestionarPanel/5
+        public void Delete(int id)
         {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ApiGestionarPanel/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ApiGestionarPanel/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

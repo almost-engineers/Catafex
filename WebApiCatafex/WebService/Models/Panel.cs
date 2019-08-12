@@ -13,9 +13,20 @@ namespace WebService.Models
         public bool terminado { get; set; }
         public Reporte reporte { get; set; }
 
-        public Panel()
+       public Panel()
         {
-            this.reporte = new Reporte();
+
         }
+
+        public Panel(string codigo, string tipoCafe, DateTime hora)
+        {
+            this.codigo = codigo;
+            this.tipoCafe = tipoCafe;
+            this.hora = hora;
+            this.terminado = false;
+            this.reporte = new Reporte();
+
+        }
+
     }
 }
