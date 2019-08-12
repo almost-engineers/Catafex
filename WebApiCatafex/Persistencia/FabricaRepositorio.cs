@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Persistencia
 {
-    class FabricaRepositorio
+    public static class FabricaRepositorio
     {
+        public static Repositorio crearRepositorio() {
+            return null;
+        }
     }
 }
