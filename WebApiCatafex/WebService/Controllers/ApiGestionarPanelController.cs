@@ -31,6 +31,7 @@ namespace WebService.Controllers
         }
 
         // GET: api/ApiGestionarPanel/5
+        [HttpGet]
         public Panel consultarPanel(string codigo)
         {
             foreach(Panel panel in this.paneles)
@@ -44,26 +45,63 @@ namespace WebService.Controllers
         }
 
         // POST: api/ApiGestionarPanel
+        [HttpPost]
         public bool Post(string codigo, string tipoCafe, string hora)
         {
             try
             {
-                this.paneles.Add(new Panel(codigo, tipoCafe, Convert.ToDateTime(hora)));
+                Panel panel = new Panel(codigo, tipoCafe, DateTime.Now);
+                this.paneles.Add(panel);
+                Console.Write(this.paneles.Count());
+                Console.ReadKey();
                 return true;
-            }catch(Exception e)
+            }catch(Exception)
             {
                 return false;
             }
         }
         
         // PUT: api/ApiGestionarPanel/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public bool actualizarPanel(string codigo, string tipoCafe, string hora)
         {
+            try
+            {
+                foreach(Panel panel in this.paneles)
+                {
+                    if (panel.codigo.Equals(codigo))
+                    {
+                        panel.tipoCafe = tipoCafe;
+                        panel.hora = Convert.ToDateTime(hora);
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         // DELETE: api/ApiGestionarPanel/5
-        public void Delete(int id)
+        [HttpDelete]
+        public bool eliminarPanel(string codigo)
         {
+            try
+            {
+                foreach(Panel panel in this.paneles)
+                {
+                    if (panel.codigo.Equals(codigo))
+                    {
+                        this.paneles.Remove(panel);
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

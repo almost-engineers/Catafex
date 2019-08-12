@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace Persistencia
 {
-<<<<<<< HEAD
-    public interface Repositorio
-=======
     public  interface Repositorio
 
->>>>>>> 125decc7897e93f3ee79593f52e6fb49b63a68b5
     {
 
         IList<string>/*<Panel>*/ consultarPaneles();
