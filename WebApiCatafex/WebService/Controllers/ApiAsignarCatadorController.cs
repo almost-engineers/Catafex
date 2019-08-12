@@ -1,89 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace WebService.Controllers
 {
-    public class ApiAsignarCatadorController : Controller
+    public class ApiAsignarCatadorController : ApiController
     {
-        // GET: ApiAsignarCatador
-        public ActionResult Index()
+        // GET: api/ApiAsignarCatador
+        public IEnumerable<string> Get()
         {
-            return View();
+            return new string[] { "value1", "value2" };
         }
 
-        // GET: ApiAsignarCatador/Details/5
-        public ActionResult Details(int id)
+        // GET: api/ApiAsignarCatador/5
+        public string Get(int id)
         {
-            return View();
+            return "value";
         }
 
-        // GET: ApiAsignarCatador/Create
-        public ActionResult Create()
+        // POST: api/ApiAsignarCatador
+        public void Post([FromBody]string value)
         {
-            return View();
         }
 
-        // POST: ApiAsignarCatador/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        // PUT: api/ApiAsignarCatador/5
+        public void Put(int id, [FromBody]string value)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
 
-        // GET: ApiAsignarCatador/Edit/5
-        public ActionResult Edit(int id)
+        // DELETE: api/ApiAsignarCatador/5
+        public void Delete(int id)
         {
-            return View();
-        }
-
-        // POST: ApiAsignarCatador/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ApiAsignarCatador/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ApiAsignarCatador/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

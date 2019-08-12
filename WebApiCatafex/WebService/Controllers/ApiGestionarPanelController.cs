@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebService.Models;
+using Persistencia;
+using Persistencia.Entity;
 
 namespace WebService.Controllers
 {
@@ -12,6 +14,7 @@ namespace WebService.Controllers
     {
 
         private IList<Panel> paneles;
+        CATAFEXEntities db = new CATAFEXEntities();
         public ApiGestionarPanelController()
         {
             this.paneles = new List<Panel>();
@@ -21,6 +24,7 @@ namespace WebService.Controllers
         {
             this.paneles.Add(new Panel("PA-01", "Verde", DateTime.Now));
             this.paneles.Add(new Panel("PA-02", "Verde", DateTime.Now));
+            
         }
         // GET: api/ApiGestionarPanel/consultarPaneles
 

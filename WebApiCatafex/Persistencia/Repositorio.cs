@@ -10,7 +10,6 @@ namespace Persistencia
     public  interface Repositorio
 
     {
-
         IList<string>/*<Panel>*/ consultarPaneles();
         IList<string>/*<Reporte>*/ consultarReportes();
         IList<string>/*<Catacion>*/ consultarCataciones();
