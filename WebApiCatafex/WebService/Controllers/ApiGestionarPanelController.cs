@@ -56,13 +56,22 @@ namespace WebService.Controllers
         }
 
         // GET: api/ApiGestionarPanel/5
-   
+        /// <summary>
+        /// Este metodo recibe como parametro el codigo de un panel. Este parametro pasa a ser el parametro de entrada del metodo convertirPANEL
+        /// </summary>
+        /// <param name="codigo"></param>
+        /// <returns>Un objeto de tipo Panel con todos los atributos del panel que coincide con el codigo ingresado por parametro</returns>
         [HttpGet]
         public Panel consultarPanel(string codigo)
         {
             return this.convertirPANEL(codigo);
         }
-
+        /// <summary>
+        /// Este metodo trae por instancia de la clase repositorio un PANEL. Este panel se "transforma" a un objeto de tipo Panel, esto se realiza de
+        /// manera manual, asignando cada atributo
+        /// </summary>
+        /// <param name="codigo"></param>
+        /// <returns>Se retorna un objeto de tipo panel</returns>
         private Panel convertirPANEL(string codigo)
         {
             PANEL panelDB = repositorio.consultarPanel(codigo);
@@ -77,20 +86,43 @@ namespace WebService.Controllers
         }
 
         // POST: api/ApiGestionarPanel
-       
+       /// <summary>
+       /// Este metodo recibe por parametro todos los valores necesario para crear un panel, estos atributos
+       /// son nuevamente ingresados por parametro a el metodo insertar panel de repositorio, y retorna un valor
+       /// booleando dependiendo del estado de insercion del dato
+       /// </summary>
+       /// <param name="codEvento"></param>
+       /// <param name="tipoCafe"></param>
+       /// <param name="hora"></param>
+       /// <returns>Verdadero o Falso, dependiendo de si fue o no exitosa la operacion de insercion</returns>
         [HttpPost]
         public bool ingresarPanel(string codEvento, string tipoCafe, string hora)
         {
             return repositorio.insertarPanel(codEvento, tipoCafe, TimeSpan.Parse(hora));
         }
-
+        /// <summary>
+        /// Este metodo recibe por parametro el codigo de un Panel, y retorna el valor booleando de ejecutar el metodo
+        /// actualizar panel del repositorio, este a su vez recibe como parametro el codigo del Panel
+        /// </summary>
+        /// <param name="codigo"></param>
+        /// <param name="codEvento"></param>
+        /// <param name="tipoCafe"></param>
+        /// <param name="hora"></param>
+        /// <returns>Retorna verdadero o falso dependiendo de si fue exitosa o no la actualizacion del Panel de la
+        /// base de datos</returns>
         [HttpPut]
         public bool actualizarPanel(string codigo, string codEvento, string tipoCafe, string hora)
         {
             return repositorio.actualizarPanel(codigo, codEvento, tipoCafe, TimeSpan.Parse(hora));
         }
 
-       
+        /// <summary>
+        /// Este metodo recibe por parametro el codigo de un Panel, y retorna el valor booleando de ejecutar el metodo
+        /// eliminar panel del repositorio, este a su vez recibe como parametro el codigo del Panel
+        /// </summary>
+        /// <param name="codigo"></param>
+        /// <returns>Retorna verdadero o falso dependiendo de si fue exitosa o no la eliminacion del Panel de la
+        /// base de datos</returns>
         [HttpDelete]
         public bool eliminarPanel(string codigo)
         {
