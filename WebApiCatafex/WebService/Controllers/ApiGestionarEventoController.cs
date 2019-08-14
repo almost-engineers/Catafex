@@ -1,89 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace WebService.Controllers
 {
-    public class ApiGestionarEventoController : Controller
+    public class ApiGestionarEventoController : ApiController
     {
-        // GET: ApiGestionarEvento
-        public ActionResult Index()
+        // GET: api/ApiGestionarEvento
+        public IEnumerable<string> Get()
         {
-            return View();
+            return new string[] { "value1", "value2" };
         }
 
-        // GET: ApiGestionarEvento/Details/5
-        public ActionResult Details(int id)
+        // GET: api/ApiGestionarEvento/5
+        public string Get(int id)
         {
-            return View();
+            return "value";
         }
 
-        // GET: ApiGestionarEvento/Create
-        public ActionResult Create()
+        // POST: api/ApiGestionarEvento
+        public void Post([FromBody]string value)
         {
-            return View();
         }
 
-        // POST: ApiGestionarEvento/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        // PUT: api/ApiGestionarEvento/5
+        public void Put(int id, [FromBody]string value)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
 
-        // GET: ApiGestionarEvento/Edit/5
-        public ActionResult Edit(int id)
+        // DELETE: api/ApiGestionarEvento/5
+        public void Delete(int id)
         {
-            return View();
-        }
-
-        // POST: ApiGestionarEvento/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ApiGestionarEvento/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ApiGestionarEvento/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
