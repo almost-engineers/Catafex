@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Persistencia.Listas
 {
-    class Lista
+    public class Lista
     {
+        int cosa;
     }
 }

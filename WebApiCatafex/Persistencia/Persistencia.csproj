@@ -86,15 +86,15 @@
     <Compile Include="Entity\EVENTO.cs">
       <DependentUpon>CatafexModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="FabricaRepositorio.cs" />
-    <Compile Include="Listas\ListaPanel.cs" />
     <Compile Include="Entity\PANEL.cs">
       <DependentUpon>CatafexModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entity\REPORTE.cs">
       <DependentUpon>CatafexModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="FabricaRepositorio.cs" />
+    <Compile Include="Listas\Lista.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositorio.cs" />
   </ItemGroup>
   <ItemGroup>
