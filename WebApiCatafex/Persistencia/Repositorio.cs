@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Persistencia
 {
-    public  interface Repositorio
+    public interface Repositorio
 
     {
         IList<PANEL> consultarPaneles();
@@ -26,17 +26,26 @@ namespace Persistencia
         bool actualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora);
         bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora);
         DateTime consultarFecha(string codigo);
+
         IList<string>/*Cafe*/consultarCafes(string tipoCafe);
         IList<string>/*Usuario*/ consultarUsuarios();
         bool registrarCatacion(/*Catacion catacion*/);
-        IList<string> /*Evento*/ consultarEventos();
+        IList<EVENTO> /*Evento*/ consultarEventos();
         string consultarAtributosCafe(string tipoCafe);
         bool eliminarEvento(string codEvento);
-        bool actualizarEvento(/*Evento evento*/);
-        bool insertarEvento(/*Evento evento*/);
-        string /*Evento*/ consultarEvento(string codEvento);
+        bool actualizarEvento(string codigo, string nombre, DateTime fecha);
+        bool insertarEvento(string nombre, DateTime fecha);
+        EVENTO consultarEvento(string codEvento);
+
+
+        bool registrarCata(string codCatacion, int vezCatada ,int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo,
+            int impresionGlobal, int fragancia, int saborResidual, string observaciones);
+
+        string obtegerTipoCafe(string codigo);
+        CATA consultarCata(string codigo);
         PANEL consultarPanel(string codPanel);
         bool registrarCata(/*Cata*/);
+
         IList<string>/*Cata*/ consultarCatasAsignadas(string codCatador);
         bool insertarReporte(/*Reporte reporte*/);
 
