@@ -110,7 +110,7 @@ namespace Persistencia.Repositorios
         /// <returns>retorna un PANEL (objeto de la base de datos)</returns>
         public PANEL consultarPanel(string codPanel)
         {
-            return this.db.PANEL.FirstOrDefault(x => x.CODPANEL.Equals(codPanel));
+            return this.db.PANEL.FirstOrDefault(x => x.CODPANEL.Equals(codPanel)); 
         }
         /// <summary>
         /// Convierte en una lista todos los paneles de la base de datos y los retorna
@@ -231,7 +231,7 @@ namespace Persistencia.Repositorios
             }
             catch (Exception)
             {
-                codigo = "PA-01";
+                codigo = "PA-1";
             }
             return codigo;
         }

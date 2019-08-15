@@ -15,6 +15,7 @@ namespace WebService.Controllers
 
         /// Se crea una variable tipo Repositorio, que retorna ya sea un EntityFramework o una lista
         private Repositorio repositorio;
+        
         public ApiGestionarPanelController()
         {
             this.repositorio = FabricaRepositorio.crearRepositorio();
@@ -29,7 +30,7 @@ namespace WebService.Controllers
        /// <returns>Retorna una lista de paneles de la capa de Dominio</returns>
         [HttpGet]
         public IEnumerable<Panel> consultarPaneles()
-        {           
+        {
             return this.convertirPANEL(repositorio.consultarPaneles());
         }
         /// <summary>
@@ -75,14 +76,18 @@ namespace WebService.Controllers
         private Panel convertirPANEL(string codigo)
         {
             PANEL panelDB = repositorio.consultarPanel(codigo);
-            Panel panel = new Panel();
+            if(panelDB != null)
             {
-                panel.codigo = panelDB.CODPANEL;
-                panel.codEvento = panelDB.CODEVENTO;
-                panel.tipoCafe = panelDB.TIPOCAFE;
-                panel.hora = panelDB.HORA;
+                Panel panel = new Panel();
+                {
+                    panel.codigo = panelDB.CODPANEL;
+                    panel.codEvento = panelDB.CODEVENTO;
+                    panel.tipoCafe = panelDB.TIPOCAFE;
+                    panel.hora = panelDB.HORA;
+                }
+                return panel;
             }           
-            return panel;
+            return null;
         }
 
         // POST: api/ApiGestionarPanel
