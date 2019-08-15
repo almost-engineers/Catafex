@@ -32,25 +32,22 @@ namespace WebService.Controllers
         {
             CATA cataDB = repositorio.consultarCata(codigo);
             Cata cata = new Cata(
-                cataDB.CODCATACION,
-                cataDB.RANCIDEZ.GetValueOrDefault(),
- cataDB.DULCE.GetValueOrDefault(),
- cataDB.ACIDEZ.GetValueOrDefault(),
- cataDB.AROMA.GetValueOrDefault(),
- cataDB.AMARGO.GetValueOrDefault(),
- cataDB.FRAGANCIA.GetValueOrDefault(),
- cataDB.SABORESIDUAL.GetValueOrDefault(),
- cataDB.CUERPO.GetValueOrDefault(),
- cataDB.IMPRESIONGLOBAL.GetValueOrDefault(),
-cataDB.OBSERVACIONES
-                );
-
+            cataDB.CODCATACION,
+            cataDB.RANCIDEZ.GetValueOrDefault(),
+            cataDB.DULCE.GetValueOrDefault(),
+            cataDB.ACIDEZ.GetValueOrDefault(),
+            cataDB.AROMA.GetValueOrDefault(),
+            cataDB.AMARGO.GetValueOrDefault(),
+            cataDB.FRAGANCIA.GetValueOrDefault(),
+            cataDB.SABORESIDUAL.GetValueOrDefault(),
+            cataDB.CUERPO.GetValueOrDefault(),
+            cataDB.IMPRESIONGLOBAL.GetValueOrDefault(),
+            cataDB.OBSERVACIONES
+            );
             return cata;
         }
         private Cata obtenerCata()
         {
-
-
             return null;
         }
         private bool registrarCata(string codCatacion, string vezCatada, string rancidez, string dulce, string acidez,
@@ -59,7 +56,6 @@ cataDB.OBSERVACIONES
         {
             if (validarDatos())
             {
-
                 return
                   repositorio.registrarCata(codCatacion, int.Parse(vezCatada), int.Parse(rancidez), int.Parse(dulce),
                   int.Parse(acidez), int.Parse(cuerpo), int.Parse(aroma), int.Parse(amargo), int.Parse(impresionGlobal),
