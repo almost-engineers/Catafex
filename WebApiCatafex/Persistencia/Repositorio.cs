@@ -26,6 +26,7 @@ namespace Persistencia
         bool actualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora);
         bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora);
         DateTime consultarFecha(string codigo);
+
         IList<string>/*Cafe*/consultarCafes(string tipoCafe);
         IList<string>/*Usuario*/ consultarUsuarios();
         bool registrarCatacion(/*Catacion catacion*/);
@@ -37,9 +38,11 @@ namespace Persistencia
         EVENTO consultarEvento(string codEvento);
 
 
-        bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo,
+        bool registrarCata(string codCatacion, int vezCatada ,int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo,
             int impresionGlobal, int fragancia, int saborResidual, string observaciones);
 
+        string obtegerTipoCafe(string codigo);
+        CATA consultarCata(string codigo);
         PANEL consultarPanel(string codPanel);
         bool registrarCata(/*Cata*/);
 

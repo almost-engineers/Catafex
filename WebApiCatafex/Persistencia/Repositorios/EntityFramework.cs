@@ -152,6 +152,45 @@ namespace Persistencia.Repositorios
         }
         public IList<CATACION> consultarCataciones()
         {
+
+            IList<CATACION> catacionesPendientes = new List<CATACION>();
+
+            foreach (CATACION cat in this.db.CATACION.ToList())
+            {
+                PANEL panel = obtenerPanel(cat.CODPANEL);
+                EVENTO evento = obtenerEvento(panel.CODEVENTO);
+
+
+                if (evento.FECHA.CompareTo(DateTime.Today) >= 1 && panel.HORA.CompareTo(DateTime.Now) >= 1)
+                {
+                    catacionesPendientes.Add(cat);
+                }
+
+
+            }
+            return catacionesPendientes;
+        }
+
+        private EVENTO obtenerEvento(string codigo)
+        {
+            foreach (EVENTO evento in this.db.EVENTO.ToList())
+            {
+                if (evento.CODEVENTO.Equals(codigo))
+                {
+                    return evento;
+                }
+            }
+            return null;
+        }
+        private PANEL obtenerPanel(string codigo)
+        {
+            foreach (PANEL panel in this.db.PANEL.ToList())
+            {
+                if (panel.CODPANEL.Equals(codigo))
+                {
+                    return panel;
+                }
+            }
             return null;
         }
         public IList<string> consultarCatasAsignadas(string codCatador)
@@ -241,13 +280,38 @@ namespace Persistencia.Repositorios
         {
             return false;
         }
-        public bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
+        public bool registrarCata(string codCatacion, int vezCatada, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
         {
-            return false;
+            try
+            {
+                this.db.CATA.Add(new CATA()
+                {
+
+                    CODCATACION = "CT-" + codCatacion + vezCatada,
+                    RANCIDEZ = rancidez,
+                    DULCE = dulce,
+                    ACIDEZ = acidez,
+                    AROMA = aroma,
+                    AMARGO = amargo,
+                    FRAGANCIA = fragancia,
+                    SABORESIDUAL = saborResidual,
+                    CUERPO = cuerpo,
+                    IMPRESIONGLOBAL = impresionGlobal,
+                    OBSERVACIONES = observaciones
+
+                }); ;
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
         public IList<EVENTO> consultarEventos()
         {
-           return  this.db.EVENTO.ToList();
+            return this.db.EVENTO.ToList();
         }
         public bool eliminarEvento(string codEvento)
         {
@@ -264,46 +328,68 @@ namespace Persistencia.Repositorios
         private string generarCodigo(string encabezado)
         {
 
-            int ultimo = 0;
+            string ultimo = "0";
 
 
             switch (encabezado)
             {
-                case "E":
+                case "EV":
                     try
                     {
-                        ultimo = Int32.Parse(this.db.EVENTO.ToList().Last().CODEVENTO.Split('-')[1]) + 1;
+                        EVENTO ev = this.db.EVENTO.ToList().Last();
+                        string[] cod = ev.CODEVENTO.Split('-');
+                        ultimo = (int.Parse(cod[1]) + 1).ToString();
                     }
                     catch (Exception)
                     {
-                        ultimo = 1;
+                        ultimo = "1";
                     }
 
+
                     break;
-                case "P":
+                case "PA":
                     try
                     {
-                        ultimo = Int32.Parse(this.db.PANEL.ToList().Last().CODEVENTO.Split('-')[1]) + 1;
+                        PANEL pa = this.db.PANEL.ToList().Last();
+                        string[] cod = pa.CODPANEL.Split('-');
+                        ultimo = (int.Parse(cod[1]) + 1).ToString();
                     }
                     catch (Exception)
                     {
-                        ultimo = 1;
+                        ultimo = "1";
                     }
                     break;
-                case "C":
+                case "CF":
                     try
                     {
-                        ultimo = Int32.Parse(this.db.CAFE.ToList().Last().CODCAFE.Split('-')[1]) + 1;
+                        CAFE ca = this.db.CAFE.ToList().Last();
+                        string[] cod = ca.CODCAFE.Split('-');
+                        ultimo = (int.Parse(cod[1]) + 1).ToString();
                     }
                     catch (Exception)
                     {
-                        ultimo = 1;
+                        ultimo = "1";
                     }
                     break;
 
             }
             return encabezado + '-' + 2;
 
+        }
+
+        public string obtegerTipoCafe(string codigo)
+        {
+            foreach (PANEL panel in this.db.PANEL.ToList())
+            {
+                if (panel.CODPANEL.Equals(codigo))
+                    return panel.TIPOCAFE;
+            }
+            return "";
+        }
+
+        public CATA consultarCata(string codigo)
+        {
+            return this.db.CATA.FirstOrDefault(x => (x.CODCATACION+"-"+x.VEZCATADA).Equals(codigo));
         }
     }
 }
