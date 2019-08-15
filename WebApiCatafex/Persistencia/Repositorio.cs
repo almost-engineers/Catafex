@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Persistencia.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,10 @@ namespace Persistencia
     public  interface Repositorio
 
     {
-        IList<string>/*<Panel>*/ consultarPaneles();
-        IList<string>/*<Reporte>*/ consultarReportes();
-        IList<string>/*<Catacion>*/ consultarCataciones();
-        string/*Reporte*/ buscarReporte(string codReporte);
+        IList<PANEL> consultarPaneles();
+        IList<REPORTE> consultarReportes();
+        IList<CATACION> consultarCataciones();
+        REPORTE buscarReporte(string codReporte);
         void insertarCafe(/*Cafe cafe*/);
         IList<string>/*<Cafe>*/ consultarCafes();
         bool eliminarCafe(string codigo);
@@ -22,8 +23,8 @@ namespace Persistencia
         bool consultarUsuario(string cedula);
         bool insertarCatador(/*Usuario usuario*/);
         bool eliminarPanel(string codigo);
-        bool actualizarPanel(/*Panel panel*/);
-        bool insertarPanel(/*Panel panel*/);
+        bool actualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora);
+        bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora);
         DateTime consultarFecha(string codigo);
         IList<string>/*Cafe*/consultarCafes(string tipoCafe);
         IList<string>/*Usuario*/ consultarUsuarios();
@@ -34,9 +35,8 @@ namespace Persistencia
         bool actualizarEvento(/*Evento evento*/);
         bool insertarEvento(/*Evento evento*/);
         string /*Evento*/ consultarEvento(string codEvento);
-        string/*Panel*/ consultarPanel(string codPanel);
-        bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo,
-            int impresionGlobal, int fragancia, int saborResidual, string observaciones);
+        PANEL consultarPanel(string codPanel);
+        bool registrarCata(/*Cata*/);
         IList<string>/*Cata*/ consultarCatasAsignadas(string codCatador);
         bool insertarReporte(/*Reporte reporte*/);
 

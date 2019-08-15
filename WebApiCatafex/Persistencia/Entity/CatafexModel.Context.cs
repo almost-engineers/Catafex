@@ -13,10 +13,10 @@ namespace Persistencia.Entity
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class CATAFEXEntities : DbContext
+    public partial class CatafexEntities : DbContext
     {
-        public CATAFEXEntities()
-            : base("name=CATAFEXEntities")
+        public CatafexEntities()
+            : base("name=CatafexEntities")
         {
         }
     

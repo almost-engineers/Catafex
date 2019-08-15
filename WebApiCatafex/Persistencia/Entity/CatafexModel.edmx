@@ -473,7 +473,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="CATAFEXEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="CatafexEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ADMINISTRADOR" EntityType="Self.ADMINISTRADOR" />
           <EntitySet Name="ATRIBUTOSCAFE" EntityType="Self.ATRIBUTOSCAFE" />
           <EntitySet Name="CAFE" EntityType="Self.CAFE" />
@@ -521,7 +521,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="CATAFEXModelStoreContainer" CdmEntityContainer="CATAFEXEntities">
+        <EntityContainerMapping StorageEntityContainer="CATAFEXModelStoreContainer" CdmEntityContainer="CatafexEntities">
           <EntitySetMapping Name="ADMINISTRADOR">
             <EntityTypeMapping TypeName="CATAFEXModel.ADMINISTRADOR">
               <MappingFragment StoreEntitySet="ADMINISTRADOR">
