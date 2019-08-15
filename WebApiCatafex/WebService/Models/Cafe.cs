@@ -25,7 +25,7 @@ namespace WebService.Models
             this.nombre = nombre;
             this.tipoCafe = tipoCafe;
             this.atributosCafe = new AtributosCafe();
-            this.datosCafe = atributosCafe.datosCafe[this.tipoCafe];
+           // this.datosCafe = atributosCafe.datosCafe[this.tipoCafe];
         }
 
         public Cafe(string codCafe, string procedencia, string origen, string nombre, string tipoCafe,int puntoTueste,int gradoMolienda)
@@ -39,7 +39,7 @@ namespace WebService.Models
             this.puntoTueste = puntoTueste;
             this.atributosCafe = new AtributosCafe();
             this.atributosCafe = new AtributosCafe();
-            this.datosCafe = atributosCafe.datosCafe[this.tipoCafe];
+            //this.datosCafe = atributosCafe.datosCafe[this.tipoCafe];
         }
     }
 
