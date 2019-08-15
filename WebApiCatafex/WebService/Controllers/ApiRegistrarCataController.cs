@@ -1,39 +1,119 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+using System.Web;
+using System.Web.Mvc;
+using WebService.Models;
+using Persistencia;
 
 namespace WebService.Controllers
 {
-    public class ApiRegistrarCataController : ApiController
+    public class ApiRegistrarCataController : Controller
     {
-        // GET: api/ApiRegistrarCata
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
+
+        Repositorio repositorio;
+        
+
+
+        public ApiRegistrarCataController() {
+            repositorio = FabricaRepositorio.crearRepositorio();
+        }
+        private IList<Cata> consultarCatacion() {
+       
+            return null;
+        }
+        private Cata obtenerCata() {
+          
+
+            return null;
+        }
+        private bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, 
+            int impresionGlobal, int fragancia, int saborResidual, string observaciones) {
+
+            return repositorio.registrarCata( rancidez,  dulce,  acidez,  cuerpo,  aroma,  amargo,
+             impresionGlobal,  fragancia,  saborResidual,  observaciones);
         }
 
-        // GET: api/ApiRegistrarCata/5
-        public string Get(int id)
+        public bool validarDatos() {
+            return true;
+        }
+        // GET: ApiRegistrarCata
+        public ActionResult Index()
         {
-            return "value";
+            return View();
         }
 
-        // POST: api/ApiRegistrarCata
-        public void Post([FromBody]string value)
+        // GET: ApiRegistrarCata/Details/5
+        public ActionResult Details(int id)
         {
+            return View();
         }
 
-        // PUT: api/ApiRegistrarCata/5
-        public void Put(int id, [FromBody]string value)
+        // GET: ApiRegistrarCata/Create
+        public ActionResult Create()
         {
+            return View();
         }
 
-        // DELETE: api/ApiRegistrarCata/5
-        public void Delete(int id)
+        // POST: ApiRegistrarCata/Create
+        [HttpPost]
+        public ActionResult Create(FormCollection collection)
         {
+            try
+            {
+                // TODO: Add insert logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
         }
+
+        // GET: ApiRegistrarCata/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        // POST: ApiRegistrarCata/Edit/5
+        [HttpPost]
+        public ActionResult Edit(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add update logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: ApiRegistrarCata/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: ApiRegistrarCata/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
     }
 }

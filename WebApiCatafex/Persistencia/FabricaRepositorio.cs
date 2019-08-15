@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Persistencia
 {
-    public static class FabricaRepositorio
+    public class FabricaRepositorio
     {
         public static Repositorio crearRepositorio() {
             return null;
