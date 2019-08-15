@@ -27,7 +27,7 @@ namespace WebService.Controllers
 
             return null;
         }
-        private bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, 
+       private bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, 
             int impresionGlobal, int fragancia, int saborResidual, string observaciones) {
 
             return repositorio.registrarCata( rancidez,  dulce,  acidez,  cuerpo,  aroma,  amargo,
