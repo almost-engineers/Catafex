@@ -223,7 +223,23 @@ namespace Persistencia.Repositorios
 
         private string generarCodigoPanel()
         {
-            return "1";
+            PANEL panel;
+            string codigo = "";
+            try {
+                panel = this.db.PANEL.ToList().Last();
+                codigo = "PA-" + this.numeroPanel(panel.CODPANEL);
+            }
+            catch (Exception)
+            {
+                codigo = "PA-01";
+            }
+            return codigo;
+        }
+
+        private int numeroPanel(string codigo)
+        {
+            string[] cod = codigo.Split('-');
+            return int.Parse(cod[1]) + 1;
         }
 
         public bool insertarReporte()
