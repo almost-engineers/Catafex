@@ -15,9 +15,27 @@ namespace Persistencia.Repositorios
         {
             this.db = new CatafexEntities();
         }
-        public bool actualizarCafe()
+        public bool actualizarCafe(string nombre, string tipoCafe)
         {
-            return false;
+            try
+            {
+
+                foreach (PANEL panel in this.db.PANEL.ToList())
+                {
+                    if (panel.CODPANEL.Equals(codigo))
+                    {
+                        panel.CODEVENTO = codEvento;
+                        panel.TIPOCAFE = tipoCafe;
+                        panel.HORA = hora;
+                    }
+                }
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public bool actualizarEvento()

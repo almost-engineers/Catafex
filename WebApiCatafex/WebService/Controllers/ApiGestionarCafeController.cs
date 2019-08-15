@@ -35,5 +35,12 @@ namespace WebService.Controllers
         public void Delete(int id)
         {
         }
+
+        public string generarCodigo()
+        {
+            string codigo="";
+
+
+        }
     }
 }
