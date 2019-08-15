@@ -1,119 +1,78 @@
-﻿using System;
+﻿using Persistencia;
+using Persistencia.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using WebService.Models;
-using Persistencia;
 
 namespace WebService.Controllers
 {
-    public class ApiRegistrarCataController : Controller
+    public class ApiRegistrarCataController : ApiController
     {
 
+
         Repositorio repositorio;
-        
 
 
-        public ApiRegistrarCataController() {
+
+        public ApiRegistrarCataController()
+        {
             repositorio = FabricaRepositorio.crearRepositorio();
         }
-        private IList<Cata> consultarCatacion() {
-       
-            return null;
-        }
-        private Cata obtenerCata() {
-          
+        private IList<Cata> consultarCatacion()
+        {
 
             return null;
         }
-       private bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, 
-            int impresionGlobal, int fragancia, int saborResidual, string observaciones) {
 
-            return repositorio.registrarCata( rancidez,  dulce,  acidez,  cuerpo,  aroma,  amargo,
-             impresionGlobal,  fragancia,  saborResidual,  observaciones);
+        private Cata convertirCATA(string codigo)
+        {
+            CATA cataDB = repositorio.consultarCata(codigo);
+            Cata cata = new Cata(
+                cataDB.CODCATACION,
+                cataDB.RANCIDEZ.GetValueOrDefault(),
+ cataDB.DULCE.GetValueOrDefault(),
+ cataDB.ACIDEZ.GetValueOrDefault(),
+ cataDB.AROMA.GetValueOrDefault(),
+ cataDB.AMARGO.GetValueOrDefault(),
+ cataDB.FRAGANCIA.GetValueOrDefault(),
+ cataDB.SABORESIDUAL.GetValueOrDefault(),
+ cataDB.CUERPO.GetValueOrDefault(),
+ cataDB.IMPRESIONGLOBAL.GetValueOrDefault(),
+cataDB.OBSERVACIONES
+                );
+
+            return cata;
+        }
+        private Cata obtenerCata()
+        {
+
+
+            return null;
+        }
+        private bool registrarCata(string codCatacion, string vezCatada, string rancidez, string dulce, string acidez,
+            string cuerpo, string aroma, string amargo, string impresionGlobal, string fragancia, string saborResidual,
+            string observaciones)
+        {
+            if (validarDatos())
+            {
+
+                return
+                  repositorio.registrarCata(codCatacion, int.Parse(vezCatada), int.Parse(rancidez), int.Parse(dulce),
+                  int.Parse(acidez), int.Parse(cuerpo), int.Parse(aroma), int.Parse(amargo), int.Parse(impresionGlobal),
+                  int.Parse(fragancia), int.Parse(saborResidual), observaciones);
+            }
+            else return false;
         }
 
-        public bool validarDatos() {
+        public bool validarDatos()
+        {
             return true;
         }
-        // GET: ApiRegistrarCata
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        // GET: ApiRegistrarCata/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ApiRegistrarCata/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ApiRegistrarCata/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ApiRegistrarCata/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ApiRegistrarCata/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ApiRegistrarCata/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ApiRegistrarCata/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
     }
 }

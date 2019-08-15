@@ -19,5 +19,24 @@ namespace WebService.Models
         public int fragancia { get; set; }
         public int saborResidual { get; set; }
         public string observaciones { get; set; }
+
+        public Cata(string CODIGO, int RANCIDEZ, int DULCE, int ACIDEZ, int AROMA, int AMARGO, int FRAGANCIA, int SABORESIDUAL,
+            int CUERPO, int IMPRESIONGLOBAL, string OBSERVACIONES)
+        {
+            this.codCata = CODIGO;
+            this.rancidez = RANCIDEZ;
+            this.dulce = DULCE;
+            this.acidez = ACIDEZ;
+            this.aroma = AROMA;
+            this.amargo = AMARGO;
+            this.fragancia = FRAGANCIA;
+            this.saborResidual = SABORESIDUAL;
+            this.cuerpo = CUERPO;
+            this.impresionGlobal = IMPRESIONGLOBAL;
+            this.observaciones = OBSERVACIONES;
+
+        }
+
     }
+
 }
