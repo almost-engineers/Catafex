@@ -10,12 +10,12 @@ namespace WebService.Models
         public string codigo { get; set; }
         public string nombre { get; set; }
         public DateTime fecha { get; set; }
-        public LinkedList<Cafe> cafes { get; set; }
-        public LinkedList<Panel> paneles { get; set; }
-        public Evento()
-        {
-            this.cafes = new LinkedList<Cafe>();
-            this.paneles = new LinkedList<Panel>();
+     
+      
+        public Evento(string codigo, string nombre, DateTime fecha ) {
+            this.codigo = codigo;
+            this.nombre = nombre;
+            this.fecha = fecha;
         }
     }
 }
