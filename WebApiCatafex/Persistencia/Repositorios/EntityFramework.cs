@@ -16,25 +16,27 @@ namespace Persistencia.Repositorios
         {
             this.db = new CatafexEntities();
         }
-<<<<<<< HEAD
-        public bool actualizarCafe(string codCafe, string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste)
+
+
+        /*
+         * Recibe como parametros todos los datos  y atributos  nececesarios para la creacion del registro de un cafe  en la base de 
+         * datos, estos parametros ya fueron previamente validados 
+         */
+        public bool insertarCafe(string nombre,string tipoCafe,string origen,string codEvento,string procedencia,int gradoMolienda,int puntoTueste)
         {
             try
             {
-                foreach (CAFE cafe in this.db.CAFE.ToList())
+                this.db.CAFE.Add(new CAFE()
                 {
-                    if (cafe.CODCAFE.Equals(codCafe))
-                    {
-                        cafe.CODCAFE = codCafe;
-                        cafe.NOMBRE = nombre;
-                        cafe.TIPOCAFE = tipoCafe;
-                        cafe.ORIGEN = origen;
-                        cafe.PROCEDENCIA = procedencia;
-                        cafe.GRADOMOLIENDA = gradoMolienda;
-                        cafe.PUNTOTUESTE = puntoTueste;
-
-                    }
-                }
+                    CODCAFE = this.generarCodigo("CF"),
+                    CODEVENTO = codEvento,
+                    TIPOCAFE =tipoCafe,
+                    NOMBRE = nombre,
+                    ORIGEN = origen,
+                    PROCEDENCIA = procedencia,
+                    GRADOMOLIENDA = gradoMolienda,
+                    PUNTOTUESTE = puntoTueste
+                });
                 this.db.SaveChanges();
                 return true;
             }
@@ -42,7 +44,7 @@ namespace Persistencia.Repositorios
             {
                 return false;
             }
-        }   
+        }
         /// <summary>
         /// Recibe como parametro todos los datos necesarios, que ya han sido previamente validados, y se disponen a ser insertados en la base de datos
         /// En esta parte no es necesario validar que el usuario no se encuentre registrado, dado que esta validacion es realizada por la base de datos
@@ -100,7 +102,6 @@ namespace Persistencia.Repositorios
                 this.db.SaveChanges();
                 return true;
             }
-
             catch (Exception)
             {
                 return false;
@@ -130,9 +131,34 @@ namespace Persistencia.Repositorios
             return false;
         }
 
-        public bool actualizarCafe()
+        /*
+         *  Reibe como parametros los atributos de Cafe, se obtiene el cafe correspondiente al codigo ingesado por parametro,
+         *  y si este codigo coincide los datos son actualizados, finalmente se guardan los cambios en la base de datos
+         */
+        public bool actualizarCafe(string codCafe,string nombre,string tipoCafe,string origen,string procedencia,int gradoMolienda,int puntoTueste)
         {
-            return false;
+            try
+            {
+                foreach (CAFE cafe in this.db.CAFE.ToList())
+                {
+                    if (cafe.CODCAFE.Equals(codCafe))
+                    {
+                        cafe.CODCAFE = codCafe;
+                        cafe.NOMBRE = nombre;
+                        cafe.TIPOCAFE = tipoCafe;
+                        cafe.ORIGEN = origen;
+                        cafe.PROCEDENCIA = procedencia;
+                        cafe.GRADOMOLIENDA = gradoMolienda;
+                        cafe.PUNTOTUESTE = puntoTueste;
+                    }
+                }
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         /// <summary>
         /// Reibe como parametros los atributos de Panel, se obtiene el panel correspondiente al codigo ingesado por parametro,
@@ -188,33 +214,42 @@ namespace Persistencia.Repositorios
         {
             return null;
         }
+
+        /*
+         * Este metodo se encarga de  buscar en la base de datos, en la tabla atributos de cafe los 
+         * atributos correspondientes del cafe de acuerdo al parametro tipo cafe 
+         */
         public ATRIBUTOSCAFE consultarAtributosCafe(string tipoCafe)
         {
-            return this.db.ATRIBUTOSCAFE.FirstOrDefault(x => x.CAFE.Equals(tipoCafe));
+            return  this.db.ATRIBUTOSCAFE.FirstOrDefault(x => x.CAFE.Equals(tipoCafe));
         }
-        public IList<cafe> consultarCafes()
+        /*
+         * Este  metodo se conecta a la base de datos y me trae una lista de cafes los cuales son aquellos registrados
+         * en la base de datos
+         */
+        public IList<CAFE> consultarCafes()
         {
             return this.db.CAFE.ToList();
         }
 
         /*
-         * este metodo nos recibe le tipo de cafe que necesitamos para hacer una busueda para esto recorremos todos los cafes que se 
-         * encuentran en la base de datos y añadimos a una lista todos aquellos que concuerden con el tipo de cafe buscado
-         * 
+         * En este metodo recibimos el tipo de cafe por el cual necesitamos hacer una busqueda, para 
+         * recorremos todos los cafes que se encuentran en la base de datos y añadimos a una lista todos aquellos 
+         * que concuerden con  el tipo del cafe buscado y luego retornamos esta lista 
          */
-        public IList<string> consultarCafes(string tipoCafe)
+        public IList<CAFE> consultarCafes(string tipoCafe)
         {
             IList<CAFE> cafesTipo = new List<CAFE>();
-
             foreach (CAFE cafe in this.db.CAFE.ToList())
             {
                 if (cafe.ATRIBUTOSCAFE.TIPOCAFE.Equals(tipoCafe))
                 {
                     cafesTipo.Add(cafe);
                 }
-
             }
-            public IList<CATACION> consultarCataciones()
+            return cafesTipo;
+        }
+        public IList<CATACION> consultarCataciones()
         {
 
             IList<CATACION> catacionesPendientes = new List<CATACION>();
@@ -300,6 +335,12 @@ namespace Persistencia.Repositorios
         {
             return null;
         }
+
+        /*
+         * Recibe como parametro un codigo de cafe, este codigo es comparado con cada Cafe y su respectivo codigo
+         * si coinciden, el cafe sera eliminado de la base da datos. Por ultimo los cambios de la base de datos deben ser aceptados
+         * con la la funcion saveChanges
+         */
         public bool eliminarCafe(string codCafe)
         {
             try
@@ -346,44 +387,7 @@ namespace Persistencia.Repositorios
             }
         }
 
-        /*
-         * Recibe como parámetros todos los datos necesarios para la creación del registro de un café
-         * Estos datos ya fueron previamente validados.
-         * 
-         */
-
-
-        public bool insertarCafe(string nombre, string tipoCafe, string origen, string codEvento, string procedencia, int gradoMolienda, int puntoTueste)
-        {
-             try
-            {
-                this.db.CAFE.Add(new CAFE()
-                {
-                    NOMBRE = nombre,
-                    CODEVENTO = codEvento,
-                    tipoCafe = tipoCafe,
-                    ORIGEN = origen,
-                    PROCEDENCIA = procedencia,
-                    gradoMolienda = gradoMolienda,
-                    puntoTueste = puntoTueste,
-                    CODCAFE = this.generarCodigo("CF"),
-                }) ;
-
-                this.db.SaveChanges();
-                return true;
-            }
-             catch(Exception)
-               {
-                return false;
-               }
-           
-        }
-
-
-        public bool insertarCatador()
-=======
         public bool registrarCata()
->>>>>>> origin/Desarrollo
         {
             return false;
         }
@@ -429,12 +433,7 @@ namespace Persistencia.Repositorios
             throw new NotImplementedException();
         }
 
-<<<<<<< HEAD
-
-        private string generarCodigoPanel()
-=======
         public EVENTO consultarEvento(string codEvento)
->>>>>>> origin/Desarrollo
         {
             throw new NotImplementedException();
         }
@@ -523,6 +522,32 @@ namespace Persistencia.Repositorios
                 }
             }
             return false;
+        }
+
+        public bool insertarCatador()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool registrarCata(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
+        {
+            throw new NotImplementedException();
+        }
+
+       
+        public bool actualizarCafe()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool actualizarCafe(string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste)
+        {
+            throw new NotImplementedException();
+        }
+
+        string Repositorio.consultarAtributosCafe(string tipoCafe)
+        {
+            throw new NotImplementedException();
         }
     }
 }
