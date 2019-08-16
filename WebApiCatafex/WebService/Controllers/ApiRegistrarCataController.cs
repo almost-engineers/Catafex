@@ -12,10 +12,6 @@ namespace WebService.Controllers
 {
     public class ApiRegistrarCataController : ApiController
     {
-<<<<<<< HEAD
-        // GET: api/ApiRegistrarCata
-        public IEnumerable<string> Get()
-=======
 
 
         Repositorio repositorio;
@@ -33,7 +29,6 @@ namespace WebService.Controllers
         }
 
         private Cata convertirCATA(string codigo)
->>>>>>> origin/Desarrollo
         {
             CATA cataDB = repositorio.consultarCata(codigo);
             Cata cata = new Cata(

@@ -16,9 +16,9 @@ namespace Persistencia
         IList<CATACION> consultarCataciones();
         REPORTE buscarReporte(string codReporte);
         bool insertarCafe(string nombre, string tipoCafe, string origen, string codEvento, string procedencia, int gradoMolienda, int puntoTueste);
-        IList<CAFE>consultarCafes();
+        IList<CAFE> consultarCafes();
         bool eliminarCafe(string codigo);
-        bool actualizarCafe(string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste );
+        bool actualizarCafe(string codCafe, string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste);
         string consultarUsuario(string correo, string contrasena);
         bool consultarUsuario(string cedula);
         bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp);
@@ -26,20 +26,12 @@ namespace Persistencia
         bool actualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora);
         bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora);
         DateTime consultarFecha(string codigo);
-
         IList<CAFE>consultarCafes(string tipoCafe);
         IList<string>/*Usuario*/ consultarUsuarios();
         bool registrarCatacion(/*Catacion catacion*/);
         IList<EVENTO> /*Evento*/ consultarEventos();
         string consultarAtributosCafe(string tipoCafe);
         bool eliminarEvento(string codEvento);
-<<<<<<< HEAD
-        bool actualizarEvento(/*Evento evento*/);
-        bool insertarEvento(/*Evento evento*/);
-        string /*Evento*/ consultarEvento(string codEvento);
-        PANEL consultarPanel(string codPanel);
-        bool registrarCata(/*Cata*/);
-=======
         bool actualizarEvento(string codigo, string nombre, DateTime fecha);
         bool insertarEvento(string nombre, DateTime fecha);
         EVENTO consultarEvento(string codEvento);
@@ -53,7 +45,6 @@ namespace Persistencia
         PANEL consultarPanel(string codPanel);
         bool registrarCata(/*Cata*/);
 
->>>>>>> origin/Desarrollo
         IList<string>/*Cata*/ consultarCatasAsignadas(string codCatador);
         bool insertarReporte(/*Reporte reporte*/);
 

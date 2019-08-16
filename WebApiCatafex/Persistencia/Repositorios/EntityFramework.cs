@@ -549,20 +549,5 @@ namespace Persistencia.Repositorios
         {
             throw new NotImplementedException();
         }
-
-        public bool actualizarEvento()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool insertarEvento()
-        {
-            throw new NotImplementedException();
-        }
-
-        string Repositorio.consultarEvento(string codEvento)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
