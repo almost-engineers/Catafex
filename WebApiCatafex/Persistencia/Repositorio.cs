@@ -38,16 +38,19 @@ namespace Persistencia
         EVENTO consultarEvento(string codEvento);
 
 
-        bool registrarCata(string codCatacion, int vezCatada ,int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo,
+        bool registrarCata(string codCatacion, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo,
             int impresionGlobal, int fragancia, int saborResidual, string observaciones);
+        bool registrarCata();
+        int obtenerUltimaCata(string codCatacion);
 
-        string obtegerTipoCafe(string codigo);
+        string obtenerTipoCafe(string codigo);
         CATA consultarCata(string codigo);
         PANEL consultarPanel(string codPanel);
-        bool registrarCata(/*Cata*/);
-
-        IList<string>/*Cata*/ consultarCatasAsignadas(string codCatador);
+      
+        IList<CATACION>consultarCatacionesAsignadas(string codCatador);
         bool insertarReporte(/*Reporte reporte*/);
+
+        string obtenerAtributosCafes(string tipoCafe);
 
     }
 }

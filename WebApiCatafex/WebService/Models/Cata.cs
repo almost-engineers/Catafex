@@ -7,6 +7,7 @@ namespace WebService.Models
 {
     public class Cata
     {
+
         public string codCata { get; set; }
         public int vezCatada { get; set; }
         public int rancidez { get; set; }
@@ -20,9 +21,10 @@ namespace WebService.Models
         public int saborResidual { get; set; }
         public string observaciones { get; set; }
 
-        public Cata(string CODIGO, int RANCIDEZ, int DULCE, int ACIDEZ, int AROMA, int AMARGO, int FRAGANCIA, int SABORESIDUAL,
+        public Cata(string CODIGO, int VEZCATADA, int RANCIDEZ, int DULCE, int ACIDEZ, int AROMA, int AMARGO, int FRAGANCIA, int SABORESIDUAL,
             int CUERPO, int IMPRESIONGLOBAL, string OBSERVACIONES)
         {
+            this.vezCatada = VEZCATADA;
             this.codCata = CODIGO;
             this.rancidez = RANCIDEZ;
             this.dulce = DULCE;

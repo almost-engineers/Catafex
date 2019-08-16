@@ -29,6 +29,5 @@ namespace Persistencia.Entity
     
         public virtual CATACION CATACION { get; set; }
 
-        
     }
 }
