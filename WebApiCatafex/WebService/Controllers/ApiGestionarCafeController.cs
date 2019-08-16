@@ -88,5 +88,12 @@ namespace WebService.Controllers
             }
             return cafes;
         }
+
+        public string generarCodigo()
+        {
+            string codigo="";
+
+            return codigo;
+        }
     }
 }
