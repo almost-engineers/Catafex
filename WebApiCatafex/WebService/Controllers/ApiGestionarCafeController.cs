@@ -4,11 +4,21 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Persistencia;
 
 namespace WebService.Controllers
 {
     public class ApiGestionarCafeController : ApiController
     {
+        private Repositorio repositorio;
+
+         public ApiGestionarCafeController()
+        {
+            this.repositorio = FabricaRepositorio.crearRepositorio();
+        }
+
+        public IEnumerable<Cafe> consultarCafes(){
+         }
         // GET: api/ApiGestionarCafe
         public IEnumerable<string> Get()
         {
@@ -36,25 +46,15 @@ namespace WebService.Controllers
         {
         }
 
-        public string generarCodigo()
+       private IList<Cafe> convertirCAFE(IList<CAFE> cafesDB)
         {
-           
-        }
-
-        private IList<Cafe> convertirPANEL(IList<PANEL> panelesDB)
-        {
-            IList<Panel> paneles = new List<Panel>();
-            foreach (PANEL panel in panelesDB)
+            IList<Cafe> cafes = new List<Cafe>();
+            foreach (CAFE cafe in cafesDB)
             {
-                paneles.Add(new Panel()
-                {
-                    codigo = panel.CODPANEL,
-                    codEvento = panel.CODEVENTO,
-                    tipoCafe = panel.TIPOCAFE,
-                    hora = panel.HORA
-                });
+                cafes.Add(new Cafe(cafe.CODCAFE, cafe.PROCEDENCIA, cafe.ORIGEN, cafe.NOMBRE, (int)cafe.PUNTOTUESTE, (int)cafe.GRADOMOLIENDA));
+                
             }
-            return paneles;
+         return cafes;
         }
     }
 }

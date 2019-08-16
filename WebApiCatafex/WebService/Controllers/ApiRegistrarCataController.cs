@@ -1,39 +1,79 @@
-﻿using System;
+﻿using Persistencia;
+using Persistencia.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebService.Models;
 
 namespace WebService.Controllers
 {
     public class ApiRegistrarCataController : ApiController
     {
+<<<<<<< HEAD
         // GET: api/ApiRegistrarCata
         public IEnumerable<string> Get()
+=======
+
+
+        Repositorio repositorio;
+
+
+
+        public ApiRegistrarCataController()
         {
-            return new string[] { "value1", "value2" };
+            repositorio = FabricaRepositorio.crearRepositorio();
+        }
+        private IList<Cata> consultarCatacion()
+        {
+
+            return null;
         }
 
-        // GET: api/ApiRegistrarCata/5
-        public string Get(int id)
+        private Cata convertirCATA(string codigo)
+>>>>>>> origin/Desarrollo
         {
-            return "value";
+            CATA cataDB = repositorio.consultarCata(codigo);
+            Cata cata = new Cata(
+            cataDB.CODCATACION,
+            cataDB.RANCIDEZ.GetValueOrDefault(),
+            cataDB.DULCE.GetValueOrDefault(),
+            cataDB.ACIDEZ.GetValueOrDefault(),
+            cataDB.AROMA.GetValueOrDefault(),
+            cataDB.AMARGO.GetValueOrDefault(),
+            cataDB.FRAGANCIA.GetValueOrDefault(),
+            cataDB.SABORESIDUAL.GetValueOrDefault(),
+            cataDB.CUERPO.GetValueOrDefault(),
+            cataDB.IMPRESIONGLOBAL.GetValueOrDefault(),
+            cataDB.OBSERVACIONES
+            );
+            return cata;
+        }
+        private Cata obtenerCata()
+        {
+            return null;
+        }
+        private bool registrarCata(string codCatacion, string vezCatada, string rancidez, string dulce, string acidez,
+            string cuerpo, string aroma, string amargo, string impresionGlobal, string fragancia, string saborResidual,
+            string observaciones)
+        {
+            if (validarDatos())
+            {
+                return
+                  repositorio.registrarCata(codCatacion, int.Parse(vezCatada), int.Parse(rancidez), int.Parse(dulce),
+                  int.Parse(acidez), int.Parse(cuerpo), int.Parse(aroma), int.Parse(amargo), int.Parse(impresionGlobal),
+                  int.Parse(fragancia), int.Parse(saborResidual), observaciones);
+            }
+            else return false;
         }
 
-        // POST: api/ApiRegistrarCata
-        public void Post([FromBody]string value)
+        public bool validarDatos()
         {
+            return true;
         }
 
-        // PUT: api/ApiRegistrarCata/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
 
-        // DELETE: api/ApiRegistrarCata/5
-        public void Delete(int id)
-        {
-        }
     }
 }
