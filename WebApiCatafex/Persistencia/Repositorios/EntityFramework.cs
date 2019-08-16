@@ -455,6 +455,7 @@ namespace Persistencia.Repositorios
 
                 return this.db.ATRIBUTOSCAFE.ToList().FirstOrDefault(x => x.TIPOCAFE.Equals(tipoCafe)).DATOS;
             }
+            //comentario
             catch (Exception)
             { return "no existen datos para ese tipo de cafe";
             }
