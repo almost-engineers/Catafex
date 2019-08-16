@@ -83,7 +83,7 @@ namespace WebService.Controllers
             IList<Cafe> cafes = new List<Cafe>();
             foreach (CAFE cafe in cafesDB)
             {
-                cafes.Add(new Cafe(cafe.CODCAFE, cafe.PROCEDENCIA, cafe.ORIGEN, cafe.NOMBRE, (int)cafe.PUNTOTUESTE, (int)cafe.GRADOMOLIENDA);
+                cafes.Add(new Cafe(cafe.CODCAFE, cafe.PROCEDENCIA, cafe.ORIGEN, cafe.NOMBRE, (int)cafe.PUNTOTUESTE, (int)cafe.GRADOMOLIENDA));
                 
             }
             return cafes;
