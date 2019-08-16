@@ -1,92 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Persistencia;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace WebService.Controllers
 {
-    public class ApiGestionarCafeController : Controller
+    public class ApiGestionarCafeController : ApiController
     {
-
-       
-        // GET: ApiGestionarCafe
-        public ActionResult Index()
+        // GET: api/ApiGestionarCafe
+        public IEnumerable<string> Get()
         {
-            return View();
+            return new string[] { "value1", "value2" };
         }
 
-        // GET: ApiGestionarCafe/Details/5
-        public ActionResult Details(int id)
+        // GET: api/ApiGestionarCafe/5
+        public string Get(int id)
         {
-            return View();
+            return "value";
         }
 
-        // GET: ApiGestionarCafe/Create
-        public ActionResult Create()
+        // POST: api/ApiGestionarCafe
+        public void Post([FromBody]string value)
         {
-            return View();
         }
 
-        // POST: ApiGestionarCafe/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        // PUT: api/ApiGestionarCafe/5
+        public void Put(int id, [FromBody]string value)
         {
-            try
+        }
+
+        // DELETE: api/ApiGestionarCafe/5
+        public void Delete(int id)
+        {
+        }
+
+        public string generarCodigo()
+        {
+           
+        }
+
+        private IList<Cafe> convertirPANEL(IList<PANEL> panelesDB)
+        {
+            IList<Panel> paneles = new List<Panel>();
+            foreach (PANEL panel in panelesDB)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                paneles.Add(new Panel()
+                {
+                    codigo = panel.CODPANEL,
+                    codEvento = panel.CODEVENTO,
+                    tipoCafe = panel.TIPOCAFE,
+                    hora = panel.HORA
+                });
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ApiGestionarCafe/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ApiGestionarCafe/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ApiGestionarCafe/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ApiGestionarCafe/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return paneles;
         }
     }
 }

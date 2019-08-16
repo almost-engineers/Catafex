@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="dc1708e2a19e45e198abd8dbb832999b" Name="Diagram1">
+        <EntityTypeShape EntityType="CATAFEXModel.ADMINISTRADOR" Width="1.5" PointX="5.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CATAFEXModel.ATRIBUTOSCAFE" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CATAFEXModel.CAFE" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CATAFEXModel.CATA" Width="1.5" PointX="7.5" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CATAFEXModel.CATACION" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CATAFEXModel.CATADOR" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CATAFEXModel.EVENTO" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CATAFEXModel.PANEL" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CATAFEXModel.REPORTE" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
+        <AssociationConnector Association="CATAFEXModel.FK__CAFE__TIPOCAFE__2EA5EC27" ManuallyRouted="false" />
+        <AssociationConnector Association="CATAFEXModel.FK__CAFE__CODEVENTO__2F9A1060" ManuallyRouted="false" />
+        <AssociationConnector Association="CATAFEXModel.FK__CATACION__CODCAF__40C49C62" ManuallyRouted="false" />
+        <AssociationConnector Association="CATAFEXModel.FK__CATA__CODCATACIO__43A1090D" ManuallyRouted="false" />
+        <AssociationConnector Association="CATAFEXModel.FK__CATACION__CODCAT__3FD07829" ManuallyRouted="false" />
+        <AssociationConnector Association="CATAFEXModel.FK__CATACION__CODPAN__3EDC53F0" ManuallyRouted="false" />
+        <AssociationConnector Association="CATAFEXModel.FK__PANEL__CODEVENTO__32767D0B" ManuallyRouted="false" />
+        <AssociationConnector Association="CATAFEXModel.FK__REPORTE__CODPANE__3552E9B6" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

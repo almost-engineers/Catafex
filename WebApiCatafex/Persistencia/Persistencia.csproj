@@ -50,20 +50,80 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\ADMINISTRADOR.cs">
+      <DependentUpon>CatafexModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\ATRIBUTOSCAFE.cs">
+      <DependentUpon>CatafexModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\CAFE.cs">
+      <DependentUpon>CatafexModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\CATA.cs">
+      <DependentUpon>CatafexModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\CATACION.cs">
+      <DependentUpon>CatafexModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\CATADOR.cs">
+      <DependentUpon>CatafexModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\CatafexModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CatafexModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\CatafexModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CatafexModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\CatafexModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CatafexModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\EVENTO.cs">
+      <DependentUpon>CatafexModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\PANEL.cs">
+      <DependentUpon>CatafexModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\REPORTE.cs">
+      <DependentUpon>CatafexModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="FabricaRepositorio.cs" />
-    <Compile Include="Listas\ListaPanel.cs" />
+    <Compile Include="Repositorios\EntityFramework.cs" />
+    <Compile Include="Repositorios\Lista.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositorio.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <EntityDeploy Include="Entity\CatafexModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CatafexModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entity\CatafexModel.edmx.diagram">
+      <DependentUpon>CatafexModel.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Entity\" />
+    <Content Include="Entity\CatafexModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CatafexModel.edmx</DependentUpon>
+      <LastGenOutput>CatafexModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Entity\CatafexModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CatafexModel.edmx</DependentUpon>
+      <LastGenOutput>CatafexModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
