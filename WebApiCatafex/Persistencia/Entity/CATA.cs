@@ -28,5 +28,6 @@ namespace Persistencia.Entity
         public string OBSERVACIONES { get; set; }
     
         public virtual CATACION CATACION { get; set; }
+
     }
 }

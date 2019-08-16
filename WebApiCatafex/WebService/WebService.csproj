@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -155,14 +161,27 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ApiAsignarCatadorController.cs" />
+    <Compile Include="Controllers\ApiAutenticarController.cs" />
+    <Compile Include="Controllers\ApiGestionarCafeController.cs" />
+    <Compile Include="Controllers\ApiGestionarEventoController.cs" />
+    <Compile Include="Controllers\ApiGestionarPanelController.cs" />
+    <Compile Include="Controllers\ApiObtenerReporteController.cs" />
+    <Compile Include="Controllers\ApiRegistrarCataController.cs" />
+    <Compile Include="Controllers\ApiRegistrarCatadorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Administrador.cs" />
+    <Compile Include="Models\AtributosCafe.cs" />
+    <Compile Include="Models\Cafe.cs" />
     <Compile Include="Models\Cata.cs" />
     <Compile Include="Models\Catacion.cs" />
     <Compile Include="Models\Catador.cs" />
+    <Compile Include="Models\Evento.cs" />
+    <Compile Include="Models\Panel.cs" />
+    <Compile Include="Models\Reporte.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -219,6 +238,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ApiAsignarCatador\" />
+    <Folder Include="Views\ApiAutenticar\" />
+    <Folder Include="Views\ApiGestionarCafe\" />
+    <Folder Include="Views\ApiGestionarEvento\" />
+    <Folder Include="Views\ApiGestionarPanel\" />
+    <Folder Include="Views\ApiObtenerReporte\" />
+    <Folder Include="Views\ApiRegistrarCatador\" />
+    <Folder Include="Views\ApiRegistrarCata\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -248,6 +275,12 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Persistencia\Persistencia.csproj">
+      <Project>{c5c0d098-119b-4ef5-ad1e-4f3444603d05}</Project>
+      <Name>Persistencia</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

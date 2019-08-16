@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Persistencia.Listas
 {
-    class Class1
+    class Lista2
     {
     }
 }

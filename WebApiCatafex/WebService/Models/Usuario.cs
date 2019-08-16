@@ -5,7 +5,12 @@ using System.Web;
 
 namespace WebService.Models
 {
-    public class Usuario
+   public abstract class Usuario
     {
+         string cedula { get; set; }
+         string correo { get; set; }
+         string nombre { get; set; }
+         string contraseña { get; set; }
+
     }
 }
