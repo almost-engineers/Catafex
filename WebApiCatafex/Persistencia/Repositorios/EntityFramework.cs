@@ -163,6 +163,11 @@ namespace Persistencia.Repositorios
         }
         public REPORTE buscarReporte(string codReporte)
         {
+            REPORTE reporte = this.db.REPORTE.ToList().FirstOrDefault(x => x.CODREPORTE.Equals(codReporte));
+            if (reporte != null)
+            {
+                return reporte;
+            }
             return null;
         }
         public string consultarAtributosCafe(string tipoCafe)
@@ -180,7 +185,7 @@ namespace Persistencia.Repositorios
         public IList<CATACION> consultarCataciones()
         {
 
-            IList<CATACION> catacionesPendientes = new List<CATACION>();
+            IList<CATACION> cataciones = new List<CATACION>();
 
             foreach (CATACION cat in this.db.CATACION.ToList())
             {
@@ -190,12 +195,12 @@ namespace Persistencia.Repositorios
 
                 if (evento.FECHA.CompareTo(DateTime.Today) >= 1 && panel.HORA.CompareTo(DateTime.Now) >= 1)
                 {
-                    catacionesPendientes.Add(cat);
+                    cataciones.Add(cat);
                 }
 
 
             }
-            return catacionesPendientes;
+            return cataciones;
         }
 
         private EVENTO obtenerEvento(string codigo)
@@ -222,6 +227,11 @@ namespace Persistencia.Repositorios
         }
         public IList<string> consultarCatasAsignadas(string codCatador)
         {
+            IList<CATACION> catacionesPendientes = new List<CATACION>();
+
+            foreach(CATACION catacion in this.db.CATACION.ToList()){
+
+            }
             return null;
         }
         public DateTime consultarFecha(string codigo)
@@ -249,7 +259,7 @@ namespace Persistencia.Repositorios
         }
         public IList<REPORTE> consultarReportes()
         {
-            return null;
+            return this.db.REPORTE.ToList();
         }
         public string consultarUsuario(string correo, string contrasena)
         {
@@ -309,7 +319,7 @@ namespace Persistencia.Repositorios
                 this.db.CATA.Add(new CATA()
                 {
 
-                    CODCATACION = "CT-" + codCatacion + vezCatada,
+                    CODCATACION = "CT-" + codCatacion +"-"+ vezCatada,
                     RANCIDEZ = rancidez,
                     DULCE = dulce,
                     ACIDEZ = acidez,
@@ -386,6 +396,18 @@ namespace Persistencia.Repositorios
                     {
                         CAFE ca = this.db.CAFE.ToList().Last();
                         string[] cod = ca.CODCAFE.Split('-');
+                        ultimo = (int.Parse(cod[1]) + 1).ToString();
+                    }
+                    catch (Exception)
+                    {
+                        ultimo = "1";
+                    }
+                    break;
+                case "RE":
+                    try
+                    {
+                        REPORTE re = this.db.REPORTE.ToList().Last();
+                        string[] cod = re.CODPANEL.Split('-');
                         ultimo = (int.Parse(cod[1]) + 1).ToString();
                     }
                     catch (Exception)
