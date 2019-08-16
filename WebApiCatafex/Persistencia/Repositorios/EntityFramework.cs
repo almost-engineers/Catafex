@@ -319,7 +319,7 @@ namespace Persistencia.Repositorios
                     RANCIDEZ = rancidez,
                     DULCE = dulce,
                     ACIDEZ = null,
-                    AROMA = aroma,
+                    AROMA = null,
                     AMARGO = amargo,
                     FRAGANCIA = fragancia,
                     SABORESIDUAL = saborResidual,
