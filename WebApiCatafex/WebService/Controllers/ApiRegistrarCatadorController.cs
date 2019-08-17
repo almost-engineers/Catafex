@@ -99,7 +99,7 @@ namespace WebService.Controllers
         /// <param name="contraseña"></param>
         /// <param name="hash"></param>
         /// <returns>Retorna Falso o Verdadero, dependiendo de la comparacion</returns>
-        private bool VerificarMd5Hash(string contraseña, string hash)
+        public bool VerificarMd5Hash(string contraseña, string hash)
         {
             string hashContraseña = getMD5Hash(contraseña);
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
