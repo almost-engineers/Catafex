@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Persistencia.Entity;
 
@@ -325,7 +327,8 @@ namespace Persistencia.Repositorios
         }
         public string consultarUsuario(string correo, string contrasena)
         {
-            return null;
+            return "";
+            
         }
         public bool consultarUsuario(string cedula)
         {
@@ -391,9 +394,26 @@ namespace Persistencia.Repositorios
         {
             return false;
         }
-        public bool registrarCatacion()
+        public bool registrarCatacion(string codCatacion,string codPanel,string codCatador,string codCafe,int cantidad)
         {
-            return false;
+            try
+            {
+                this.db.CATACION.Add(new CATACION()
+                {
+
+                    CODCATACION = generarCodigo("CT"),
+                    CODPANEL = codPanel,
+                    CODCATADOR = codCatador,
+                    CODCAFE = codCafe,
+                    CANTIDAD = cantidad                  
+                }); 
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public bool registrarCata(string codCatacion, int vezCatada, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
         {
@@ -438,7 +458,20 @@ namespace Persistencia.Repositorios
             throw new NotImplementedException();
         }
 
-
+        private string getMD5Hash(string contraseña)
+        {
+            using (MD5 md5Hash = MD5.Create())
+            {
+                byte[] datos = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(contraseña));
+                StringBuilder sBuilder = new StringBuilder();
+                foreach (byte b in datos)
+                {
+                    //Le da un formato hexadecimal a cada byte de informacion, ademas de transformalo en string
+                    sBuilder.Append(b.ToString("x2"));
+                }
+                return sBuilder.ToString();
+            }
+        }
 
         private string generarCodigo(string encabezado)
         {
@@ -459,8 +492,18 @@ namespace Persistencia.Repositorios
                     {
                         ultimo = "1";
                     }
-
-
+                    break;
+                case "CT":
+                    try
+                    {
+                        CATACION ev = this.db.CATACION.ToList().Last();
+                        string[] cod = ev.CODCATACION.Split('-');
+                        ultimo = (int.Parse(cod[1]) + 1).ToString();
+                    }
+                    catch (Exception)
+                    {
+                        ultimo = "1";
+                    }
                     break;
                 case "PA":
                     try
@@ -546,6 +589,16 @@ namespace Persistencia.Repositorios
         }
 
         string Repositorio.consultarAtributosCafe(string tipoCafe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool registrarCatacion()
+        {
+            throw new NotImplementedException();
+        }
+
+        string Repositorio.consultarUsuario(string correo, string contrasena)
         {
             throw new NotImplementedException();
         }

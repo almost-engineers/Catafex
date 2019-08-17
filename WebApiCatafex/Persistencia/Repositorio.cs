@@ -28,7 +28,7 @@ namespace Persistencia
         DateTime consultarFecha(string codigo);
         IList<CAFE>consultarCafes(string tipoCafe);
         IList<string>/*Usuario*/ consultarUsuarios();
-        bool registrarCatacion(/*Catacion catacion*/);
+        bool registrarCatacion(string codCatacion, string codPanel, string codCatador, string codCafe, int cantidad);
         IList<EVENTO> /*Evento*/ consultarEventos();
         string consultarAtributosCafe(string tipoCafe);
         bool eliminarEvento(string codEvento);
