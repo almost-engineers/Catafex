@@ -465,6 +465,29 @@ namespace Persistencia.Repositorios
             return this.db.CATA.FirstOrDefault(x => (x.CODCATACION + "-" + x.VEZCATADA).Equals(codigo));
         }
 
+        public bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
+        {
+            throw new NotImplementedException();
+        }
 
+        public bool registrarCata(string codCatacion, int vezCatada, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string obtegerTipoCafe(string codigo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<string> consultarCatasAsignadas(string codCatador)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool buscarCedulaCatador(string cedula)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
