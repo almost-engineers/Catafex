@@ -7,5 +7,8 @@ namespace WebService.Models
 {
    public class Catador: Usuario
     {
+        string codigo { get; set; }
+        string nivelExp { get; set; }
+
     }
 }

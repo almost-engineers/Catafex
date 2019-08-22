@@ -1,39 +1,60 @@
-﻿using System;
+﻿using Persistencia;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Persistencia.Entity;
+
 
 namespace WebService.Controllers
 {
     public class ApiAutenticarController : ApiController
     {
-        // GET: api/ApiAutenticar
-        public IEnumerable<string> Get()
+        private Repositorio repositorio;
+        private ApiRegistrarCatadorController controladoraRCatador;
+        public ApiAutenticarController()
         {
-            return new string[] { "value1", "value2" };
+            this.repositorio = FabricaRepositorio.crearRepositorio();
+            controladoraRCatador = new ApiRegistrarCatadorController();
         }
 
         // GET: api/ApiAutenticar/5
-        public string Get(int id)
+        [HttpGet]
+        public bool validarCamposCatador(string correoCatador, string contraseñaCatador)
         {
-            return "value";
+            return buscarCatador(correoCatador,contraseñaCatador);
         }
+        // GET: api/ApiAutenticar/
+        [HttpGet]
+        public bool validarCamposAdministrador(string correoAdministrador, string contraseñaAdministrador)
+        {
+            return buscarAdministrador(correoAdministrador, contraseñaAdministrador);
+        }
+        private bool buscarCatador(string correo,string contraseña)
+        {
+            CATADOR catadorDB = repositorio.consultarCatador(correo);
+            
+            if(catadorDB != null)
+            {
+                return controladoraRCatador.VerificarMd5Hash(contraseña, catadorDB.CONTRASEÑA);
+            }
+            
+            return false;
+        }
+        private bool buscarAdministrador(string correo, string contraseña)
+        {
+            ADMINISTRADOR administradorDB = repositorio.consultarAdministrador(correo);
+            if (administradorDB != null)
+            {
+                return controladoraRCatador.VerificarMd5Hash(contraseña, administradorDB.CONTRASEÑA);
+            }
+            return false;
+        }
+        
+       
 
-        // POST: api/ApiAutenticar
-        public void Post([FromBody]string value)
-        {
-        }
 
-        // PUT: api/ApiAutenticar/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/ApiAutenticar/5
-        public void Delete(int id)
-        {
-        }
     }
 }
