@@ -14,18 +14,21 @@ namespace Persistencia
         IList<PANEL> consultarPaneles();
         IList<REPORTE> consultarReportes();
         IList<CATACION> consultarCataciones();
+        REPORTE buscarReporte(string codReporte);
         string consultarUsuario(string correo, string contrasena);
         bool consultarUsuario(string cedula);
         IList<string>/*<Cafe>*/ consultarCafes();
-        REPORTE buscarReporte(string codReporte);
-        void insertarCafe(/*Cafe cafe*/);
+     
+       
         bool eliminarCafe(string codigo);
         bool actualizarCafe(/*Cafe cafe*/);
 
+        //INSERTAR
+        bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora);
         bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp);
         bool eliminarPanel(string codigo);
         bool actualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora);
-        bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora);
+      
         DateTime consultarFecha(string codigo);
 
         IList<string>/*Cafe*/consultarCafes(string tipoCafe);
