@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Persistencia.Entity;
 
@@ -21,37 +22,9 @@ namespace Persistencia.Repositorios
         {
 
         }
-        /// <summary>
-        /// Recibe como parametro todos los datos necesarios, que ya han sido previamente validados, y se disponen a ser insertados en la base de datos
-        /// En esta parte no es necesario validar que el usuario no se encuentre registrado, dado que esta validacion es realizada por la base de datos
-        /// </summary>
-        /// <param name="nombre"></param>
-        /// <param name="cedula"></param>
-        /// <param name="codigo"></param>
-        /// <param name="correo"></param>
-        /// <param name="contraseña"></param>
-        /// <param name="nivelExp"></param>
-        /// <returns>Retorna Verdadero si los cambios en la base de datos son logrados con exito de lo contrario retorna False</returns>
-        public bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
+        public bool insertarCatador()
         {
-            try
-            {
-                this.db.CATADOR.Add(new CATADOR()
-                {
-                    NOMBRE = nombre,
-                    CEDULA = cedula,
-                    CODIGO = codigo,
-                    CORREO = correo,
-                    CONTRASEÑA = contraseña,
-                    NIVELEXP = nivelExp
-                });
-                this.db.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return false;
         }
         /// <summary>
         /// Recibe como parametros los atributos necesarios para la creacion de un panel, en estos no se incluye el codigo del panel
@@ -70,7 +43,7 @@ namespace Persistencia.Repositorios
             {
                 this.db.PANEL.Add(new PANEL()
                 {
-                    CODPANEL = this.generarCodigo("PA"),
+                    CODPANEL = this.generarCodigo("P"),
                     CODEVENTO = codEvento,
                     TIPOCAFE = tipoCafe,
                     HORA = hora
@@ -83,7 +56,6 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
-
         public bool insertarEvento(string nombre, DateTime fecha)
         {
             try
@@ -106,7 +78,6 @@ namespace Persistencia.Repositorios
         {
             return false;
         }
-
         public bool actualizarCafe()
         {
             return false;
@@ -197,7 +168,6 @@ namespace Persistencia.Repositorios
             }
             return catacionesPendientes;
         }
-
         private EVENTO obtenerEvento(string codigo)
         {
             foreach (EVENTO evento in this.db.EVENTO.ToList())
@@ -220,10 +190,21 @@ namespace Persistencia.Repositorios
             }
             return null;
         }
-        public IList<string> consultarCatasAsignadas(string codCatador)
+        public IList<CATACION> consultarCatacionesAsignadas(string codCatador)
         {
-            return null;
+
+            IList<CATACION> catacionesPendientes = new List<CATACION>();
+
+            foreach (CATACION cat in this.db.CATACION.ToList())
+            {
+                if (cat.CODCATADOR.Equals(codCatador))
+                {
+                    catacionesPendientes.Add(cat);
+                }
+            }
+            return catacionesPendientes;
         }
+
         public DateTime consultarFecha(string codigo)
         {
             return DateTime.Now;
@@ -298,22 +279,80 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool registrarCata()
-        {
-            return false;
-        }
         public bool registrarCatacion()
         {
             return false;
         }
-        public bool registrarCata(string codCatacion, int vezCatada, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
+        public int obtenerUltimaCata(string codCatacion)
         {
+            try
+            {
+                return this.db.CATA.ToList<CATA>().Last(x => x.CODCATACION.Equals(codCatacion)).VEZCATADA + 1;
+            }
+            catch (Exception)
+            {
+                return 1;
+            }
+        }
+
+        public bool registrarCata()
+        {
+
+            string codCatacion = "ct1";
+            int rancidez =0;
+            int  dulce = 0;
+            int acidez = 0;
+            int cuerpo = 0;
+            int aroma = 0;
+            int amargo = 0;
+            int impresionGlobal = 0;
+            int fragancia = 0;
+            int saborResidual = 0;
+            string observaciones = "obs";
+
+
+            int vezCatada = obtenerUltimaCata(codCatacion);
+
             try
             {
                 this.db.CATA.Add(new CATA()
                 {
 
-                    CODCATACION = "CT-" + codCatacion + vezCatada,
+                    CODCATACION = codCatacion,
+                    VEZCATADA = vezCatada,
+                    RANCIDEZ = rancidez,
+                    DULCE = dulce,
+                    ACIDEZ = null,
+                    AROMA = null,
+                    AMARGO = amargo,
+                    FRAGANCIA = fragancia,
+                    SABORESIDUAL = saborResidual,
+                    CUERPO = cuerpo,
+                    IMPRESIONGLOBAL = impresionGlobal,
+                    OBSERVACIONES = observaciones
+
+                }); ;
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
+        }
+        public bool registrarCata(string codCatacion, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
+        {
+            int vezCatada = obtenerUltimaCata(codCatacion);
+
+            try
+            {
+                this.db.CATA.Add(new CATA()
+                {
+
+                    CODCATACION = codCatacion,
+                    VEZCATADA = vezCatada,
                     RANCIDEZ = rancidez,
                     DULCE = dulce,
                     ACIDEZ = acidez,
@@ -403,36 +442,33 @@ namespace Persistencia.Repositorios
 
         }
 
-        public string obtegerTipoCafe(string codigo)
+        public string obtenerTipoCafe(string codigo)
         {
-            foreach (PANEL panel in this.db.PANEL.ToList())
+            foreach (CATACION cat in this.db.CATACION.ToList())
             {
-                if (panel.CODPANEL.Equals(codigo))
-                    return panel.TIPOCAFE;
+                if (cat.CODCATACION.Equals(codigo))
+                    return this.consultarPanel(cat.CODPANEL).TIPOCAFE;
             }
-            return "";
+            return "no se encuentra";
         }
 
+        public string obtenerAtributosCafes(string tipoCafe)
+        {
+            try
+            {
+
+                return this.db.ATRIBUTOSCAFE.ToList().FirstOrDefault(x => x.TIPOCAFE.Equals(tipoCafe)).DATOS;
+            }
+            //comentario
+            catch (Exception)
+            { return "no existen datos para ese tipo de cafe";
+            }
+        }
         public CATA consultarCata(string codigo)
         {
-            return this.db.CATA.FirstOrDefault(x => (x.CODCATACION+"-"+x.VEZCATADA).Equals(codigo));
+            return this.db.CATA.FirstOrDefault(x => (x.CODCATACION + "-" + x.VEZCATADA).Equals(codigo));
         }
-        /// <summary>
-        /// Recibe como parametro la cedula del catador, esta es comparada con la cedula de cata catador en la base de datos, si la cedula
-        /// que se ingresa por parametro coincide con alguna de la base de datos se retorna true de lo contrario se retorna false
-        /// </summary>
-        /// <param name="cedula"></param>
-        /// <returns></returns>
-        public bool buscarCedulaCatador(string cedula)
-        {
-            foreach(CATADOR catador in this.db.CATADOR.ToList())
-            {
-                if (catador.CEDULA.Equals(cedula))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+
+
     }
 }

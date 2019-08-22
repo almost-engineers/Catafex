@@ -7,15 +7,13 @@ namespace WebService.Models
 {
     public class Reporte
     {
-        string codigo { get; set; }
-        string rutaGrafico { get; set; }
-        LinkedList<string> observaciones { get; set; }
+        public string codigo { get; set; }
+        public string rutaGrafico { get; set; }
+        public LinkedList<string> observaciones { get; set; }
 
         public Reporte()
         {
-            this.observaciones = new LinkedList<string>();
-           
-
+            this.observaciones = new LinkedList<string>();        
         }
     }
 }
