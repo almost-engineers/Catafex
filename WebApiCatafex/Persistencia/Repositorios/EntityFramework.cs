@@ -232,9 +232,13 @@ namespace Persistencia.Repositorios
         {
             return null;
         }
-        public string consultarUsuario(string correo, string contrasena)
+        public ADMINISTRADOR consultarAdministrador(string correo)
         {
-            return null;
+            return this.db.ADMINISTRADOR.FirstOrDefault(x => x.CORREO.Equals(correo));
+        }
+        public CATADOR consultarCatador(string correo)
+        {
+            return this.db.CATADOR.FirstOrDefault(x => x.CORREO.Equals(correo));
         }
         public bool consultarUsuario(string cedula)
         {

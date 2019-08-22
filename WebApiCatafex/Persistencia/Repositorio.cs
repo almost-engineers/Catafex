@@ -19,7 +19,7 @@ namespace Persistencia
         IList<string>/*<Cafe>*/ consultarCafes();
         bool eliminarCafe(string codigo);
         bool actualizarCafe(/*Cafe cafe*/);
-        string consultarUsuario(string correo, string contrasena);
+    
         bool consultarUsuario(string cedula);
         bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp);
         bool eliminarPanel(string codigo);
@@ -50,5 +50,10 @@ namespace Persistencia
         bool insertarReporte(/*Reporte reporte*/);
 
         bool buscarCedulaCatador(string cedula);
+
+        ADMINISTRADOR consultarAdministrador(string correo);
+
+        CATADOR consultarCatador(string correo);
+       
     }
 }
