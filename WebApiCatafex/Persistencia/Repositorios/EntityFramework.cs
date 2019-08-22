@@ -469,6 +469,6 @@ namespace Persistencia.Repositorios
             return this.db.CATA.FirstOrDefault(x => (x.CODCATACION + "-" + x.VEZCATADA).Equals(codigo));
         }
 
-
+        
     }
 }
