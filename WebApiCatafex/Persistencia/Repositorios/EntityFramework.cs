@@ -204,7 +204,6 @@ namespace Persistencia.Repositorios
             }
             return catacionesPendientes;
         }
-
         public DateTime consultarFecha(string codigo)
         {
             return DateTime.Now;
@@ -274,7 +273,6 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
-
         public bool registrarCatacion()
         {
             return false;
@@ -290,7 +288,6 @@ namespace Persistencia.Repositorios
                 return 1;
             }
         }
-
         public bool registrarCata()
         {
 
@@ -378,14 +375,11 @@ namespace Persistencia.Repositorios
         {
             throw new NotImplementedException();
         }
-
         public EVENTO consultarEvento(string codEvento)
         {
-            throw new NotImplementedException();
+
+            return null;
         }
-
-
-
         private string generarCodigo(string encabezado)
         {
 
@@ -437,7 +431,6 @@ namespace Persistencia.Repositorios
             return encabezado + '-' + 2;
 
         }
-
         public string obtenerTipoCafe(string codigo)
         {
             foreach (CATACION cat in this.db.CATACION.ToList())
@@ -447,7 +440,6 @@ namespace Persistencia.Repositorios
             }
             return "no se encuentra";
         }
-
         public string obtenerAtributosCafes(string tipoCafe)
         {
             try
@@ -464,7 +456,21 @@ namespace Persistencia.Repositorios
         {
             return this.db.CATA.FirstOrDefault(x => (x.CODCATACION + "-" + x.VEZCATADA).Equals(codigo));
         }
-
-
+        public bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
+        {
+            return false;
+        }
+        public string obtegerTipoCafe(string codigo)
+        {
+            return "";
+        }
+        public IList<string> consultarCatasAsignadas(string codCatador)
+        {
+            return null;
+        }
+        public bool buscarCedulaCatador(string cedula)
+        {
+            return false;
+        }
     }
 }

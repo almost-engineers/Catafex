@@ -14,13 +14,14 @@ namespace Persistencia
         IList<PANEL> consultarPaneles();
         IList<REPORTE> consultarReportes();
         IList<CATACION> consultarCataciones();
-        REPORTE buscarReporte(string codReporte);
-        void insertarCafe(/*Cafe cafe*/);
-        IList<string>/*<Cafe>*/ consultarCafes();
-        bool eliminarCafe(string codigo);
-        bool actualizarCafe(/*Cafe cafe*/);
         string consultarUsuario(string correo, string contrasena);
         bool consultarUsuario(string cedula);
+        IList<string>/*<Cafe>*/ consultarCafes();
+        REPORTE buscarReporte(string codReporte);
+        void insertarCafe(/*Cafe cafe*/);
+        bool eliminarCafe(string codigo);
+        bool actualizarCafe(/*Cafe cafe*/);
+
         bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp);
         bool eliminarPanel(string codigo);
         bool actualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora);
@@ -38,13 +39,14 @@ namespace Persistencia
         EVENTO consultarEvento(string codEvento);
 
 
-        bool registrarCata(string codCatacion, int vezCatada ,int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo,
-            int impresionGlobal, int fragancia, int saborResidual, string observaciones);
+        bool registrarCata(string codCatacion, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones);
+
+
 
         string obtegerTipoCafe(string codigo);
         CATA consultarCata(string codigo);
         PANEL consultarPanel(string codPanel);
-        bool registrarCata(/*Cata*/);
+
 
         IList<string>/*Cata*/ consultarCatasAsignadas(string codCatador);
         bool insertarReporte(/*Reporte reporte*/);
