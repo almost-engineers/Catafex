@@ -296,8 +296,8 @@ namespace Persistencia.Repositorios
         {
 
             string codCatacion = "ct1";
-            int rancidez =0;
-            int  dulce = 0;
+            int rancidez = 0;
+            int dulce = 0;
             int acidez = 0;
             int cuerpo = 0;
             int aroma = 0;
@@ -377,12 +377,19 @@ namespace Persistencia.Repositorios
         }
         public bool eliminarEvento(string codEvento)
         {
-            throw new NotImplementedException();
+
+            foreach (EVENTO e in this.db.EVENTO.ToList())
+            {
+                if (e.CODEVENTO.Equals(codEvento))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         public EVENTO consultarEvento(string codEvento)
         {
-
-            return null;
+            return this.db.EVENTO.FirstOrDefault(x => x.CODEVENTO.Equals(codEvento));
         }
         private string generarCodigo(string encabezado)
         {
@@ -453,7 +460,8 @@ namespace Persistencia.Repositorios
             }
             //comentario
             catch (Exception)
-            { return "no existen datos para ese tipo de cafe";
+            {
+                return "no existen datos para ese tipo de cafe";
             }
         }
         public CATA consultarCata(string codigo)

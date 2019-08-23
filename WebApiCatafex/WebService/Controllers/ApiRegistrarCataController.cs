@@ -24,7 +24,8 @@ namespace WebService.Controllers
         [HttpGet]
         public IEnumerable<Catacion> consultarCatacion(string codCatador)
         {
-            return convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador));
+            return null;
+           //eturn convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador));
         }
 
         [HttpGet]
@@ -32,7 +33,7 @@ namespace WebService.Controllers
         public string getCafe(string codigoCatacion)
         {
 
-            return repositorio.obtenerTipoCafe(codigoCatacion);
+            return null;// repositorio.obtenerTipoCafe(codigoCatacion);
         }
 
         [HttpGet]
@@ -91,9 +92,7 @@ namespace WebService.Controllers
         }
 
         [HttpPost]
-        public bool registrarCata1(string a) {
-            return repositorio.registrarCata();
-        }
+      
         
         public bool registrarCata(string codCatacion, string vezCatada, string rancidez, string dulce, string acidez,
             string cuerpo, string aroma, string amargo, string impresionGlobal, string fragancia, string saborResidual,
