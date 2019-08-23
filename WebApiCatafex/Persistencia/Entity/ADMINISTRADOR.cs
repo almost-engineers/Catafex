@@ -18,5 +18,10 @@ namespace Persistencia.Entity
         public string CORREO { get; set; }
         public string CONTRASEÑA { get; set; }
         public string NOMBRE { get; set; }
+
+        internal object getMD5hASH(object cONTRASEÑA)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

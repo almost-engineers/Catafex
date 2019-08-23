@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Persistencia;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,6 +10,13 @@ namespace WebService.Controllers
 {
     public class ApiAsignarCatadorController : ApiController
     {
+        private Repositorio repositorio;
+
+        public ApiAsignarCatadorController()
+        {
+            this.repositorio = FabricaRepositorio.crearRepositorio();
+        }
+
         // GET: api/ApiAsignarCatador
         public IEnumerable<string> Get()
         {
@@ -22,8 +30,9 @@ namespace WebService.Controllers
         }
 
         // POST: api/ApiAsignarCatador
-        public void Post([FromBody]string value)
+        public bool registrarCatacion(string codCatacion, string codPanel, string codCatador, string codCafe, int cantidad)
         {
+            return this.repositorio.registrarCatacion( codCatacion, codPanel,codCatador,codCafe,cantidad);
         }
 
         // PUT: api/ApiAsignarCatador/5

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Persistencia.Entity;
@@ -18,9 +19,33 @@ namespace Persistencia.Repositorios
             this.db = new CatafexEntities();
         }
 
-        public void insertarCafe()
-        {
 
+        /*
+         * Recibe como parametros todos los datos  y atributos  nececesarios para la creacion del registro de un cafe  en la base de 
+         * datos, estos parametros ya fueron previamente validados 
+         */
+        public bool insertarCafe(string nombre, string tipoCafe, string origen, string codEvento, string procedencia, int gradoMolienda, int puntoTueste)
+        {
+            try
+            {
+                this.db.CAFE.Add(new CAFE()
+                {
+                    CODCAFE = this.generarCodigo("CF"),
+                    CODEVENTO = codEvento,
+                    TIPOCAFE = tipoCafe,
+                    NOMBRE = nombre,
+                    ORIGEN = origen,
+                    PROCEDENCIA = procedencia,
+                    GRADOMOLIENDA = gradoMolienda,
+                    PUNTOTUESTE = puntoTueste
+                });
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public bool insertarCatador()
         {
@@ -78,9 +103,35 @@ namespace Persistencia.Repositorios
         {
             return false;
         }
-        public bool actualizarCafe()
+
+        /*
+         *  Reibe como parametros los atributos de Cafe, se obtiene el cafe correspondiente al codigo ingesado por parametro,
+         *  y si este codigo coincide los datos son actualizados, finalmente se guardan los cambios en la base de datos
+         */
+        public bool actualizarCafe(string codCafe, string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste)
         {
-            return false;
+            try
+            {
+                foreach (CAFE cafe in this.db.CAFE.ToList())
+                {
+                    if (cafe.CODCAFE.Equals(codCafe))
+                    {
+                        cafe.CODCAFE = codCafe;
+                        cafe.NOMBRE = nombre;
+                        cafe.TIPOCAFE = tipoCafe;
+                        cafe.ORIGEN = origen;
+                        cafe.PROCEDENCIA = procedencia;
+                        cafe.GRADOMOLIENDA = gradoMolienda;
+                        cafe.PUNTOTUESTE = puntoTueste;
+                    }
+                }
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         /// <summary>
         /// Reibe como parametros los atributos de Panel, se obtiene el panel correspondiente al codigo ingesado por parametro,
@@ -136,17 +187,40 @@ namespace Persistencia.Repositorios
         {
             return null;
         }
-        public string consultarAtributosCafe(string tipoCafe)
+
+        /*
+         * Este metodo se encarga de  buscar en la base de datos, en la tabla atributos de cafe los 
+         * atributos correspondientes del cafe de acuerdo al parametro tipo cafe 
+         */
+        public ATRIBUTOSCAFE consultarAtributosCafe(string tipoCafe)
         {
-            return null;
+            return this.db.ATRIBUTOSCAFE.FirstOrDefault(x => x.CAFE.Equals(tipoCafe));
         }
-        public IList<string> consultarCafes()
+        /*
+         * Este  metodo se conecta a la base de datos y me trae una lista de cafes los cuales son aquellos registrados
+         * en la base de datos
+         */
+        public IList<CAFE> consultarCafes()
         {
-            return null;
+            return this.db.CAFE.ToList();
         }
-        public IList<string> consultarCafes(string tipoCafe)
+
+        /*
+         * En este metodo recibimos el tipo de cafe por el cual necesitamos hacer una busqueda, para 
+         * recorremos todos los cafes que se encuentran en la base de datos y añadimos a una lista todos aquellos 
+         * que concuerden con  el tipo del cafe buscado y luego retornamos esta lista 
+         */
+        public IList<CAFE> consultarCafes(string tipoCafe)
         {
-            return null;
+            IList<CAFE> cafesTipo = new List<CAFE>();
+            foreach (CAFE cafe in this.db.CAFE.ToList())
+            {
+                if (cafe.ATRIBUTOSCAFE.TIPOCAFE.Equals(tipoCafe))
+                {
+                    cafesTipo.Add(cafe);
+                }
+            }
+            return cafesTipo;
         }
         public IList<CATACION> consultarCataciones()
         {
@@ -244,13 +318,29 @@ namespace Persistencia.Repositorios
         {
             return false;
         }
-        public IList<string> consultarUsuarios()
+        /*
+         * Recibe como parametro un codigo de cafe, este codigo es comparado con cada Cafe y su respectivo codigo
+         * si coinciden, el cafe sera eliminado de la base da datos. Por ultimo los cambios de la base de datos deben ser aceptados
+         * con la la funcion saveChanges
+         */
+        public bool eliminarCafe(string codCafe)
         {
-            return null;
-        }
-        public bool eliminarCafe(string codigo)
-        {
-            return false;
+            try
+            {
+                foreach (CAFE cafe in this.db.CAFE.ToList())
+                {
+                    if (cafe.CODCAFE.Equals(codCafe))
+                    {
+                        this.db.CAFE.Remove(cafe);
+                    }
+                }
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         /// <summary>
         /// Recibe como parametro un codigo de panel, este codigo es comparado con cada Panel y su respectivo codigo
@@ -279,10 +369,6 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool registrarCatacion()
-        {
-            return false;
-        }
         public int obtenerUltimaCata(string codCatacion)
         {
             try
@@ -294,13 +380,34 @@ namespace Persistencia.Repositorios
                 return 1;
             }
         }
+        public bool registrarCatacion(string codCatacion, string codPanel, string codCatador, string codCafe, int cantidad)
+        {
+            try
+            {
+                this.db.CATACION.Add(new CATACION()
+                {
+
+                    CODCATACION = generarCodigo("CT"),
+                    CODPANEL = codPanel,
+                    CODCATADOR = codCatador,
+                    CODCAFE = codCafe,
+                    CANTIDAD = cantidad
+                });
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         public bool registrarCata()
         {
 
             string codCatacion = "ct1";
-            int rancidez =0;
-            int  dulce = 0;
+            int rancidez = 0;
+            int dulce = 0;
             int acidez = 0;
             int cuerpo = 0;
             int aroma = 0;
@@ -342,53 +449,42 @@ namespace Persistencia.Repositorios
 
 
         }
-        public bool registrarCata(string codCatacion, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
-        {
-            int vezCatada = obtenerUltimaCata(codCatacion);
 
-            try
-            {
-                this.db.CATA.Add(new CATA()
-                {
-
-                    CODCATACION = codCatacion,
-                    VEZCATADA = vezCatada,
-                    RANCIDEZ = rancidez,
-                    DULCE = dulce,
-                    ACIDEZ = acidez,
-                    AROMA = aroma,
-                    AMARGO = amargo,
-                    FRAGANCIA = fragancia,
-                    SABORESIDUAL = saborResidual,
-                    CUERPO = cuerpo,
-                    IMPRESIONGLOBAL = impresionGlobal,
-                    OBSERVACIONES = observaciones
-
-                }); ;
-                this.db.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-        }
         public IList<EVENTO> consultarEventos()
         {
             return this.db.EVENTO.ToList();
         }
         public bool eliminarEvento(string codEvento)
         {
-            throw new NotImplementedException();
+            foreach (EVENTO e in this.db.EVENTO.ToList())
+            {
+                if (e.CODEVENTO.Equals(codEvento))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public EVENTO consultarEvento(string codEvento)
         {
-            throw new NotImplementedException();
+            return this.db.EVENTO.FirstOrDefault(x => x.CODEVENTO.Equals(codEvento));
         }
 
-
+        private string getMD5Hash(string contraseña)
+        {
+            using (MD5 md5Hash = MD5.Create())
+            {
+                byte[] datos = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(contraseña));
+                StringBuilder sBuilder = new StringBuilder();
+                foreach (byte b in datos)
+                {
+                    //Le da un formato hexadecimal a cada byte de informacion, ademas de transformalo en string
+                    sBuilder.Append(b.ToString("x2"));
+                }
+                return sBuilder.ToString();
+            }
+        }
 
         private string generarCodigo(string encabezado)
         {
@@ -409,8 +505,18 @@ namespace Persistencia.Repositorios
                     {
                         ultimo = "1";
                     }
-
-
+                    break;
+                case "CT":
+                    try
+                    {
+                        CATACION ev = this.db.CATACION.ToList().Last();
+                        string[] cod = ev.CODCATACION.Split('-');
+                        ultimo = (int.Parse(cod[1]) + 1).ToString();
+                    }
+                    catch (Exception)
+                    {
+                        ultimo = "1";
+                    }
                     break;
                 case "PA":
                     try
@@ -461,7 +567,8 @@ namespace Persistencia.Repositorios
             }
             //comentario
             catch (Exception)
-            { return "no existen datos para ese tipo de cafe";
+            {
+                return "no existen datos para ese tipo de cafe";
             }
         }
         public CATA consultarCata(string codigo)
@@ -471,27 +578,64 @@ namespace Persistencia.Repositorios
 
         public bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
         {
-            throw new NotImplementedException();
+            try
+            {
+                this.db.CATADOR.Add(new CATADOR()
+                {
+                    NOMBRE = nombre,
+                    CEDULA = cedula,
+                    CODIGO = codigo,
+                    CORREO = correo,
+                    CONTRASEÑA = contraseña,
+                    NIVELEXP = nivelExp
+                });
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public bool registrarCata(string codCatacion, int vezCatada, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
+        public bool registrarCata(string codCatacion, int vezCatad, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
         {
-            throw new NotImplementedException();
+            int vezCatada = obtenerUltimaCata(codCatacion);
+
+            try
+            {
+                this.db.CATA.Add(new CATA()
+                {
+
+                    CODCATACION = codCatacion,
+                    VEZCATADA = vezCatada,
+                    RANCIDEZ = rancidez,
+                    DULCE = dulce,
+                    ACIDEZ = acidez,
+                    AROMA = aroma,
+                    AMARGO = amargo,
+                    FRAGANCIA = fragancia,
+                    SABORESIDUAL = saborResidual,
+                    CUERPO = cuerpo,
+                    IMPRESIONGLOBAL = impresionGlobal,
+                    OBSERVACIONES = observaciones
+
+                }); ;
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
 
-        public string obtegerTipoCafe(string codigo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<string> consultarCatasAsignadas(string codCatador)
-        {
-            throw new NotImplementedException();
-        }
 
         public bool buscarCedulaCatador(string cedula)
         {
-            throw new NotImplementedException();
+            return true;
         }
+
     }
 }
