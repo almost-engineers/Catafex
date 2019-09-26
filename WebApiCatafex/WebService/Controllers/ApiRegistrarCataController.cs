@@ -24,24 +24,23 @@ namespace WebService.Controllers
         [HttpGet]
         public IEnumerable<Catacion> consultarCatacion(string codCatador)
         {
-            return null;
-           //eturn convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador));
+            return convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador));
         }
 
-        [HttpGet]
+        //[HttpGet]
 
-        public string getCafe(string codigoCatacion)
-        {
+        //public Cafe getCafe(string codigoCatacion)
+        //{
 
-            return null;// repositorio.obtenerTipoCafe(codigoCatacion);
-        }
+        //    return repositorio.obtegerTipoCafe(codigoCatacion);
+        //}
 
-        [HttpGet]
+        //[HttpGet]
 
-        public string obtenerAtributosCafes(string tipoCafe)
-        {
-            return repositorio.obtenerAtributosCafes(tipoCafe);
-        }
+        //public string obtenerAtributosCafes(string tipoCafe)
+        //{
+        //    return repositorio.obtenerAtributosCafes(tipoCafe);
+        //}
         private IList<Catacion> convertirCATACION(IList<CATACION> catacionesDB)
         {
 
@@ -86,14 +85,9 @@ namespace WebService.Controllers
         }
         private Cata obtenerCata()
         {
-
-
             return null;
         }
 
-        [HttpPost]
-      
-        
         public bool registrarCata(string codCatacion, string vezCatada, string rancidez, string dulce, string acidez,
             string cuerpo, string aroma, string amargo, string impresionGlobal, string fragancia, string saborResidual,
             string observaciones)
@@ -102,7 +96,7 @@ namespace WebService.Controllers
             {
 
                 return
-                  repositorio.registrarCata(codCatacion, int.Parse(rancidez), int.Parse(dulce),
+                  repositorio.registrarCata(codCatacion, int.Parse(vezCatada), int.Parse(rancidez), int.Parse(dulce),
                   int.Parse(acidez), int.Parse(cuerpo), int.Parse(aroma), int.Parse(amargo), int.Parse(impresionGlobal),
                   int.Parse(fragancia), int.Parse(saborResidual), observaciones);
             }
