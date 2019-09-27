@@ -16,7 +16,7 @@ namespace Persistencia.Repositorios
         private CatafexEntities db;
         public EntityFramework()
         {
-            this.db = new CatafexEntities();
+          this.db = new CatafexEntities();
         }
 
 
@@ -598,7 +598,10 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool registrarCata(string codCatacion, int vezCatad, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
+        public bool registrarCata(string codCatacion, int vezCatad,
+            int rancidez, int dulce, int acidez, int cuerpo, int aroma,
+            int amargo, int impresionGlobal, int fragancia, int saborResidual,
+            string observaciones)
         {
             int vezCatada = obtenerUltimaCata(codCatacion);
 

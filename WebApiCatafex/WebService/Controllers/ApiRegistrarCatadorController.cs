@@ -16,7 +16,7 @@ namespace WebService.Controllers
         private Repositorio repositorio;
         public ApiRegistrarCatadorController()
         {
-            this.repositorio = FabricaRepositorio.crearRepositorio();
+           // this.repositorio = FabricaRepositorio.crearRepositorio();
         }
         // POST: api/ApiRegistrarCatador
         /// <summary>
@@ -38,7 +38,7 @@ namespace WebService.Controllers
         [HttpPost]
         public bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
         {
-            if (!this.validarCedula(cedula))
+            if (this.validarCedula(cedula))
             {
                 try
                 {
@@ -99,11 +99,15 @@ namespace WebService.Controllers
         /// <param name="contraseña"></param>
         /// <param name="hash"></param>
         /// <returns>Retorna Falso o Verdadero, dependiendo de la comparacion</returns>
+
+
         public bool VerificarMd5Hash(string contraseña, string hash)
         {
+             const int RESPUESTACOMPARER = 0;
+
             string hashContraseña = getMD5Hash(contraseña);
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
-            return comparer.Compare(hashContraseña, hash) == 0;
+            return comparer.Compare(hashContraseña, hash) == RESPUESTACOMPARER;
         }
     }
 }
