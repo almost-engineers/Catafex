@@ -40,7 +40,27 @@ namespace WebService.Controllers
         [HttpGet]
         public IEnumerable<Cafe> consultarCafes(string codigo)
         {
-            return this.convertirCAFE(repositorio.consultarCafes(codigo));
+           
+            IList<CAFE> cafesDB = repositorio.consultarCafes(codigo);
+            IList<Cafe> cafes = new List<Cafe>();
+            foreach (CAFE cafe in cafesDB)
+            {
+                cafes.Add(new Cafe(cafe.CODCAFE, cafe.PROCEDENCIA, cafe.ORIGEN, cafe.NOMBRE, (int)cafe.PUNTOTUESTE, (int)cafe.GRADOMOLIENDA));
+
+            }
+            return cafes;
+        }
+
+
+        private IList<Cafe> convertirCAFE(IList<CAFE> cafesDB)
+        {
+            IList<Cafe> cafes = new List<Cafe>();
+            foreach (CAFE cafe in cafesDB)
+            {
+                cafes.Add(new Cafe(cafe.CODCAFE, cafe.PROCEDENCIA, cafe.ORIGEN, cafe.NOMBRE, (int)cafe.PUNTOTUESTE, (int)cafe.GRADOMOLIENDA));
+
+            }
+            return cafes;
         }
 
         /*
@@ -78,16 +98,7 @@ namespace WebService.Controllers
             return repositorio.eliminarCafe(codCafe);
         }
 
-        private IList<Cafe> convertirCAFE(IList<CAFE> cafesDB)
-        {
-            IList<Cafe> cafes = new List<Cafe>();
-            foreach (CAFE cafe in cafesDB)
-            {
-                cafes.Add(new Cafe(cafe.CODCAFE, cafe.PROCEDENCIA, cafe.ORIGEN, cafe.NOMBRE, (int)cafe.PUNTOTUESTE, (int)cafe.GRADOMOLIENDA));
-                
-            }
-            return cafes;
-        }
+       
 
         public string generarCodigo()
         {
