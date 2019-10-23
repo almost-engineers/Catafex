@@ -88,19 +88,28 @@ namespace WebService.Controllers
             return null;
         }
 
-        public bool registrarCata(string codCatacion, string vezCatada, string rancidez, string dulce, string acidez,
-            string cuerpo, string aroma, string amargo, string impresionGlobal, string fragancia, string saborResidual,
-            string observaciones)
+        // POST: api/ApiRegistrarCata
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cata"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/ApiRegistrarCata/")]
+        public HttpResponseMessage registrarCata(Cata cata)
         {
-            if (validarDatos())
+            try
             {
-
-                return
-                  repositorio.registrarCata(codCatacion, int.Parse(vezCatada), int.Parse(rancidez), int.Parse(dulce),
-                  int.Parse(acidez), int.Parse(cuerpo), int.Parse(aroma), int.Parse(amargo), int.Parse(impresionGlobal),
-                  int.Parse(fragancia), int.Parse(saborResidual), observaciones);
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                repositorio.registrarCata(cata.codCata, cata.rancidez, cata.dulce,
+                  cata.acidez, cata.cuerpo, cata.aroma, cata.amargo, cata.impresionGlobal,
+                  cata.fragancia, cata.saborResidual, cata.observaciones);
+                return response;
             }
-            else return false;
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+            }
         }
 
         public bool validarDatos()

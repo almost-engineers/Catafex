@@ -598,7 +598,7 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool registrarCata(string codCatacion, int vezCatad,
+        public bool registrarCata(string codCatacion,
             int rancidez, int dulce, int acidez, int cuerpo, int aroma,
             int amargo, int impresionGlobal, int fragancia, int saborResidual,
             string observaciones)

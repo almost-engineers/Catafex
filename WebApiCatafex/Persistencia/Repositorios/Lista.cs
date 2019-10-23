@@ -153,7 +153,7 @@ namespace Persistencia.Listas
         }
 
 
-        public bool registrarCata(string codCatacion, int vezCatada, int rancidez, 
+        public bool registrarCata(string codCatacion, int rancidez, 
             int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal
             , int fragancia, int saborResidual, string observaciones)
         {
@@ -164,7 +164,7 @@ namespace Persistencia.Listas
                 {
 
                     CODCATACION = codCatacion,
-                    VEZCATADA = vezCatada,
+                    VEZCATADA = 1,
                     RANCIDEZ = rancidez,
                     DULCE = dulce,
                     ACIDEZ = acidez,
