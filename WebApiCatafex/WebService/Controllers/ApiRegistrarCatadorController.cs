@@ -1,12 +1,11 @@
 ﻿using Persistencia;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Http;
+using WebService.Models;
 
 namespace WebService.Controllers
 {
@@ -16,7 +15,7 @@ namespace WebService.Controllers
         private Repositorio repositorio;
         public ApiRegistrarCatadorController()
         {
-           // this.repositorio = FabricaRepositorio.crearRepositorio();
+           this.repositorio = FabricaRepositorio.crearRepositorio();
         }
         // POST: api/ApiRegistrarCatador
         /// <summary>
@@ -36,23 +35,26 @@ namespace WebService.Controllers
         /// de una excepcion. En caso de no ser exitosa la insercion, la excepcion retorna false
         /// </returns>
         [HttpPost]
-        public bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
+        public HttpResponseMessage insertarCatador(Catador catador)
         {
-            if (this.validarCedula(cedula))
+        
+            if (this.validarCedula(catador.cedula))
             {
                 try
                 {
-                    repositorio.insertarCatador(nombre, cedula, codigo, correo, this.getMD5Hash(contraseña), nivelExp);
-                    return true;
+                    
+                    repositorio.insertarCatador(catador.nombre, catador.cedula, catador.codigo, catador.correo, this.getMD5Hash(catador.contrasena), catador.nivelExp);
+                    return new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 catch (Exception)
                 {
-                    return false;
+                    
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
             }
             else
             {
-                return false;
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
             }
         }
         /// <summary>
@@ -101,7 +103,7 @@ namespace WebService.Controllers
         /// <returns>Retorna Falso o Verdadero, dependiendo de la comparacion</returns>
 
 
-        public bool VerificarMd5Hash(string contraseña, string hash)
+        protected internal bool VerificarMd5Hash(string contraseña, string hash)
         {
              const int RESPUESTACOMPARER = 0;
 

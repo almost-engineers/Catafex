@@ -7,10 +7,18 @@ namespace WebService.Models
 {
    public abstract class Usuario
     {
-         string cedula { get; set; }
-         string correo { get; set; }
-         string nombre { get; set; }
-         string contraseña { get; set; }
+         public string cedula { get; set; }
+         public string correo { get; set; }
+         public string nombre { get; set; }
+         public string contrasena { get; set; }
+
+        public Usuario (string nombre, string cedula, string correo, string contrasena)
+        {
+            this.nombre = nombre;
+            this.cedula = cedula;
+            this.correo = correo;
+            this.contrasena = contrasena;
+        }
 
     }
 }
