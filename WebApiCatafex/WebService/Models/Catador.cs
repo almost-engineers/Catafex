@@ -5,11 +5,12 @@ using System.Web;
 
 namespace WebService.Models
 {
-   public class Catador: Usuario
+    public class Catador : Usuario
     {
         public string codigo { get; set; }
         public string nivelExp { get; set; }
 
+        public Catador() : base() {}
         public Catador (string nombre, string cedula, string correo, string contrasena, string nivelExp, string codigo) : base(nombre,cedula,correo,contrasena)
         {
             this.codigo = codigo;

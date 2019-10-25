@@ -163,6 +163,28 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
+
+        public bool actualizarCatador(string nombre, string cedula, string correo, string contraseña)
+        {
+            try
+            {
+                foreach (CATADOR catador in this.db.CATADOR.ToList())
+                {
+                    if (catador.CEDULA.Equals(cedula))
+                    {
+                        catador.NOMBRE= nombre;
+                        catador.CORREO = correo;
+                        catador.CONTRASEÑA = contraseña; 
+                    }
+                }
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public bool actualizarEvento(string codigo, string nombre, DateTime fecha)
         {
             try
@@ -358,6 +380,26 @@ namespace Persistencia.Repositorios
                     if (panel.CODPANEL.Equals(codigo))
                     {
                         this.db.PANEL.Remove(panel);
+                    }
+                }
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool eliminarCatador (string cedula)
+        {
+            try
+            {
+                foreach(CATADOR catador in this.db.CATADOR.ToList())
+                {
+                    if (catador.CEDULA.Equals(cedula))
+                    {
+                        this.db.CATADOR.Remove(catador);
                     }
                 }
                 this.db.SaveChanges();
@@ -635,9 +677,9 @@ namespace Persistencia.Repositorios
         }
 
 
-        public bool buscarCedulaCatador(string cedula)
+        public CATADOR buscarCedulaCatador(string cedula)
         {
-            return true;
+            return this.db.CATADOR.FirstOrDefault(x => x.CEDULA.Equals(cedula));
         }
 
     }

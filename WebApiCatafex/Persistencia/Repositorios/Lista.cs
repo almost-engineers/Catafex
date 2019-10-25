@@ -20,6 +20,11 @@ namespace Persistencia.Listas
             return true;
         }
 
+        public bool actualizarCatador(string nombre, string cedula, string correo, string contraseña)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool actualizarEvento(string codigo, string nombre, DateTime fecha)
         {
             return true;
@@ -30,9 +35,9 @@ namespace Persistencia.Listas
             return true;
         }
 
-        public bool buscarCedulaCatador(string cedula)
+        public CATADOR buscarCedulaCatador(string cedula)
         {
-            return true;
+            return null;
         }
 
         public REPORTE buscarReporte(string codReporte)
@@ -100,6 +105,11 @@ namespace Persistencia.Listas
         public bool eliminarCafe(string codigo)
         {
             return false;
+        }
+
+        public bool eliminarCatador(string cedula)
+        {
+            throw new NotImplementedException();
         }
 
         public bool eliminarEvento(string codEvento)

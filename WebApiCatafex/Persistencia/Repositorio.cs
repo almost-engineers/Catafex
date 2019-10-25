@@ -24,6 +24,8 @@ namespace Persistencia
         bool consultarUsuario(string cedula);
         bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp);
         bool eliminarPanel(string codigo);
+        bool eliminarCatador(string cedula);
+        bool actualizarCatador(string nombre, string cedula, string correo, string contraseña);
         bool actualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora);
         bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora);
         DateTime consultarFecha(string codigo);
@@ -39,7 +41,7 @@ namespace Persistencia
         CATA consultarCata(string codigo);
         PANEL consultarPanel(string codPanel);
         bool insertarReporte(/*Reporte reporte*/);
-        bool buscarCedulaCatador(string cedula);
+        CATADOR buscarCedulaCatador(string cedula);
         ADMINISTRADOR consultarAdministrador(string correo);
         CATADOR consultarCatador(string correo);
 

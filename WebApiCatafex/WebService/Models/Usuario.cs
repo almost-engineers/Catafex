@@ -12,6 +12,10 @@ namespace WebService.Models
          public string nombre { get; set; }
          public string contrasena { get; set; }
 
+        public Usuario()
+        {
+
+        }
         public Usuario (string nombre, string cedula, string correo, string contrasena)
         {
             this.nombre = nombre;
