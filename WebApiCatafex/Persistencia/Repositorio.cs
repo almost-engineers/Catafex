@@ -26,6 +26,7 @@ namespace Persistencia
         bool eliminarPanel(string codigo);
         bool eliminarCatador(string cedula);
         bool actualizarCatador(string nombre, string cedula, string correo, string contraseña);
+        bool actualizarCatación(string codCatacion, string codCafe, string codPanel, string codCatador,int cantidad);
         bool actualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora);
         bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora);
         DateTime consultarFecha(string codigo);

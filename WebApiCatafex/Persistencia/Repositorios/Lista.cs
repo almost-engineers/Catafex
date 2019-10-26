@@ -20,6 +20,11 @@ namespace Persistencia.Listas
             return true;
         }
 
+        public bool actualizarCatación(string codCatacion, string codCafe, string codPanel, string codCatador, int cantidad)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool actualizarCatador(string nombre, string cedula, string correo, string contraseña)
         {
             throw new NotImplementedException();

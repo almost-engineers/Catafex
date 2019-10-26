@@ -7,6 +7,8 @@ using System.Web.Http;
 using WebService.Models;
 using Persistencia;
 using Persistencia.Entity;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace WebService.Controllers
 {
@@ -29,9 +31,20 @@ namespace WebService.Controllers
        /// </summary>
        /// <returns>Retorna una lista de paneles de la capa de Dominio</returns>
         [HttpGet]
-        public IEnumerable<Panel> consultarPaneles()
+        public HttpResponseMessage consultarPaneles()
         {
-            return this.convertirPANEL(repositorio.consultarPaneles());
+            try
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirPANEL(repositorio.consultarPaneles())));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+            }
+            
         }
         /// <summary>
         /// Este metodo recibe como parametro una lista de PANELES e instancia, una variable de tipo List (IList es abstracto),
@@ -63,9 +76,20 @@ namespace WebService.Controllers
         /// <param name="codigo"></param>
         /// <returns>Un objeto de tipo Panel con todos los atributos del panel que coincide con el codigo ingresado por parametro</returns>
         [HttpGet]
-        public Panel consultarPanel(string codigo)
+        public HttpResponseMessage consultarPanel(string codigo)
         {
-            return this.convertirPANEL(codigo);
+            try
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirPANEL(codigo)));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+            }
+            
         }
         /// <summary>
         /// Este metodo trae por instancia de la clase repositorio un PANEL. Este panel se "transforma" a un objeto de tipo Panel, esto se realiza de

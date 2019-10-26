@@ -1,10 +1,12 @@
-﻿using Persistencia;
+﻿using Newtonsoft.Json;
+using Persistencia;
 using Persistencia.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using WebService.Models;
 
@@ -22,9 +24,21 @@ namespace WebService.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Catacion> consultarCatacion(string codCatador)
+        [Route("api/ApiRegistrarCata/{codCatador}")]
+        public HttpResponseMessage consultarCatacion(string codCatador)
         {
-            return convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador));
+            try
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador))));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+            }
+            
         }
 
         //[HttpGet]
@@ -95,7 +109,7 @@ namespace WebService.Controllers
         /// <param name="cata"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/ApiRegistrarCata/")]
+        [Route("api/ApiRegistrarCata/registrarCata/")]
         public HttpResponseMessage registrarCata(Cata cata)
         {
             try
@@ -117,6 +131,23 @@ namespace WebService.Controllers
             return true;
         }
 
-
+        [HttpPut]
+        [Route("api/ApiRegistrarCata/actualizarCatacion/")]
+        public HttpResponseMessage actualizarCatacion(Catacion catacion)
+        {
+            if(catacion == null)
+            {
+                new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+            try
+            {
+                this.repositorio.actualizarCatación(catacion.codCatacion,catacion.codCafe,catacion.codPanel,catacion.codCatador,catacion.cantidad);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+            }
+        }
     }
 }

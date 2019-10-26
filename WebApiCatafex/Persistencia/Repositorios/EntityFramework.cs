@@ -185,6 +185,30 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
+
+        public bool actualizarCatación(string codCatacion, string codCafe, string codPanel, string codCatador, int cantidad)
+        {
+            try
+            {
+                foreach(CATACION catacion in this.db.CATACION.ToList())
+                {
+                    if (catacion.CODCATACION.Equals(codCatacion))
+                    {
+                        catacion.CANTIDAD = cantidad;
+                        catacion.CODCAFE = codCafe;
+                        catacion.CODCATADOR = codCatador;
+                        catacion.CODPANEL = codPanel;
+                    }
+                }
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
         public bool actualizarEvento(string codigo, string nombre, DateTime fecha)
         {
             try
