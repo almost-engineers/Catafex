@@ -11,8 +11,8 @@ namespace WebService.Models
         public string codEvento { get; set; }
         public string tipoCafe { get; set; }
         public TimeSpan hora { get; set; }
-        public bool terminado { get; set; }
-        public Reporte reporte { get; set; }
+        /*public bool terminado { get; set; }
+        public Reporte reporte { get; set; }*/
 
        public Panel()
         {
@@ -25,8 +25,8 @@ namespace WebService.Models
             this.codEvento = codEvento;
             this.tipoCafe = tipoCafe;
             this.hora = hora;
-            this.terminado = false;
-            this.reporte = new Reporte();
+            /*this.terminado = false;
+            this.reporte = new Reporte();*/
 
         }
 

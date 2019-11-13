@@ -1,12 +1,14 @@
-﻿using Persistencia;
+﻿using Newtonsoft.Json;
+using Persistencia;
+using Persistencia.Entity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Http;
+using WebService.Models;
 
 namespace WebService.Controllers
 {
@@ -16,7 +18,7 @@ namespace WebService.Controllers
         private Repositorio repositorio;
         public ApiRegistrarCatadorController()
         {
-            this.repositorio = FabricaRepositorio.crearRepositorio();
+           this.repositorio = FabricaRepositorio.crearRepositorio();
         }
         // POST: api/ApiRegistrarCatador
         /// <summary>
@@ -36,23 +38,25 @@ namespace WebService.Controllers
         /// de una excepcion. En caso de no ser exitosa la insercion, la excepcion retorna false
         /// </returns>
         [HttpPost]
-        public bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
+        public HttpResponseMessage insertarCatador(Catador catador)
         {
-            if (!this.validarCedula(cedula))
+            var result = this.validarCedula(catador.cedula);
+            if (result.StatusCode.Equals(HttpStatusCode.NotFound))
             {
                 try
-                {
-                    repositorio.insertarCatador(nombre, cedula, codigo, correo, this.getMD5Hash(contraseña), nivelExp);
-                    return true;
+                {   
+                    repositorio.insertarCatador(catador.nombre, catador.cedula, catador.codigo, catador.correo, this.getMD5Hash(catador.contrasena), catador.nivelExp);
+                    return new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 catch (Exception)
                 {
-                    return false;
+                    
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
             }
             else
             {
-                return false;
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
             }
         }
         /// <summary>
@@ -62,11 +66,76 @@ namespace WebService.Controllers
         /// <returns>Retorna Verdadero o Falso, esto depende de si ya se encuentra registrado el catador, de esto ser asi
         /// se retorna true, de lo contrario retorna false
         /// </returns>
-        private bool validarCedula(string cedula)
+        [HttpGet]
+        public HttpResponseMessage validarCedula(string cedula)
         {
-            return this.repositorio.buscarCedulaCatador(cedula);
+            Catador catador= convertirCATADOR(cedula);
+            if(catador == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+            else{
+                try {
+                    var response = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Content = new StringContent(JsonConvert.SerializeObject(catador));
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    return response;
+                }
+                catch
+                {
+                    return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                }
+            }
+
         }
- 
+
+        [HttpDelete]
+        public HttpResponseMessage eliminarCatador(string cedula)
+        {
+            try
+            {
+                this.repositorio.eliminarCatador(cedula);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+            }
+        }
+
+        [HttpPut]
+        public HttpResponseMessage actualizarCatador(Catador catador)
+        {
+            try
+            {
+                this.repositorio.actualizarCatador(catador.nombre,catador.cedula,catador.correo,catador.contrasena);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+            }
+        }
+
+        private Catador convertirCATADOR(string cedula)
+        {
+            CATADOR catadorDB = repositorio.buscarCedulaCatador(cedula);
+            if (catadorDB != null)
+            {
+                Catador catador = new Catador();
+                {
+                    catador.codigo = catadorDB.CODIGO;
+                    catador.cedula = catadorDB.CEDULA;
+                    catador.contrasena = catadorDB.CONTRASEÑA;
+                    catador.correo = catadorDB.CORREO;
+                    catador.nivelExp = catadorDB.NIVELEXP;
+                    catador.nombre = catadorDB.NOMBRE;
+                }
+                return catador;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Este metodo se encarga de obtener el hash md5 de una cadena de texto, en este caso la cadena de entrada
         /// es la contraseña suministrada por el usuario. El texto de entrada es transformado en bytes de informacion 
@@ -99,12 +168,19 @@ namespace WebService.Controllers
         /// <param name="contraseña"></param>
         /// <param name="hash"></param>
         /// <returns>Retorna Falso o Verdadero, dependiendo de la comparacion</returns>
-        public bool VerificarMd5Hash(string contraseña, string hash)
+
+
+        protected internal bool VerificarMd5Hash(string contraseña, string hash)
         {
+<<<<<<< HEAD
             
+=======
+             const int RESPUESTACOMPARER = 0;
+
+>>>>>>> 7c4aef0cab0977df97a3db27ff7ec10282097044
             string hashContraseña = getMD5Hash(contraseña);
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
-            return comparer.Compare(hashContraseña, hash) == 0;
+            return comparer.Compare(hashContraseña, hash) == RESPUESTACOMPARER;
         }
 
 

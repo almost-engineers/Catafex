@@ -16,7 +16,7 @@ namespace Persistencia.Repositorios
         private CatafexEntities db;
         public EntityFramework()
         {
-            this.db = new CatafexEntities();
+          this.db = new CatafexEntities();
         }
 
 
@@ -162,6 +162,52 @@ namespace Persistencia.Repositorios
             {
                 return false;
             }
+        }
+
+        public bool actualizarCatador(string nombre, string cedula, string correo, string contraseña)
+        {
+            try
+            {
+                foreach (CATADOR catador in this.db.CATADOR.ToList())
+                {
+                    if (catador.CEDULA.Equals(cedula))
+                    {
+                        catador.NOMBRE= nombre;
+                        catador.CORREO = correo;
+                        catador.CONTRASEÑA = contraseña; 
+                    }
+                }
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool actualizarCatación(string codCatacion, string codCafe, string codPanel, string codCatador, int cantidad)
+        {
+            try
+            {
+                foreach(CATACION catacion in this.db.CATACION.ToList())
+                {
+                    if (catacion.CODCATACION.Equals(codCatacion))
+                    {
+                        catacion.CANTIDAD = cantidad;
+                        catacion.CODCAFE = codCafe;
+                        catacion.CODCATADOR = codCatador;
+                        catacion.CODPANEL = codPanel;
+                    }
+                }
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
         public bool actualizarEvento(string codigo, string nombre, DateTime fecha)
         {
@@ -368,6 +414,29 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
+<<<<<<< HEAD
+=======
+
+        public bool eliminarCatador (string cedula)
+        {
+            try
+            {
+                foreach(CATADOR catador in this.db.CATADOR.ToList())
+                {
+                    if (catador.CEDULA.Equals(cedula))
+                    {
+                        this.db.CATADOR.Remove(catador);
+                    }
+                }
+                this.db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+>>>>>>> 7c4aef0cab0977df97a3db27ff7ec10282097044
 
         public int obtenerUltimaCata(string codCatacion)
         {
@@ -598,7 +667,10 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool registrarCata(string codCatacion, int vezCatad, int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual, string observaciones)
+        public bool registrarCata(string codCatacion,
+            int rancidez, int dulce, int acidez, int cuerpo, int aroma,
+            int amargo, int impresionGlobal, int fragancia, int saborResidual,
+            string observaciones)
         {
             int vezCatada = obtenerUltimaCata(codCatacion);
 
@@ -632,9 +704,9 @@ namespace Persistencia.Repositorios
         }
 
 
-        public bool buscarCedulaCatador(string cedula)
+        public CATADOR buscarCedulaCatador(string cedula)
         {
-            return true;
+            return this.db.CATADOR.FirstOrDefault(x => x.CEDULA.Equals(cedula));
         }
 
     }

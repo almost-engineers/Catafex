@@ -7,6 +7,6 @@ namespace WebService.Models
 {
     public class Administrador : Usuario
     {
-       
+        public Administrador(string nombre, string cedula, string correo, string contraseña) : base(nombre, cedula, correo, contraseña) { }
     }
 }
