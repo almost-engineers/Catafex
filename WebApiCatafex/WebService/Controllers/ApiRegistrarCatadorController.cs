@@ -101,9 +101,15 @@ namespace WebService.Controllers
         /// <returns>Retorna Falso o Verdadero, dependiendo de la comparacion</returns>
         public bool VerificarMd5Hash(string contraseña, string hash)
         {
+            
             string hashContraseña = getMD5Hash(contraseña);
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
             return comparer.Compare(hashContraseña, hash) == 0;
+        }
+
+
+        public string prueba(ApiAsignarCatadorController cat) {
+            return "";
         }
     }
 }
