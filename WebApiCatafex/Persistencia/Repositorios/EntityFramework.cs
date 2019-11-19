@@ -16,7 +16,7 @@ namespace Persistencia.Repositorios
         private CatafexEntities db;
         public EntityFramework()
         {
-          this.db = new CatafexEntities();
+            this.db = new CatafexEntities();
         }
 
 
@@ -172,9 +172,9 @@ namespace Persistencia.Repositorios
                 {
                     if (catador.CEDULA.Equals(cedula))
                     {
-                        catador.NOMBRE= nombre;
+                        catador.NOMBRE = nombre;
                         catador.CORREO = correo;
-                        catador.CONTRASEÑA = contraseña; 
+                        catador.CONTRASEÑA = contraseña;
                     }
                 }
                 this.db.SaveChanges();
@@ -190,7 +190,7 @@ namespace Persistencia.Repositorios
         {
             try
             {
-                foreach(CATACION catacion in this.db.CATACION.ToList())
+                foreach (CATACION catacion in this.db.CATACION.ToList())
                 {
                     if (catacion.CODCATACION.Equals(codCatacion))
                     {
@@ -415,11 +415,11 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool eliminarCatador (string cedula)
+        public bool eliminarCatador(string cedula)
         {
             try
             {
-                foreach(CATADOR catador in this.db.CATADOR.ToList())
+                foreach (CATADOR catador in this.db.CATADOR.ToList())
                 {
                     if (catador.CEDULA.Equals(cedula))
                     {
@@ -706,5 +706,59 @@ namespace Persistencia.Repositorios
             return this.db.CATADOR.FirstOrDefault(x => x.CEDULA.Equals(cedula));
         }
 
+        public Dictionary<string, string> obtenerInformacionCatacion(string codCatacion)
+
+        {
+
+            Dictionary<string, string> catas = new Dictionary<string, string>();
+
+
+            CATACION catacion = consultarCatacion(codCatacion);
+            PANEL panel = consultarPanel(catacion.CODPANEL);
+            EVENTO evento = consultarEvento(panel.CODEVENTO);
+            CAFE cafe = consultarCafe(catacion.CODCAFE);
+
+            if (catacion != null && panel != null && evento != null && cafe != null)
+            {
+                string hora = panel.HORA.ToString();
+                string fecha = evento.FECHA.ToShortDateString();
+                string tipoCafe = panel.TIPOCAFE;
+                string CodCafe = cafe.CODCAFE;
+                string cantVez = catacion.CANTIDAD.ToString();
+
+                catas.Add("hora", hora);
+                catas.Add("fecha", fecha);
+                catas.Add("tipoCafe", tipoCafe);
+                catas.Add("CodCafe", CodCafe);
+                catas.Add("cantVez", cantVez);
+            }
+
+            return catas;
+        }
+
+        public CATACION consultarCatacion(string codCatacion)
+        {
+            try
+            {
+                return this.db.CATACION.FirstOrDefault(x => x.CODCATACION.Equals(codCatacion));
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+
+        public CAFE consultarCafe(string codCafe)
+        {
+            try
+            {
+                return this.db.CAFE.FirstOrDefault(x => x.CODCAFE.Equals(codCafe));
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

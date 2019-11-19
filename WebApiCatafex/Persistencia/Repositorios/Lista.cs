@@ -60,6 +60,11 @@ namespace Persistencia.Listas
             return null;
         }
 
+        public CAFE consultarCafe(string codCafe)
+        {
+            throw new NotImplementedException();
+        }
+
         public IList<CAFE> consultarCafes() => null;
 
 
@@ -69,6 +74,11 @@ namespace Persistencia.Listas
         public CATA consultarCata(string codigo)
         {
             return null;
+        }
+
+        public CATACION consultarCatacion(string codCatacion)
+        {
+            throw new NotImplementedException();
         }
 
         public IList<CATACION> consultarCataciones() => null;
@@ -153,8 +163,10 @@ namespace Persistencia.Listas
             return false;
         }
 
-
-
+        public Dictionary<string, string> obtenerInformacionCatacion(string codCatacion)
+        {
+            throw new NotImplementedException();
+        }
 
         public bool registrarCata(CATA cata) {
             try { 

@@ -20,7 +20,6 @@ namespace Persistencia
         bool eliminarCafe(string codigo);
         IList<CATACION> consultarCatacionesAsignadas(string codCatador);
         bool actualizarCafe(string codCafe, string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste);
-     
         bool consultarUsuario(string cedula);
         bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp);
         bool eliminarPanel(string codigo);
@@ -45,6 +44,11 @@ namespace Persistencia
         CATADOR buscarCedulaCatador(string cedula);
         ADMINISTRADOR consultarAdministrador(string correo);
         CATADOR consultarCatador(string correo);
+
+
+        CATACION consultarCatacion(string codCatacion);
+        Dictionary<string, string> obtenerInformacionCatacion(string codCatacion);
+        CAFE consultarCafe(string codCafe);
 
     }
 }

@@ -23,6 +23,32 @@ namespace WebService.Controllers
             repositorio = FabricaRepositorio.crearRepositorio();
         }
 
+       
+        [Route("api/ApiRegistrarCata/ObtenerInformacionCatacion/{codCatacion}")]
+        [HttpGet]
+        public HttpResponseMessage ObtenerInformacionCatacion(string codCatacion)
+        {
+
+            try
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(convertirCata(repositorio.obtenerInformacionCatacion(codCatacion))));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+            }
+        }
+
+
+        private Catas convertirCata(Dictionary<string, string> catas) {
+
+            Catas c_catas = new Catas(catas["CodCafe"], int.Parse(catas["cantVez"]), catas["hora"], catas["fecha"], catas["tipoCafe"]);
+
+            return c_catas;
+        }
         [HttpGet]
         [Route("api/ApiRegistrarCata/{codCatador}")]
         public HttpResponseMessage consultarCatacion(string codCatador)

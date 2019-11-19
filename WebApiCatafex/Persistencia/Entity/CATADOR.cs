@@ -26,6 +26,7 @@ namespace Persistencia.Entity
         public string NOMBRE { get; set; }
         public string CODIGO { get; set; }
         public string NIVELEXP { get; set; }
+        public string ESTADO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CATACION> CATACION { get; set; }

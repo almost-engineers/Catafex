@@ -180,6 +180,7 @@
     <Compile Include="Models\Cata.cs" />
     <Compile Include="Models\Catacion.cs" />
     <Compile Include="Models\Catador.cs" />
+    <Compile Include="Models\Catas.cs" />
     <Compile Include="Models\Evento.cs" />
     <Compile Include="Models\Panel.cs" />
     <Compile Include="Models\Reporte.cs" />
