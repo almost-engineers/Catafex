@@ -45,7 +45,7 @@ namespace Persistencia
         ADMINISTRADOR consultarAdministrador(string correo);
         CATADOR consultarCatador(string correo);
 
-
+         bool verificarRango(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual);
         CATACION consultarCatacion(string codCatacion);
         Dictionary<string, string> obtenerInformacionCatacion(string codCatacion);
         CAFE consultarCafe(string codCafe);
