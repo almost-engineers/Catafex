@@ -414,6 +414,8 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
+<<<<<<< HEAD
+=======
 
         public bool eliminarCatador(string cedula)
         {
@@ -434,6 +436,7 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
+>>>>>>> 7c4aef0cab0977df97a3db27ff7ec10282097044
 
         public int obtenerUltimaCata(string codCatacion)
         {
