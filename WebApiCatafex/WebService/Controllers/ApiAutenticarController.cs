@@ -56,7 +56,6 @@ namespace WebService.Controllers
                     {
                         catador.cedula = catadorDB.CEDULA;
                         catador.codigo = catadorDB.CODIGO;
-                        catador.contrasena = catadorDB.CONTRASEÑA;
                         catador.correo = catadorDB.CORREO;
                         catador.nivelExp = catadorDB.NIVELEXP;
                         catador.nombre = catadorDB.NOMBRE;

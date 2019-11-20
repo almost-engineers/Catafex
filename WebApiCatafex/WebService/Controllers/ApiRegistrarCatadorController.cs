@@ -108,7 +108,7 @@ namespace WebService.Controllers
         {
             try
             {
-                this.repositorio.actualizarCatador(catador.nombre,catador.cedula,catador.correo,catador.contrasena);
+                this.repositorio.actualizarCatador(catador.nombre,catador.cedula,catador.correo, this.getMD5Hash(catador.contrasena));
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch
