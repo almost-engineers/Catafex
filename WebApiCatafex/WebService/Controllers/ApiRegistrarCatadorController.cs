@@ -172,12 +172,10 @@ namespace WebService.Controllers
 
         protected internal bool VerificarMd5Hash(string contraseña, string hash)
         {
-<<<<<<< HEAD
-            
-=======
+
              const int RESPUESTACOMPARER = 0;
 
->>>>>>> 7c4aef0cab0977df97a3db27ff7ec10282097044
+
             string hashContraseña = getMD5Hash(contraseña);
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
             return comparer.Compare(hashContraseña, hash) == RESPUESTACOMPARER;
