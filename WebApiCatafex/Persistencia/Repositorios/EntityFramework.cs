@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Persistencia.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using Persistencia.Entity;
 
 namespace Persistencia.Repositorios
 {
@@ -436,6 +435,7 @@ namespace Persistencia.Repositorios
             }
         }
 
+
         public int obtenerUltimaCata(string codCatacion)
         {
             try
@@ -672,6 +672,12 @@ namespace Persistencia.Repositorios
         {
             int vezCatada = obtenerUltimaCata(codCatacion);
 
+
+            if (!verificarRango(rancidez, dulce, acidez, cuerpo, aroma,
+             amargo, impresionGlobal, fragancia, saborResidual))
+            {
+                return false;
+            }
             try
             {
                 this.db.CATA.Add(new CATA()
@@ -760,6 +766,18 @@ namespace Persistencia.Repositorios
             {
                 return null;
             }
+        }
+
+
+        public bool verificarRango(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual)
+        {
+            if (rancidez < 0 || dulce < 0 || acidez < 0 || cuerpo < 0 || aroma < 0 || amargo < 0 || impresionGlobal < 0 || fragancia < 0 || saborResidual < 0 ||
+                 rancidez > 10 || dulce > 10 || acidez > 10 || cuerpo > 10 || aroma > 10 || amargo > 10 || impresionGlobal > 10 || fragancia > 10 || saborResidual > 10
+                )
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
