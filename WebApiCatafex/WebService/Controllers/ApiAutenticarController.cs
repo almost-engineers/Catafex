@@ -22,6 +22,7 @@ namespace WebService.Controllers
 
         // GET: api/ApiAutenticar/5
         [HttpGet]
+        [Route("api/ApiAutenticar/validarCamposCatador")]
         public bool validarCamposCatador(string correoCatador, string contraseñaCatador)
         {
             return buscarCatador(correoCatador,contraseñaCatador);
