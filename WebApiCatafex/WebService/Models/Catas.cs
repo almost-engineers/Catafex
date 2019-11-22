@@ -12,16 +12,19 @@ namespace WebService.Models
         public string hora { get; private set; }
         public string fecha { get; private set; }
         public string tipoCafe { get; private set; }
+
+        public string atributos { get; private set; }
         
 
 
-        public Catas(string CodCafe, int vezCatada, string hora, string fecha, string tipoCafe)
+        public Catas(string CodCafe, int vezCatada, string hora, string fecha, string tipoCafe,string atributos)
         {
             this.codCafe = CodCafe;
             this.vezCatada = vezCatada;
             this.hora = hora;
             this.fecha = fecha;
             this.tipoCafe = tipoCafe;
+            this.atributos = atributos;
         }
     }
 }

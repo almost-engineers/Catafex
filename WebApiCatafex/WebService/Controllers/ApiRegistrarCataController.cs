@@ -45,7 +45,7 @@ namespace WebService.Controllers
 
         private Catas convertirCata(Dictionary<string, string> catas) {
 
-            Catas c_catas = new Catas(catas["CodCafe"], int.Parse(catas["cantVez"]), catas["hora"], catas["fecha"], catas["tipoCafe"]);
+            Catas c_catas = new Catas(catas["CodCafe"], int.Parse(catas["cantVez"]), catas["hora"], catas["fecha"], catas["tipoCafe"], catas["atributos"]);
 
             return c_catas;
         }
@@ -141,10 +141,17 @@ namespace WebService.Controllers
             try
             {
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
-                repositorio.registrarCata(cata.codCata, cata.rancidez, cata.dulce,
+                if (repositorio.registrarCata(cata.codCata, cata.rancidez, cata.dulce,
                   cata.acidez, cata.cuerpo, cata.aroma, cata.amargo, cata.impresionGlobal,
-                  cata.fragancia, cata.saborResidual, cata.observaciones);
-                return response;
+                  cata.fragancia, cata.saborResidual, cata.observaciones))
+                {
+
+                    return response;
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
             }
             catch
             {

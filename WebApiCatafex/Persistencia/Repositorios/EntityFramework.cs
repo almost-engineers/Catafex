@@ -630,7 +630,7 @@ namespace Persistencia.Repositorios
             try
             {
 
-                return this.db.ATRIBUTOSCAFE.ToList().FirstOrDefault(x => x.TIPOCAFE.Equals(tipoCafe)).DATOS;
+                return this.db.ATRIBUTOSCAFE.FirstOrDefault(x => x.TIPOCAFE.Equals(tipoCafe)).DATOS;
             }
             //comentario
             catch (Exception)
@@ -671,6 +671,7 @@ namespace Persistencia.Repositorios
             string observaciones)
         {
             int vezCatada = obtenerUltimaCata(codCatacion);
+            CATACION catacionAux = this.consultarCatacion(codCatacion);
 
 
             if (!verificarRango(rancidez, dulce, acidez, cuerpo, aroma,
@@ -680,25 +681,32 @@ namespace Persistencia.Repositorios
             }
             try
             {
-                this.db.CATA.Add(new CATA()
+                if (catacionAux.CANTIDAD >= 1)
                 {
+                    this.db.CATA.Add(new CATA()
+                    {
 
-                    CODCATACION = codCatacion,
-                    VEZCATADA = vezCatada,
-                    RANCIDEZ = rancidez,
-                    DULCE = dulce,
-                    ACIDEZ = acidez,
-                    AROMA = aroma,
-                    AMARGO = amargo,
-                    FRAGANCIA = fragancia,
-                    SABORESIDUAL = saborResidual,
-                    CUERPO = cuerpo,
-                    IMPRESIONGLOBAL = impresionGlobal,
-                    OBSERVACIONES = observaciones
+                        CODCATACION = codCatacion,
+                        VEZCATADA = vezCatada,
+                        RANCIDEZ = rancidez,
+                        DULCE = dulce,
+                        ACIDEZ = acidez,
+                        AROMA = aroma,
+                        AMARGO = amargo,
+                        FRAGANCIA = fragancia,
+                        SABORESIDUAL = saborResidual,
+                        CUERPO = cuerpo,
+                        IMPRESIONGLOBAL = impresionGlobal,
+                        OBSERVACIONES = observaciones
 
-                }); ;
-                this.db.SaveChanges();
-                return true;
+                    }); ;
+                    this.db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception)
             {
@@ -724,6 +732,7 @@ namespace Persistencia.Repositorios
             PANEL panel = consultarPanel(catacion.CODPANEL);
             EVENTO evento = consultarEvento(panel.CODEVENTO);
             CAFE cafe = consultarCafe(catacion.CODCAFE);
+            string atributosCafe = obtenerAtributosCafes(panel.TIPOCAFE.ToString());
 
             if (catacion != null && panel != null && evento != null && cafe != null)
             {
@@ -738,6 +747,7 @@ namespace Persistencia.Repositorios
                 catas.Add("tipoCafe", tipoCafe);
                 catas.Add("CodCafe", CodCafe);
                 catas.Add("cantVez", cantVez);
+                catas.Add("atributos", atributosCafe);
             }
 
             return catas;

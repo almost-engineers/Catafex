@@ -38,6 +38,7 @@ namespace WebService.Controllers
         /// de una excepcion. En caso de no ser exitosa la insercion, la excepcion retorna false
         /// </returns>
         [HttpPost]
+        [Route("api/RegistrarCatador")]
         public HttpResponseMessage insertarCatador(Catador catador)
         {
             var result = this.validarCedula(catador.cedula);
