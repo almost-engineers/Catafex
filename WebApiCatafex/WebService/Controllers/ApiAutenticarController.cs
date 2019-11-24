@@ -6,7 +6,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Persistencia.Entity;
-
+using WebService.Models;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace WebService.Controllers
 {
@@ -21,11 +23,20 @@ namespace WebService.Controllers
         }
 
         // GET: api/ApiAutenticar/5
-        [HttpGet]
-        [Route("api/ApiAutenticar/validarCamposCatador")]
-        public bool validarCamposCatador(string correoCatador, string contraseñaCatador)
+        [HttpPost]
+        public HttpResponseMessage validarCamposCatador(Catador catador)
         {
-            return buscarCatador(correoCatador,contraseñaCatador);
+            try
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(buscarCatador(catador.correo, catador.contrasena)));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            catch
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+            }
         }
         // GET: api/ApiAutenticar/
         [HttpGet]
@@ -33,17 +44,29 @@ namespace WebService.Controllers
         {
             return buscarAdministrador(correoAdministrador, contraseñaAdministrador);
         }
-        private bool buscarCatador(string correo,string contraseña)
+        private Catador buscarCatador(string correo,string contraseña)
         {
             CATADOR catadorDB = repositorio.consultarCatador(correo);
             
             if(catadorDB != null)
             {
-                return controladoraRCatador.VerificarMd5Hash(contraseña, catadorDB.CONTRASEÑA);
+                if(controladoraRCatador.VerificarMd5Hash(contraseña, catadorDB.CONTRASEÑA) && catadorDB.ESTADO.Equals("HABILITADO"))
+                {
+                    Catador catador = new Catador();
+                    {
+                        catador.cedula = catadorDB.CEDULA;
+                        catador.codigo = catadorDB.CODIGO;
+                        catador.correo = catadorDB.CORREO;
+                        catador.nivelExp = catadorDB.NIVELEXP;
+                        catador.nombre = catadorDB.NOMBRE;
+                    }
+                    return catador;
+                }
             }
+            return null;
             
-            return false;
         }
+    
         private bool buscarAdministrador(string correo, string contraseña)
         {
             ADMINISTRADOR administradorDB = repositorio.consultarAdministrador(correo);

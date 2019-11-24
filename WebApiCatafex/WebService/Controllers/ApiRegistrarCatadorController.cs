@@ -38,6 +38,7 @@ namespace WebService.Controllers
         /// de una excepcion. En caso de no ser exitosa la insercion, la excepcion retorna false
         /// </returns>
         [HttpPost]
+        [Route("api/RegistrarCatador")]
         public HttpResponseMessage insertarCatador(Catador catador)
         {
             var result = this.validarCedula(catador.cedula);
@@ -108,7 +109,7 @@ namespace WebService.Controllers
         {
             try
             {
-                this.repositorio.actualizarCatador(catador.nombre,catador.cedula,catador.correo,catador.contrasena);
+                this.repositorio.actualizarCatador(catador.nombre,catador.cedula,catador.correo, this.getMD5Hash(catador.contrasena));
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch
@@ -172,11 +173,18 @@ namespace WebService.Controllers
 
         protected internal bool VerificarMd5Hash(string contraseña, string hash)
         {
+
              const int RESPUESTACOMPARER = 0;
+
 
             string hashContraseña = getMD5Hash(contraseña);
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
             return comparer.Compare(hashContraseña, hash) == RESPUESTACOMPARER;
+        }
+
+
+        public string prueba(ApiAsignarCatadorController cat) {
+            return "";
         }
     }
 }
