@@ -59,6 +59,7 @@ namespace WebService.Controllers
                         catador.correo = catadorDB.CORREO;
                         catador.nivelExp = catadorDB.NIVELEXP;
                         catador.nombre = catadorDB.NOMBRE;
+                        catador.contrasena = catadorDB.CONTRASEÑA;
                     }
                     return catador;
                 }
