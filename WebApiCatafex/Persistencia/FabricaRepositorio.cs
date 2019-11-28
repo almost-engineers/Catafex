@@ -1,4 +1,5 @@
-﻿using Persistencia.Repositorios;
+﻿using Persistencia.Listas;
+using Persistencia.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,6 @@ using System.Threading.Tasks;
 namespace Persistencia
 {
 
-   
 
     public static class FabricaRepositorio
     {   /// <summary>
@@ -20,8 +20,7 @@ namespace Persistencia
         /// <returns></returns>
         public static Repositorio crearRepositorio()
         {
-
-            return new EntityFramework();
+            return new Lista();
         }
     }
 }
