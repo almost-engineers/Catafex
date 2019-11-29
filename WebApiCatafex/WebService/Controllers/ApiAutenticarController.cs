@@ -29,9 +29,18 @@ namespace WebService.Controllers
             try
             {
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(buscarCatador(catador.correo, catador.contrasena)));
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                return response;
+                Catador c1 = buscarCatador(catador.correo, catador.contrasena);
+                if (c1 == null)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                }
+                else
+                {
+                    response.Content = new StringContent(JsonConvert.SerializeObject(c1));
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    return response;
+                }
+
             }
             catch
             {
@@ -44,13 +53,13 @@ namespace WebService.Controllers
         {
             return buscarAdministrador(correoAdministrador, contraseñaAdministrador);
         }
-        private Catador buscarCatador(string correo,string contraseña)
+        private Catador buscarCatador(string correo, string contraseña)
         {
             CATADOR catadorDB = repositorio.consultarCatador(correo);
-            
-            if(catadorDB != null)
+
+            if (catadorDB != null)
             {
-                if(controladoraRCatador.VerificarMd5Hash(contraseña, catadorDB.CONTRASEÑA) && catadorDB.ESTADO.Equals("HABILITADO"))
+                if (controladoraRCatador.VerificarMd5Hash(contraseña, catadorDB.CONTRASEÑA) && catadorDB.ESTADO.Equals("HABILITADO"))
                 {
                     Catador catador = new Catador();
                     {
@@ -65,9 +74,9 @@ namespace WebService.Controllers
                 }
             }
             return null;
-            
+
         }
-    
+
         private bool buscarAdministrador(string correo, string contraseña)
         {
             ADMINISTRADOR administradorDB = repositorio.consultarAdministrador(correo);
@@ -77,8 +86,8 @@ namespace WebService.Controllers
             }
             return false;
         }
-        
-       
+
+
 
 
     }

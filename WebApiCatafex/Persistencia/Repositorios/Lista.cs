@@ -33,7 +33,7 @@ namespace Persistencia.Listas
 
         private void LlenarListas()
         {
-      
+
             this.eventos.Add(new EVENTO()
             {
                 CODEVENTO = "EV-01",
@@ -86,9 +86,21 @@ namespace Persistencia.Listas
         {
             throw new NotImplementedException();
         }
+        private bool validarDatosCatador2(string nombre, string cedula, string correo, string contraseña)
+        {
+            if (nombre.Equals("") || cedula.Equals("") || correo.Equals("") || contraseña.Equals(""))
+            {
+                return false;
+            }
+            return true;
+        }
 
         public bool actualizarCatador(string nombre, string cedula, string correo, string contraseña)
         {
+            if (!validarDatosCatador2(nombre, cedula, correo, contraseña))
+            {
+                return false;
+            }
             foreach (CATADOR catador in this.catadores)
             {
                 if (catador.CEDULA.Equals(cedula))
@@ -114,6 +126,13 @@ namespace Persistencia.Listas
 
         public CATADOR buscarCedulaCatador(string cedula)
         {
+            foreach (CATADOR catador in this.catadores)
+            {
+                if (catador.CEDULA.Equals(cedula))
+                {
+                    return catador;
+                }
+            }
             return null;
         }
         public CATADOR buscarCatador(string correo, string contraseña)
@@ -135,7 +154,7 @@ namespace Persistencia.Listas
 
         private CATADOR obtenerCatador(string correo)
         {
-          
+
             foreach (CATADOR catador in this.catadores)
             {
                 if (catador.CORREO.Equals(correo))
@@ -162,7 +181,7 @@ namespace Persistencia.Listas
 
         public CAFE consultarCafe(string codCafe)
         {
-            foreach(CAFE cafe  in this.cafes)
+            foreach (CAFE cafe in this.cafes)
             {
                 if (cafe.CODCAFE.Equals(codCafe))
                 {
@@ -188,7 +207,8 @@ namespace Persistencia.Listas
 
             foreach (CATACION catacion in this.cataciones)
             {
-                if (catacion.CODCATACION.Equals(codCatacion)){
+                if (catacion.CODCATACION.Equals(codCatacion))
+                {
                     return catacion;
                 }
             }
@@ -198,7 +218,28 @@ namespace Persistencia.Listas
         public IList<CATACION> consultarCataciones() => null;
 
 
-        public IList<CATACION> consultarCatacionesAsignadas(string codCatador) => null;
+        public IList<CATACION> consultarCatacionesAsignadas(string codCatador)
+        {
+            IList<CATACION> cataciones = new List<CATACION>();
+            foreach (CATACION catacion in this.cataciones)
+            {
+                if (catacion.CODCATADOR.Equals(codCatador))
+                {
+                    cataciones.Add(catacion);
+                }
+            }
+            if (cataciones.Count > 0)
+            {
+                return cataciones;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+
 
         public CATADOR consultarCatador(string correo)
         {
@@ -226,7 +267,7 @@ namespace Persistencia.Listas
             }
             return null;
         }
-    
+
 
         public IList<EVENTO> consultarEventos() => null;
 
@@ -325,9 +366,28 @@ namespace Persistencia.Listas
                 }
             }
         }
-
+        private bool validarDatosCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
+        {
+            if (nombre.Equals("") || cedula.Equals("") || codigo.Equals("") || correo.Equals("") || contraseña.Equals("") || nivelExp.Equals(""))
+            {
+                return false;
+            }
+            return true;
+        }
         public bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
         {
+            try
+            {
+                Int64.Parse(cedula);
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+            if (!validarDatosCatador(nombre, cedula, codigo, correo, contraseña, nivelExp))
+            {
+                return false;
+            }
             try
             {
                 this.catadores.Add(new CATADOR()
@@ -404,7 +464,7 @@ namespace Persistencia.Listas
 
         }
 
-      
+
 
         public bool registrarCata(CATA cata)
         {
@@ -425,6 +485,11 @@ namespace Persistencia.Listas
             int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal
             , int fragancia, int saborResidual, string observaciones)
         {
+            if (!verificarRango(rancidez, dulce, acidez, cuerpo, aroma,
+             amargo, impresionGlobal, fragancia, saborResidual))
+            {
+                return false;
+            }
 
             try
             {
@@ -448,7 +513,7 @@ namespace Persistencia.Listas
 
                 return true;
             }
-            catch (NullReferenceException e)
+            catch (NullReferenceException)
             {
                 return false;
             }
@@ -458,6 +523,16 @@ namespace Persistencia.Listas
         public bool registrarCatacion(string codCatacion, string codPanel, string codCatador, string codCafe, int cantidad)
         {
             return false;
+        }
+        private bool verificarRango(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual)
+        {
+            if (rancidez < 0 || dulce < 0 || acidez < 0 || cuerpo < 0 || aroma < 0 || amargo < 0 || impresionGlobal < 0 || fragancia < 0 || saborResidual < 0 ||
+                 rancidez > 10 || dulce > 10 || acidez > 10 || cuerpo > 10 || aroma > 10 || amargo > 10 || impresionGlobal > 10 || fragancia > 10 || saborResidual > 10
+                )
+            {
+                return false;
+            }
+            return true;
         }
     }
 
