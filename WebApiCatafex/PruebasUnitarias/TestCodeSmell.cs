@@ -73,5 +73,6 @@ namespace PruebasUnitarias
             bool registroCata = catas.registrarCata(cata);
             Assert.IsTrue(registroCata);
         }
+       
     }
 }
