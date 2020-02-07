@@ -14,11 +14,11 @@ namespace WebService.Controllers
 {
     public class ApiRegistrarCatadorController : ApiController
     {
-        
+
         private Repositorio repositorio;
         public ApiRegistrarCatadorController()
         {
-           this.repositorio = FabricaRepositorio.crearRepositorio();
+            this.repositorio = FabricaRepositorio.crearRepositorio();
         }
         // POST: api/ApiRegistrarCatador
         /// <summary>
@@ -45,13 +45,16 @@ namespace WebService.Controllers
             if (result.StatusCode.Equals(HttpStatusCode.NotFound))
             {
                 try
-                {   
-                    repositorio.insertarCatador(catador.nombre, catador.cedula, catador.codigo, catador.correo, this.getMD5Hash(catador.contrasena), catador.nivelExp);
-                    return new HttpResponseMessage(HttpStatusCode.OK);
+                {
+                    if (repositorio.insertarCatador(catador.nombre, catador.cedula, catador.codigo, catador.correo, this.getMD5Hash(catador.contrasena), catador.nivelExp))
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    return new HttpResponseMessage(HttpStatusCode.BadGateway);
                 }
                 catch (Exception)
                 {
-                    
+
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
             }
@@ -70,13 +73,15 @@ namespace WebService.Controllers
         [HttpGet]
         public HttpResponseMessage validarCedula(string cedula)
         {
-            Catador catador= convertirCATADOR(cedula);
-            if(catador == null)
+            Catador catador = convertirCATADOR(cedula);
+            if (catador == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
-            else{
-                try {
+            else
+            {
+                try
+                {
                     var response = new HttpResponseMessage(HttpStatusCode.OK);
                     response.Content = new StringContent(JsonConvert.SerializeObject(catador));
                     response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -95,8 +100,15 @@ namespace WebService.Controllers
         {
             try
             {
-                this.repositorio.eliminarCatador(cedula);
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                if (this.repositorio.eliminarCatador(cedula))
+                {
+                    return new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                }
+               
             }
             catch
             {
@@ -109,8 +121,13 @@ namespace WebService.Controllers
         {
             try
             {
-                this.repositorio.actualizarCatador(catador.nombre,catador.cedula,catador.correo, this.getMD5Hash(catador.contrasena));
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                if (this.repositorio.actualizarCatador(catador.nombre, catador.cedula, catador.correo, this.getMD5Hash(catador.contrasena))){
+                    return new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                }
             }
             catch
             {
@@ -174,7 +191,7 @@ namespace WebService.Controllers
         protected internal bool VerificarMd5Hash(string contraseña, string hash)
         {
 
-             const int RESPUESTACOMPARER = 0;
+            const int RESPUESTACOMPARER = 0;
 
 
             string hashContraseña = getMD5Hash(contraseña);
@@ -183,7 +200,8 @@ namespace WebService.Controllers
         }
 
 
-        public string prueba(ApiAsignarCatadorController cat) {
+        public string prueba(ApiAsignarCatadorController cat)
+        {
             return "";
         }
     }

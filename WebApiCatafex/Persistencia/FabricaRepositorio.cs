@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace Persistencia
 {
 
-   
 
     public static class FabricaRepositorio
     {   /// <summary>
@@ -21,8 +20,7 @@ namespace Persistencia
         /// <returns></returns>
         public static Repositorio crearRepositorio()
         {
-
-            return new EntityFramework();
+            return new Lista();
         }
     }
 }

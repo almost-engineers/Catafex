@@ -56,9 +56,18 @@ namespace WebService.Controllers
             try
             {
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador))));
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                return response;
+                IList<Catacion> catas = convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador));
+                if (catas != null)
+                {
+                    response.Content = new StringContent(JsonConvert.SerializeObject(convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador))));
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    return response;
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                }
+               
             }
             catch
             {
