@@ -67,9 +67,13 @@ namespace WebService.Controllers
             return null;
             
         }
+        public Catador ValidarCatador(string correo, string contrasena)
+        {
+            return this.buscarCatador(correo, contrasena);
+        }
 
-      
-    
+
+
         private bool buscarAdministrador(string correo, string contraseña)
         {
             ADMINISTRADOR administradorDB = repositorio.consultarAdministrador(correo);

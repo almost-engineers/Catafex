@@ -1,9 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using WebService.Controllers;
 using WebService.Models;
-
-
 
 namespace PruebasUnitarias
 {
@@ -160,7 +162,7 @@ namespace PruebasUnitarias
 
         [TestMethod]
         public void actualizarCatadorFallido()
-        { 
+        {
             Catador catador = new Catador()
             {
                 cedula = "1234",
@@ -178,6 +180,14 @@ namespace PruebasUnitarias
         {
             var response = apiRegistrar.eliminarCatador("1234");
             Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.OK);
+        }
+
+        [TestMethod]
+        public void AutenticarCatadorDatosBlanco()
+        {
+            ApiAutenticarController autenticar = new ApiAutenticarController();
+            Catador catador = new Catador() { correo = "", contrasena = "" };
+            Assert.IsNull(autenticar.ValidarCatador(catador.correo, catador.contrasena));
         }
     }
 }
