@@ -140,7 +140,7 @@ namespace Persistencia.Listas
             CATADOR catador = this.obtenerCatador(correo);
             if (catador != null)
             {
-                if (VerificarMd5Hash(contraseña, catador.CONTRASEÑA) && catador.ESTADO.Equals("HABILITADO"))
+                if (VerificarMd5Hash(contraseña, catador.CONTRASEÑA) && catador.ESTADO.Equals("HABILITADO") && correo.Equals(catador.CORREO))
                 {
                     return catador;
                 }
@@ -149,7 +149,7 @@ namespace Persistencia.Listas
                     return null;
                 }
             }
-            return catador;
+            return null;
         }
 
         private CATADOR obtenerCatador(string correo)

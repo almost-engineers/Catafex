@@ -316,7 +316,7 @@ namespace Persistencia.Repositorios
 
             foreach (CATACION cat in this.db.CATACION.ToList())
             {
-                if (cat.CODCATADOR.Equals(codCatador))
+                if (cat.CODCATADOR.Equals(codCatador) && cat.CANTIDAD>0)
                 {
                     catacionesPendientes.Add(cat);
                 }

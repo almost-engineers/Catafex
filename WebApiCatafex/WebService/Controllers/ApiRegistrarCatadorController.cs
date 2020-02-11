@@ -38,7 +38,7 @@ namespace WebService.Controllers
         /// de una excepcion. En caso de no ser exitosa la insercion, la excepcion retorna false
         /// </returns>
         [HttpPost]
-        [Route("api/RegistrarCatador")]
+        ///[Route("api/RegistrarCatador")]
         public HttpResponseMessage insertarCatador(Catador catador)
         {
             var result = this.validarCedula(catador.cedula);
@@ -199,10 +199,5 @@ namespace WebService.Controllers
             return comparer.Compare(hashContraseña, hash) == RESPUESTACOMPARER;
         }
 
-
-        public string prueba(ApiAsignarCatadorController cat)
-        {
-            return "";
-        }
     }
 }

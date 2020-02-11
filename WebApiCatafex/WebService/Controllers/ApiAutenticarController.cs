@@ -26,17 +26,21 @@ namespace WebService.Controllers
         [HttpPost]
         public HttpResponseMessage validarCamposCatador(Catador catador)
         {
-            try
-            {
-                var response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(buscarCatador(catador.correo, catador.contrasena)));
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                return response;
-            }
-            catch
+
+
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
+
+            Catador nuevoC = buscarCatador(catador.correo, catador.contrasena);
+            if (nuevoC == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadGateway);
             }
+            response.Content = new StringContent(JsonConvert.SerializeObject(nuevoC));
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+           
+            return response;
+
+
         }
         // GET: api/ApiAutenticar/
         [HttpGet]
@@ -44,13 +48,13 @@ namespace WebService.Controllers
         {
             return buscarAdministrador(correoAdministrador, contraseñaAdministrador);
         }
-        private Catador buscarCatador(string correo,string contraseña)
+        private Catador buscarCatador(string correo, string contraseña)
         {
             CATADOR catadorDB = repositorio.consultarCatador(correo);
-            
-            if(catadorDB != null)
+
+            if (catadorDB != null)
             {
-                if(controladoraRCatador.VerificarMd5Hash(contraseña, catadorDB.CONTRASEÑA) && catadorDB.ESTADO.Equals("HABILITADO"))
+                if (controladoraRCatador.VerificarMd5Hash(contraseña, catadorDB.CONTRASEÑA) && catadorDB.ESTADO.Equals("HABILITADO"))
                 {
                     Catador catador = new Catador();
                     {
@@ -63,10 +67,11 @@ namespace WebService.Controllers
                     }
                     return catador;
                 }
+
             }
             return null;
-            
         }
+        [Route("ApiAutenticar/NoEsServicio")]
         public Catador ValidarCatador(string correo, string contrasena)
         {
             return this.buscarCatador(correo, contrasena);
@@ -83,8 +88,8 @@ namespace WebService.Controllers
             }
             return false;
         }
-        
-       
+
+
 
 
     }

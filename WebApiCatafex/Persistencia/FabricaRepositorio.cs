@@ -20,7 +20,7 @@ namespace Persistencia
         /// <returns></returns>
         public static Repositorio crearRepositorio()
         {
-            return new Lista();
+            return new EntityFramework();
         }
     }
 }
