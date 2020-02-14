@@ -27,12 +27,7 @@ namespace WebService.Controllers
         /// SemiExperimentados. Lo primero que se realiza es una validacion de que la cedula no se encuentre registrada, esto con el fin de identificar
         /// que dicho catador no se encuentre registrado
         /// </summary>
-        /// <param name="nombre"></param>
-        /// <param name="cedula"></param>
-        /// <param name="codigo"></param>
-        /// <param name="correo"></param>
-        /// <param name="contraseña"></param>
-        /// <param name="nivelExp"></param>
+        /// <param name="catador"></param>
         /// <returns>En este metodo existen tres puntos de retorno, uno de ellos se da en el momento en el que la validacion de la cedula da como
         /// resultado true, esto quiere decir que la cedula ya existe por ende ya esta registrado el catador. Los otros dos se producen por medio
         /// de una excepcion. En caso de no ser exitosa la insercion, la excepcion retorna false
@@ -54,7 +49,6 @@ namespace WebService.Controllers
                 }
                 catch (Exception)
                 {
-
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
             }
@@ -92,9 +86,12 @@ namespace WebService.Controllers
                     return new HttpResponseMessage(HttpStatusCode.BadGateway);
                 }
             }
-
         }
-
+        /// <summary>
+        /// Este metodo se encarga de eliminar la informacion personal de un catador a patir de su cedula, 
+        /// </summary>
+        /// <param name="cedula">Cedula del catador</param>
+        /// <returns>Retorna OK si la operacion de eliminacion fue exitosa, en caso contrario retorna BadGateway </returns>
         [HttpDelete]
         public HttpResponseMessage eliminarCatador(string cedula)
         {
@@ -115,7 +112,11 @@ namespace WebService.Controllers
                 return new HttpResponseMessage(HttpStatusCode.BadGateway);
             }
         }
-
+        /// <summary>
+        /// Este metodo se encarga de actualizar los datos pertenecientes a un catador, 
+        /// </summary>
+        /// <param name="catador">Cedula del catador</param>
+        /// <returns></returns>
         [HttpPut]
         public HttpResponseMessage actualizarCatador(Catador catador)
         {
@@ -134,7 +135,13 @@ namespace WebService.Controllers
                 return new HttpResponseMessage(HttpStatusCode.BadGateway);
             }
         }
-
+        /// <summary>
+        /// Este metodo se encarga de convertir un CATADOR (objeto de base de datos) en un 
+        /// Catador (Models), a partir de la cedula se busca el catador y se transforma la informacion
+        /// </summary>
+        /// <param name="cedula">Cedula del catador</param>
+        /// <returns>Retorna un Catador (objeto de Models) si la cedula ingresada es correcta y 
+        /// existe en el repositorio, en caso contrario retorna null</returns>
         private Catador convertirCATADOR(string cedula)
         {
             CATADOR catadorDB = repositorio.buscarCedulaCatador(cedula);
@@ -186,14 +193,9 @@ namespace WebService.Controllers
         /// <param name="contraseña"></param>
         /// <param name="hash"></param>
         /// <returns>Retorna Falso o Verdadero, dependiendo de la comparacion</returns>
-
-
         protected internal bool VerificarMd5Hash(string contraseña, string hash)
         {
-
             const int RESPUESTACOMPARER = 0;
-
-
             string hashContraseña = getMD5Hash(contraseña);
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
             return comparer.Compare(hashContraseña, hash) == RESPUESTACOMPARER;

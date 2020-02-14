@@ -51,7 +51,13 @@ namespace WebService.Controllers
             return cafes;
         }
 
-
+        /// <summary>
+        /// Este metodo se encarga de transformar el tipo de CAFE en Cafe de este modo, el 
+        /// servicio puede devolver una lista de datos que puedan ser interpretados 
+        /// posteriormente, por la parte que solicita el servicio REST
+        /// </summary>
+        /// <param name="cafesDB">Lista de cafes de tipo CAFE(base de datos)</param>
+        /// <returns>una lista de cafes de tipo Cafe (Models)</returns>
         private IList<Cafe> convertirCAFE(IList<CAFE> cafesDB)
         {
             IList<Cafe> cafes = new List<Cafe>();
@@ -96,15 +102,6 @@ namespace WebService.Controllers
         public bool eliminarCafe(string codCafe)
         {
             return repositorio.eliminarCafe(codCafe);
-        }
-
-       
-
-        public string generarCodigo()
-        {
-            string codigo="";
-
-            return codigo;
         }
     }
 }

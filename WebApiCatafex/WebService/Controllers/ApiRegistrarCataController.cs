@@ -15,20 +15,23 @@ namespace WebService.Controllers
     public class ApiRegistrarCataController : ApiController
     {
 
-
         Repositorio repositorio;
-
         public ApiRegistrarCataController()
         {
             repositorio = FabricaRepositorio.crearRepositorio();
         }
-
-       
+        /// <summary>
+        /// Este metodo se encarga de obtener la informacion correspondiente a una catacion a partir de
+        /// su codigo. Esta informacion es convertida en formato json y es devuelta junto con una respuesta
+        /// de validacion, esta ultima corresponde a un HttpResponseMessage
+        /// </summary>
+        /// <param name="codCatacion">Codigo de la catacion</param>
+        /// <returns>Un HttpResponseMessage con la informacion de la cacatacion, y un OK si el codigo enviado
+        /// fue correcto de lo contrario la respuesta contendra un BadGateway y un mensaje de null</returns>
         [Route("api/ApiRegistrarCata/ObtenerInformacionCatacion/{codCatacion}")]
         [HttpGet]
         public HttpResponseMessage ObtenerInformacionCatacion(string codCatacion)
         {
-
             try
             {
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
@@ -41,14 +44,26 @@ namespace WebService.Controllers
                 return new HttpResponseMessage(HttpStatusCode.BadGateway);
             }
         }
-
-
+        /// <summary>
+        /// Este metodo permite construtir una cata a partir de un diccionario de datos en el cual
+        /// se encuentra la informacion de una cata
+        /// </summary>
+        /// <param name="catas">Diccionario de datos en el que la llave es un identificador perteneciente
+        /// a un dato de la cata y su llave el valor correspondiente</param>
+        /// <returns>Retorna una cata con toda su informacion</returns>
         private Catas convertirCata(Dictionary<string, string> catas) {
 
             Catas c_catas = new Catas(catas["CodCafe"], int.Parse(catas["cantVez"]), catas["hora"], catas["fecha"], catas["tipoCafe"], catas["atributos"]);
-
             return c_catas;
         }
+        /// <summary>
+        /// Este metodo se encarga de listar todas las cataciones que un catador tiene asignadas, puede tener
+        /// dos respuestas, OK si todo salio bien, BadGateway si el catador no tiene catas asignadas, o el codigo 
+        /// de este es incorrecto 
+        /// </summary>
+        /// <param name="codCatador">Codigo del catador</param>
+        /// <returns>Retorna un HttpResponseMessage con un status code con valor OK con la informacion si el 
+        /// codigo del catador corresponde a un codigo correcto y si cuenta con cataciones asignadas</returns>
         [HttpGet]
         [Route("api/ApiRegistrarCata/{codCatador}")]
         public HttpResponseMessage consultarCatacion(string codCatador)
@@ -67,7 +82,6 @@ namespace WebService.Controllers
                 {
                     return new HttpResponseMessage(HttpStatusCode.BadGateway);
                 }
-               
             }
             catch
             {
@@ -75,24 +89,16 @@ namespace WebService.Controllers
             }
             
         }
-
-        //[HttpGet]
-
-        //public Cafe getCafe(string codigoCatacion)
-        //{
-
-        //    return repositorio.obtegerTipoCafe(codigoCatacion);
-        //}
-
-        //[HttpGet]
-
-        //public string obtenerAtributosCafes(string tipoCafe)
-        //{
-        //    return repositorio.obtenerAtributosCafes(tipoCafe);
-        //}
+        /// <summary>
+        /// Este metodo permite trasformar la informacion proveniente de la base de datos con un
+        /// formato que no puede ser interpretado,en un objeto Catacion que si se puede interpretar por 
+        /// el cliente que realiza la solicitud REST
+        /// </summary>
+        /// <param name="catacionesDB">Lista de cataciones con informacion de tipo de base de datos</param>
+        /// <returns>Restrona una lista con las cataciones convertidas en un formato que pude ser
+        /// interpretado, es decir, en un objeto Catacion (Models)</returns>
         private IList<Catacion> convertirCATACION(IList<CATACION> catacionesDB)
         {
-
             IList<Catacion> cataciones = new List<Catacion>();
 
             foreach (CATACION catDB in catacionesDB)
@@ -108,6 +114,13 @@ namespace WebService.Controllers
             }
             return cataciones;
         }
+        /// <summary>
+        /// Este metodo permite convertir una cata de la base de datos en un objeto de tipo Cata, 
+        /// con el fin de que pueda ser interpretada, dicha cata es consultada en el repositorio
+        /// a partir de su codigo
+        /// </summary>
+        /// <param name="codigo">Codigo de la cata</param>
+        /// <returns>Retorna una cata con la informacion del repositorio</returns>
         private Cata convertirCATA(string codigo)
         {
             CATA cataDB = repositorio.consultarCata(codigo);
@@ -126,23 +139,19 @@ namespace WebService.Controllers
                 cataDB.IMPRESIONGLOBAL.GetValueOrDefault(),
                 cataDB.OBSERVACIONES
             );
-
-
-
-
             return cata;
-        }
-        private Cata obtenerCata()
-        {
-            return null;
         }
 
         // POST: api/ApiRegistrarCata
         /// <summary>
-        /// 
+        /// Este metodo se encarga de registrar la informacion proveniente de una cata en el respositorio,
+        /// esta operacion puede obtener tres posibles resultados, Ok si la operacion de registro fue 
+        /// exitosa, BadRequest si algun dato es incorrecto y finalmente BadGateway si la operacion no pudo
+        /// ser realizada de manera exitosa
         /// </summary>
-        /// <param name="cata"></param>
-        /// <returns></returns>
+        /// <param name="cata">Cata con todos los datos enviados por el catador</param>
+        /// <returns>Retorna HttpResponseMessage, con la informacion de status code OK, BadRequest, BadGateway
+        /// dependiendo el resultado de la operacion</returns>
         [HttpPost]
         [Route("api/ApiRegistrarCata/registrarCata/")]
         public HttpResponseMessage registrarCata(Cata cata)
@@ -167,12 +176,14 @@ namespace WebService.Controllers
                 return new HttpResponseMessage(HttpStatusCode.BadGateway);
             }
         }
-
-        public bool validarDatos()
-        {
-            return true;
-        }
-
+        /// <summary>
+        /// Este metodo se encarga de actualizar los datos de una catacion, con la informacion proveniente 
+        /// del cliente, esta operacion puede obtener tres respuestas, OK si todo salio bien, NotFound si
+        /// los datos enviados son nulos o BadGateway si sucede algun error durante la actualizacion
+        /// </summary>
+        /// <param name="catacion">Catacion con los datos para ser actualizados en el repositorio</param>
+        /// <returns>Retorna HttpResponseMessage, con la informacion de status code OK, NotFound, BadGateway
+        /// dependiendo el resultado de la operacion</returns>
         [HttpPut]
         [Route("api/ApiRegistrarCata/actualizarCatacion/")]
         public HttpResponseMessage actualizarCatacion(Catacion catacion)

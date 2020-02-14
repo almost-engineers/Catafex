@@ -51,7 +51,7 @@ namespace WebService.Controllers
         /// mientras se recorre el ciclo, se añade a la lista de Paneles (capa Dominio) para finalmente esta ser retornada, con todos
         /// los datos de Paneles de la base de datos
         /// </summary>
-        /// <param name="panelesDB"></param>
+        /// <param name="panelesDB">Lista de paneles de tipo PANEL (base de datos)</param>
         /// <returns>Una lista de Paneles</returns>
         private IList<Panel> convertirPANEL(IList<PANEL> panelesDB)
         {
@@ -73,7 +73,7 @@ namespace WebService.Controllers
         /// <summary>
         /// Este metodo recibe como parametro el codigo de un panel. Este parametro pasa a ser el parametro de entrada del metodo convertirPANEL
         /// </summary>
-        /// <param name="codigo"></param>
+        /// <param name="codigo">Codigo del panel</param>
         /// <returns>Un objeto de tipo Panel con todos los atributos del panel que coincide con el codigo ingresado por parametro</returns>
         [HttpGet]
         public HttpResponseMessage consultarPanel(string codigo)
@@ -95,7 +95,7 @@ namespace WebService.Controllers
         /// Este metodo trae por instancia de la clase repositorio un PANEL. Este panel se "transforma" a un objeto de tipo Panel, esto se realiza de
         /// manera manual, asignando cada atributo
         /// </summary>
-        /// <param name="codigo"></param>
+        /// <param name="codigo">Codigo del panel</param>
         /// <returns>Se retorna un objeto de tipo panel</returns>
         private Panel convertirPANEL(string codigo)
         {
@@ -120,9 +120,9 @@ namespace WebService.Controllers
        /// son nuevamente ingresados por parametro a el metodo insertar panel de repositorio, y retorna un valor
        /// booleando dependiendo del estado de insercion del dato
        /// </summary>
-       /// <param name="codEvento"></param>
-       /// <param name="tipoCafe"></param>
-       /// <param name="hora"></param>
+       /// <param name="codEvento">Codigo del evento al cual pertenece el panel</param>
+       /// <param name="tipoCafe">Ej : Verde, Soluble</param>
+       /// <param name="hora">Hora del panel</param>
        /// <returns>Verdadero o Falso, dependiendo de si fue o no exitosa la operacion de insercion</returns>
         [HttpPost]
         public bool ingresarPanel(string codEvento, string tipoCafe, string hora)
