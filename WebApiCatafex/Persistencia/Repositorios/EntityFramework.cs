@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Persistencia.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using Persistencia.Entity;
 
 namespace Persistencia.Repositorios
 {
@@ -16,7 +15,7 @@ namespace Persistencia.Repositorios
         private CatafexEntities db;
         public EntityFramework()
         {
-          this.db = new CatafexEntities();
+            this.db = new CatafexEntities();
         }
 
 
@@ -172,9 +171,9 @@ namespace Persistencia.Repositorios
                 {
                     if (catador.CEDULA.Equals(cedula))
                     {
-                        catador.NOMBRE= nombre;
+                        catador.NOMBRE = nombre;
                         catador.CORREO = correo;
-                        catador.CONTRASEÑA = contraseña; 
+                        catador.CONTRASEÑA = contraseña;
                     }
                 }
                 this.db.SaveChanges();
@@ -190,7 +189,7 @@ namespace Persistencia.Repositorios
         {
             try
             {
-                foreach(CATACION catacion in this.db.CATACION.ToList())
+                foreach (CATACION catacion in this.db.CATACION.ToList())
                 {
                     if (catacion.CODCATACION.Equals(codCatacion))
                     {
@@ -317,7 +316,7 @@ namespace Persistencia.Repositorios
 
             foreach (CATACION cat in this.db.CATACION.ToList())
             {
-                if (cat.CODCATADOR.Equals(codCatador))
+                if (cat.CODCATADOR.Equals(codCatador) && cat.CANTIDAD>0)
                 {
                     catacionesPendientes.Add(cat);
                 }
@@ -415,11 +414,12 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool eliminarCatador (string cedula)
+
+        public bool eliminarCatador(string cedula)
         {
             try
             {
-                foreach(CATADOR catador in this.db.CATADOR.ToList())
+                foreach (CATADOR catador in this.db.CATADOR.ToList())
                 {
                     if (catador.CEDULA.Equals(cedula))
                     {
@@ -434,6 +434,7 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
+
 
         public int obtenerUltimaCata(string codCatacion)
         {
@@ -629,7 +630,7 @@ namespace Persistencia.Repositorios
             try
             {
 
-                return this.db.ATRIBUTOSCAFE.ToList().FirstOrDefault(x => x.TIPOCAFE.Equals(tipoCafe)).DATOS;
+                return this.db.ATRIBUTOSCAFE.FirstOrDefault(x => x.TIPOCAFE.Equals(tipoCafe)).DATOS;
             }
             //comentario
             catch (Exception)
@@ -670,28 +671,42 @@ namespace Persistencia.Repositorios
             string observaciones)
         {
             int vezCatada = obtenerUltimaCata(codCatacion);
+            CATACION catacionAux = this.consultarCatacion(codCatacion);
 
+
+            if (!verificarRango(rancidez, dulce, acidez, cuerpo, aroma,
+             amargo, impresionGlobal, fragancia, saborResidual))
+            {
+                return false;
+            }
             try
             {
-                this.db.CATA.Add(new CATA()
+                if (catacionAux.CANTIDAD >= 1)
                 {
+                    this.db.CATA.Add(new CATA()
+                    {
 
-                    CODCATACION = codCatacion,
-                    VEZCATADA = vezCatada,
-                    RANCIDEZ = rancidez,
-                    DULCE = dulce,
-                    ACIDEZ = acidez,
-                    AROMA = aroma,
-                    AMARGO = amargo,
-                    FRAGANCIA = fragancia,
-                    SABORESIDUAL = saborResidual,
-                    CUERPO = cuerpo,
-                    IMPRESIONGLOBAL = impresionGlobal,
-                    OBSERVACIONES = observaciones
+                        CODCATACION = codCatacion,
+                        VEZCATADA = vezCatada,
+                        RANCIDEZ = rancidez,
+                        DULCE = dulce,
+                        ACIDEZ = acidez,
+                        AROMA = aroma,
+                        AMARGO = amargo,
+                        FRAGANCIA = fragancia,
+                        SABORESIDUAL = saborResidual,
+                        CUERPO = cuerpo,
+                        IMPRESIONGLOBAL = impresionGlobal,
+                        OBSERVACIONES = observaciones
 
-                }); ;
-                this.db.SaveChanges();
-                return true;
+                    }); ;
+                    this.db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception)
             {
@@ -706,5 +721,73 @@ namespace Persistencia.Repositorios
             return this.db.CATADOR.FirstOrDefault(x => x.CEDULA.Equals(cedula));
         }
 
+        public Dictionary<string, string> obtenerInformacionCatacion(string codCatacion)
+
+        {
+
+            Dictionary<string, string> catas = new Dictionary<string, string>();
+
+
+            CATACION catacion = consultarCatacion(codCatacion);
+            PANEL panel = consultarPanel(catacion.CODPANEL);
+            EVENTO evento = consultarEvento(panel.CODEVENTO);
+            CAFE cafe = consultarCafe(catacion.CODCAFE);
+            string atributosCafe = obtenerAtributosCafes(panel.TIPOCAFE.ToString());
+
+            if (catacion != null && panel != null && evento != null && cafe != null)
+            {
+                string hora = panel.HORA.ToString();
+                string fecha = evento.FECHA.ToShortDateString();
+                string tipoCafe = panel.TIPOCAFE;
+                string CodCafe = cafe.CODCAFE;
+                string cantVez = catacion.CANTIDAD.ToString();
+
+                catas.Add("hora", hora);
+                catas.Add("fecha", fecha);
+                catas.Add("tipoCafe", tipoCafe);
+                catas.Add("CodCafe", CodCafe);
+                catas.Add("cantVez", cantVez);
+                catas.Add("atributos", atributosCafe);
+            }
+
+            return catas;
+        }
+
+        public CATACION consultarCatacion(string codCatacion)
+        {
+            try
+            {
+                return this.db.CATACION.FirstOrDefault(x => x.CODCATACION.Equals(codCatacion));
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+
+        public CAFE consultarCafe(string codCafe)
+        {
+            try
+            {
+                return this.db.CAFE.FirstOrDefault(x => x.CODCAFE.Equals(codCafe));
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
+        public bool verificarRango(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual)
+        {
+            if (rancidez < 0 || dulce < 0 || acidez < 0 || cuerpo < 0 || aroma < 0 || amargo < 0 || impresionGlobal < 0 || fragancia < 0 || saborResidual < 0 ||
+                 rancidez > 10 || dulce > 10 || acidez > 10 || cuerpo > 10 || aroma > 10 || amargo > 10 || impresionGlobal > 10 || fragancia > 10 || saborResidual > 10
+                )
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

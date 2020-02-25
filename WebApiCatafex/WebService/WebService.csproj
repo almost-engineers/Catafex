@@ -180,6 +180,7 @@
     <Compile Include="Models\Cata.cs" />
     <Compile Include="Models\Catacion.cs" />
     <Compile Include="Models\Catador.cs" />
+    <Compile Include="Models\Catas.cs" />
     <Compile Include="Models\Evento.cs" />
     <Compile Include="Models\Panel.cs" />
     <Compile Include="Models\Reporte.cs" />
@@ -216,8 +217,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\webservice.pubxml" />
+    <None Include="Properties\PublishProfiles\WebApiCatafex - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
