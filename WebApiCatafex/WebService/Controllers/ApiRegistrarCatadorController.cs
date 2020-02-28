@@ -2,16 +2,19 @@
 using Persistencia;
 using Persistencia.Entity;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using WebService.Models;
 
 namespace WebService.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiRegistrarCatadorController : ApiController
     {
 
@@ -201,5 +204,23 @@ namespace WebService.Controllers
             return comparer.Compare(hashContraseña, hash) == RESPUESTACOMPARER;
         }
 
+        [HttpGet]
+        public IEnumerable<Catador> consultarCatadores()
+        {
+            return this.convertirCATADORES(repositorio.consultarCatadores());
+        }
+
+        private IEnumerable<Catador> convertirCATADORES(IList<CATADOR> catadoresDB)
+        {
+            IList<Catador> catadores = new List<Catador>();
+            foreach (CATADOR catador in catadoresDB)
+            {
+                catadores.Add(new Catador(catador.NOMBRE,catador.CEDULA,catador.CORREO,catador.CONTRASEÑA,catador.NIVELEXP,catador.CODIGO));
+
+            }
+            return catadores;
+        }
     }
+
+   
 }

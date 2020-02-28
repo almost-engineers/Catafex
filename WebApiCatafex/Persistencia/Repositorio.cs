@@ -51,5 +51,6 @@ namespace Persistencia
         Dictionary<string, string> obtenerInformacionCatacion(string codCatacion);
         CAFE consultarCafe(string codCafe);
 
+        IList<CATADOR> consultarCatadores();
     }
 }

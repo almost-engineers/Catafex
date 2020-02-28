@@ -9,9 +9,11 @@ using Persistencia;
 using Persistencia.Entity;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Web.Http.Cors;
 
 namespace WebService.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiGestionarPanelController : ApiController
     {
 

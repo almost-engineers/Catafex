@@ -534,6 +534,11 @@ namespace Persistencia.Listas
             }
             return true;
         }
+
+        public IList<CATADOR> consultarCatadores()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

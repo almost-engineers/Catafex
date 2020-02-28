@@ -9,9 +9,11 @@ using Persistencia.Entity;
 using WebService.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Web.Http.Cors;
 
 namespace WebService.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiAutenticarController : ApiController
     {
         private Repositorio repositorio;

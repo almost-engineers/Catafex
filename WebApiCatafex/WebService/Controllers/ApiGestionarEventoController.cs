@@ -7,9 +7,11 @@ using System.Web.Http;
 using WebService.Models;
 using Persistencia;
 using Persistencia.Entity;
+using System.Web.Http.Cors;
 
 namespace WebService.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiGestionarEventoController : ApiController
     {
         Repositorio repositorio;

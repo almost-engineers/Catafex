@@ -789,5 +789,10 @@ namespace Persistencia.Repositorios
             }
             return true;
         }
+
+        public IList<CATADOR> consultarCatadores()
+        {
+            return this.db.CATADOR.ToList();
+        }
     }
 }
