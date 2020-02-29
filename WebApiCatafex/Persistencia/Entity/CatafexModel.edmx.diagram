@@ -4,9 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="da165b6b0ade49e6acf8e5c608a14dd7" Name="Diagram1">
+      <Diagram DiagramId="aed82588fd584ff0b72a933e8271fdc5" Name="Diagram1">
         <EntityTypeShape EntityType="CatafexModel.ADMINISTRADOR" Width="1.5" PointX="5.75" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CatafexModel.ATRIBUTOSCAFE" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CatafexModel.ATRIBUTOSCAFE" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CatafexModel.CAFE" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CatafexModel.CATA" Width="1.5" PointX="7.5" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CatafexModel.CATACION" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />

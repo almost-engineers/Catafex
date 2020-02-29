@@ -21,6 +21,10 @@ namespace WebService.Models
         public int saborResidual { get; set; }
         public string observaciones { get; set; }
 
+        public Cata()
+        {
+        }
+
         public Cata(string CODIGO, int VEZCATADA, int RANCIDEZ, int DULCE, int ACIDEZ, int AROMA, int AMARGO, int FRAGANCIA, int SABORESIDUAL,
             int CUERPO, int IMPRESIONGLOBAL, string OBSERVACIONES)
         {

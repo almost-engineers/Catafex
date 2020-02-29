@@ -121,11 +121,10 @@ namespace WebService.Controllers
         /// </summary>
         /// <param name="codigo">Codigo de la cata</param>
         /// <returns>Retorna una cata con la informacion del repositorio</returns>
-        private Cata convertirCATA(string codigo)
+        protected internal Cata convertirCATA(string codigo)
         {
             CATA cataDB = repositorio.consultarCata(codigo);
             Cata cata = new Cata(
-
                 cataDB.CODCATACION,
                 cataDB.VEZCATADA,
                 cataDB.RANCIDEZ.GetValueOrDefault(),

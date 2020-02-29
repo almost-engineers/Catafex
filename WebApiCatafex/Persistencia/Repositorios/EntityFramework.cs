@@ -316,7 +316,7 @@ namespace Persistencia.Repositorios
 
             foreach (CATACION cat in this.db.CATACION.ToList())
             {
-                if (cat.CODCATADOR.Equals(codCatador) && cat.CANTIDAD>0)
+                if (cat.CODCATADOR.Equals(codCatador) && cat.CANTIDAD > 0)
                 {
                     catacionesPendientes.Add(cat);
                 }
@@ -799,5 +799,133 @@ namespace Persistencia.Repositorios
         {
             return this.db.PANEL.Where(x => x.CODEVENTO.Equals(codEvento)).ToList();
         }
+
+        public bool panelTerminado(string codPanel)
+        {
+            List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
+            return cataciones.Count() == cataciones.Where(x => x.CANTIDAD == 0).Count();
+        }
+
+        public IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel)
+        {
+            string tipoCafe = this.getTipoCafe(codPanel);
+            return this.db.CAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).ToList();
+        }
+        //------------------ Calcular Promedio de catas -------------------------------------------------------
+        public Dictionary<string,double> promedioCatas(string codPanel)
+        {
+            string[] atri = this.getAtributosCafe(this.getTipoCafe(codPanel));
+            Dictionary<string, double> promedio = new Dictionary<string, double>();
+            int cantidad = this.getCantidadCatasporPanel(codPanel);
+            foreach(string str in atri)
+            {
+                promedio.Add(str, 0);
+            }
+            List<Dictionary<string, int>> valoresCata = getValores_AtributosCata(codPanel);
+            foreach(Dictionary<string, int> datos in valoresCata)
+            {
+                foreach(string atributos in datos.Keys)
+                {
+                    foreach(string atr in atri)
+                    {
+                        if (atr.Equals(atributos))
+                        {
+                            promedio[atr] += datos[atributos] ;
+                        }
+                    }
+                }
+
+            }
+            foreach(string prom in atri)
+            {
+                promedio[prom] = promedio[prom] / cantidad;
+            }
+            return promedio;
+        }
+      
+        public string[] getObservaciones(string codPanel)
+        {
+            List<CATA> catas = this.obtenerCatas(codPanel).ToList();
+            string[] observaciones = new string[catas.Count];
+            int i = 0;
+            foreach (CATA cata in catas)
+            {
+                if (!cata.OBSERVACIONES.Equals("NULL"))
+                {
+                    observaciones[i] = cata.OBSERVACIONES.ToString();
+                }     
+            }
+            return observaciones;
+        }
+
+        private List<Dictionary<string, int>> getValores_AtributosCata(string codPanel)
+        {
+           
+            List<CATA> catas = this.obtenerCatas(codPanel).ToList();
+            List<Dictionary<string, int>> datosFinales = new List<Dictionary<string, int>>();
+            foreach (CATA cata in catas)
+            {
+                Dictionary<string, int> datos = new Dictionary<string, int>();
+                datos.Add("RANCIDEZ", cata.RANCIDEZ.Value);
+                datos.Add("DULCE", cata.DULCE.Value);
+                datos.Add("ACIDEZ", cata.ACIDEZ.Value);
+                datos.Add("AROMA", cata.AROMA.Value);
+                datos.Add("AMARGO", cata.AMARGO.Value);
+                datos.Add("FRAGANCIA", cata.FRAGANCIA.Value);
+                datos.Add("SABOR_RESIDUAL", cata.SABORESIDUAL.Value);
+                datos.Add("CUERPO", cata.CUERPO.Value);
+                datos.Add("IMPRESION_GLOBAL", cata.IMPRESIONGLOBAL.Value);
+                datosFinales.Add(datos);
+            }
+            return datosFinales;
+        }
+
+       
+        private IList<CATA> obtenerCatas(string codPanel)
+        {
+            List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
+            List<CATA> catas = new List<CATA>();
+            foreach(CATACION catacion in cataciones)
+            {
+                foreach(CATA cata in this.getCatas(catacion.CODCATACION))
+                {
+                    catas.Add(cata);
+                }
+            }
+            return catas;
+        }
+
+        private IList<CATA> getCatas(string codCatacion)
+        {
+            return this.db.CATA.Where(x => x.CODCATACION.Equals(codCatacion)).ToList();
+        }
+
+        private int getCantidadCatasporPanel(string codPanel)
+        {
+            return this.obtenerCatas(codPanel).Count();
+        }
+
+        private string[] getValoresDefectoCafe(string tipoCafe)
+        {
+            return this.db.ATRIBUTOSCAFE.Where(x => x.CAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
+        }
+
+        private string[] getAtributosCafe(string tipoCafe)
+        {
+            char[] charSeparators = new char[] { ';' };
+            return this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().DATOS.Split(';');
+        }
+
+        private string getTipoCafe(string codPanel)
+        {
+            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().TIPOCAFE.ToString();
+        }
+
+        //--------------------------- Fin calculo promedio de catas ------------------------------------------------
+
+        //---------------------------------- Inicio Generar Imagen -------------------------------------------------
+
+
+        //---------------------------------- Fin Generar Imagen ----------------------------------------------------
     }
 }

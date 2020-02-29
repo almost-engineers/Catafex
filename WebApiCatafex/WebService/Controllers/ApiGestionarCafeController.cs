@@ -58,7 +58,7 @@ namespace WebService.Controllers
         /// </summary>
         /// <param name="cafesDB">Lista de cafes de tipo CAFE(base de datos)</param>
         /// <returns>una lista de cafes de tipo Cafe (Models)</returns>
-        private IList<Cafe> convertirCAFE(IList<CAFE> cafesDB)
+        protected internal IList<Cafe> convertirCAFE(IList<CAFE> cafesDB)
         {
             IList<Cafe> cafes = new List<Cafe>();
             foreach (CAFE cafe in cafesDB)

@@ -1,10 +1,12 @@
-﻿using Persistencia;
+﻿using Newtonsoft.Json;
+using Persistencia;
 using Persistencia.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using WebService.Models;
 
@@ -14,10 +16,30 @@ namespace WebService.Controllers
     {
 
         private Repositorio repositorio;
+        ApiRegistrarCataController registrar = new ApiRegistrarCataController();
 
         public ApiObtenerReporteController()
         {
             this.repositorio = FabricaRepositorio.crearRepositorio();
+        }
+
+
+        [HttpGet]
+        [Route("api/reporte/obtenerReporte")]
+        public HttpResponseMessage obtenerReporte(string codPanel)
+        {   
+            if (repositorio.panelTerminado(codPanel))
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.repositorio.promedioCatas(codPanel)));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            else
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+            
         }
         /// <summary>
         /// Este metodo permite obtener todos los reportes almacenados en el repositorio en un formato
