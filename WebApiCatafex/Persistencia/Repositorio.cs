@@ -11,6 +11,7 @@ namespace Persistencia
     public interface Repositorio
 
     {
+        IList<PANEL> consultarPanelesPorEvento(string codEvento);
         IList<PANEL> consultarPaneles();
         IList<REPORTE> consultarReportes();
         IList<CATACION> consultarCataciones();

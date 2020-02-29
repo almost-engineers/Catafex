@@ -794,5 +794,10 @@ namespace Persistencia.Repositorios
         {
             return this.db.CATADOR.ToList();
         }
+
+        public IList<PANEL> consultarPanelesPorEvento(string codEvento)
+        {
+            return this.db.PANEL.Where(x => x.CODEVENTO.Equals(codEvento)).ToList();
+        }
     }
 }

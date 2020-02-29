@@ -539,6 +539,11 @@ namespace Persistencia.Listas
         {
             throw new NotImplementedException();
         }
+
+        public IList<PANEL> consultarPanelesPorEvento(string codEvento)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

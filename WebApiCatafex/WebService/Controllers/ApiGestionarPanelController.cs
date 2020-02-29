@@ -70,6 +70,22 @@ namespace WebService.Controllers
             }
             return paneles;
         }
+        [HttpGet]
+        [Route("api/Panel/obtenerPanelesPorEvento")]
+        public HttpResponseMessage obtenerPanelesporEvento(string codEvento)
+        {
+            try
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirPANEL(repositorio.consultarPanelesPorEvento(codEvento))));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            catch (Exception)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+        }
 
         // GET: api/ApiGestionarPanel/5
         /// <summary>
