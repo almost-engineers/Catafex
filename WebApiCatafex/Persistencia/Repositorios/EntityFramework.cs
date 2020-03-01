@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms.DataVisualization.Charting;
 
+
 namespace Persistencia.Repositorios
 {
     public class EntityFramework : Repositorio
@@ -814,33 +815,8 @@ namespace Persistencia.Repositorios
             return this.db.CAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).ToList();
         }
         //------------------ Calcular Promedio de catas -------------------------------------------------------
-        private double [] getValoresPromedio(string codPanel)
-        {
-            Dictionary<string, double> promedios = new Dictionary<string, double>();
-            double[] valoresProm = new double[promedios.Count];
-            int i = 0;
-            foreach(string atributo in promedios.Keys)
-            {
-                valoresProm[i] = promedios[atributo];
-                i++;
-            }
-            return valoresProm;
-        }
-        private string[] getDatosPromedio(string codPanel)
-        {
-            Dictionary<string, double> promedios = new Dictionary<string, double>();
-            string[] valoresProm = new string[promedios.Count];
-            int i = 0;
-            foreach (string atributo in promedios.Keys)
-            {
-                valoresProm[i] = atributo;
-                i++;
-            }
-            return valoresProm;
-        }
-
-
-        public Dictionary<string,double> promedioCatas(string codPanel)
+       
+        private Dictionary<string,double> promedioCatas(string codPanel)
         {
             string[] atri = this.getAtributosCafe(this.getTipoCafe(codPanel));
             Dictionary<string, double> promedio = new Dictionary<string, double>();
@@ -987,7 +963,7 @@ namespace Persistencia.Repositorios
             double[] valoresDefecto = this.getValoresDefectoCafe(this.getTipoCafe(codPanel));
             grafico.Series["Patron"].Points.DataBindXY(promedio.Keys, valoresDefecto);
             grafico.Series["Promedio Catas"].Points.DataBindXY(promedio.Keys, promedio.Values);
-            //grafico.SaveImage("Repositorios/ImagenGrafico.png", ChartImageFormat.Png);
+            grafico.SaveImage(".\\Imagenes\\ImagenGrafico.png", ChartImageFormat.Png);
             return true;
             //return Image.FromFile("../Repositorios/ImagenGrafico.png");
         }

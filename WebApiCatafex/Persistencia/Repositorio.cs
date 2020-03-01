@@ -15,7 +15,6 @@ namespace Persistencia
         bool GenerarImagen(string codPanel);
         IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel);
         string[] getObservaciones(string codPanel);
-        Dictionary<string, double> promedioCatas(string codPanel);
         bool panelTerminado(string codPanel);
         IList<PANEL> consultarPanelesPorEvento(string codEvento);
         IList<PANEL> consultarPaneles();

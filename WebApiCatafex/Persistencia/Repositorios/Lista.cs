@@ -8,7 +8,7 @@ using Persistencia.Entity;
 
 namespace Persistencia.Listas
 {
-    public class Lista 
+    public class Lista : Repositorio
     {
         IList<CATA> Catas;
         IList<CATADOR> catadores;
@@ -550,17 +550,18 @@ namespace Persistencia.Listas
             throw new NotImplementedException();
         }
 
-        public Dictionary<string, double> promedioCatas(string codPanel)
+  
+        public bool GenerarImagen(string codPanel)
         {
             throw new NotImplementedException();
         }
 
-        public List<Dictionary<string, int>> getValores_AtributosCata(string codPanel)
+        public IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel)
         {
             throw new NotImplementedException();
         }
 
-        public IList<CATA> obtenerCatas(string codPanel)
+        public string[] getObservaciones(string codPanel)
         {
             throw new NotImplementedException();
         }
