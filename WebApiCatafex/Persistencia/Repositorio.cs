@@ -11,7 +11,7 @@ namespace Persistencia
     public interface Repositorio
 
     {
-        IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel)
+        IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel);
         string[] getObservaciones(string codPanel);
         Dictionary<string, double> promedioCatas(string codPanel);
         bool panelTerminado(string codPanel);

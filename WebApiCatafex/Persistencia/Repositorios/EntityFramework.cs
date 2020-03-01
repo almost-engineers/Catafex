@@ -907,7 +907,7 @@ namespace Persistencia.Repositorios
 
         private string[] getValoresDefectoCafe(string tipoCafe)
         {
-            return this.db.ATRIBUTOSCAFE.Where(x => x.CAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
+            return this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
         }
 
         private string[] getAtributosCafe(string tipoCafe)
