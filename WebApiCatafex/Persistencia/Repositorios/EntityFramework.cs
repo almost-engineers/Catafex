@@ -1,9 +1,11 @@
 ﻿using Persistencia.Entity;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Persistencia.Repositorios
 {
@@ -812,6 +814,32 @@ namespace Persistencia.Repositorios
             return this.db.CAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).ToList();
         }
         //------------------ Calcular Promedio de catas -------------------------------------------------------
+        private double [] getValoresPromedio(string codPanel)
+        {
+            Dictionary<string, double> promedios = new Dictionary<string, double>();
+            double[] valoresProm = new double[promedios.Count];
+            int i = 0;
+            foreach(string atributo in promedios.Keys)
+            {
+                valoresProm[i] = promedios[atributo];
+                i++;
+            }
+            return valoresProm;
+        }
+        private string[] getDatosPromedio(string codPanel)
+        {
+            Dictionary<string, double> promedios = new Dictionary<string, double>();
+            string[] valoresProm = new string[promedios.Count];
+            int i = 0;
+            foreach (string atributo in promedios.Keys)
+            {
+                valoresProm[i] = atributo;
+                i++;
+            }
+            return valoresProm;
+        }
+
+
         public Dictionary<string,double> promedioCatas(string codPanel)
         {
             string[] atri = this.getAtributosCafe(this.getTipoCafe(codPanel));
@@ -905,9 +933,17 @@ namespace Persistencia.Repositorios
             return this.obtenerCatas(codPanel).Count();
         }
 
-        private string[] getValoresDefectoCafe(string tipoCafe)
+        private double[] getValoresDefectoCafe(string tipoCafe)
         {
-            return this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
+            string[] defecto = this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
+            double[] valores = new double[defecto.Length];
+            int i = 0;
+            foreach(string defect in defecto)
+            {
+                valores[i] = Double.Parse(defect);
+                i++;
+            }
+            return valores;
         }
 
         private string[] getAtributosCafe(string tipoCafe)
@@ -924,7 +960,37 @@ namespace Persistencia.Repositorios
         //--------------------------- Fin calculo promedio de catas ------------------------------------------------
 
         //---------------------------------- Inicio Generar Imagen -------------------------------------------------
-
+        public bool GenerarImagen(string codPanel)
+        {
+            Chart grafico = new Chart();
+            ChartArea area = new ChartArea();
+            area.Visible = true;
+            grafico.ChartAreas.Add(area);
+            grafico.ChartAreas[0].Area3DStyle.Enable3D = false;
+            grafico.ChartAreas[0].AxisX.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            grafico.ChartAreas[0].AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            grafico.Width = 800;
+            grafico.Titles.Add("Grafico del panel: " + codPanel);
+            grafico.Series.Add("Patron");
+            grafico.Series["Patron"].LabelToolTip = "Patron";
+            grafico.Series.Add("Promedio Catas");
+            grafico.Series["Patron"].ChartType = SeriesChartType.Radar;
+            grafico.Series["Patron"]["RadarDrawingStyle"] = "Line";
+            grafico.Series["Patron"]["AreaDrawingStyle"] = "Polygon";
+            grafico.Series["Promedio Catas"].ChartType = SeriesChartType.Radar;
+            grafico.Series["Promedio Catas"]["RadarDrawingStyle"] = "Line";
+            grafico.Series["Promedio Catas"]["AreaDrawingStyle"] = "Polygon";
+            grafico.Legends.Add(new Legend("Patron"));
+            grafico.TextAntiAliasingQuality = TextAntiAliasingQuality.High;
+            grafico.Series["Patron"].LegendText = "Patron";
+            Dictionary<string, double> promedio = this.promedioCatas(codPanel);
+            double[] valoresDefecto = this.getValoresDefectoCafe(this.getTipoCafe(codPanel));
+            grafico.Series["Patron"].Points.DataBindXY(promedio.Keys, valoresDefecto);
+            grafico.Series["Promedio Catas"].Points.DataBindXY(promedio.Keys, promedio.Values);
+            //grafico.SaveImage("Repositorios/ImagenGrafico.png", ChartImageFormat.Png);
+            return true;
+            //return Image.FromFile("../Repositorios/ImagenGrafico.png");
+        }
 
         //---------------------------------- Fin Generar Imagen ----------------------------------------------------
     }

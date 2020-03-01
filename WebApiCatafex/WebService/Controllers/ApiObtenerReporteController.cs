@@ -30,10 +30,21 @@ namespace WebService.Controllers
         {   
             if (repositorio.panelTerminado(codPanel))
             {
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                /*HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(this.repositorio.promedioCatas(codPanel)));
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return response;
+                */
+
+                if (this.repositorio.GenerarImagen(codPanel))
+                {
+                    return new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+                }
+                 
             }
             else
             {
