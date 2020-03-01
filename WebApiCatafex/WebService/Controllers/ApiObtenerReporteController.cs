@@ -23,18 +23,18 @@ namespace WebService.Controllers
             this.repositorio = FabricaRepositorio.crearRepositorio();
         }
 
-
+/*
         [HttpGet]
         [Route("api/reporte/obtenerReporte")]
         public HttpResponseMessage obtenerReporte(string codPanel)
         {   
             if (repositorio.panelTerminado(codPanel))
             {
-                /*HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(this.repositorio.promedioCatas(codPanel)));
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return response;
-                */
+                
 
                 if (this.repositorio.GenerarImagen(codPanel))
                 {
@@ -51,7 +51,7 @@ namespace WebService.Controllers
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
             
-        }
+        }*/
         /// <summary>
         /// Este metodo permite obtener todos los reportes almacenados en el repositorio en un formato
         /// que pueda ser interpretado, por el cliente que realiza la solicitud del servicio REST
