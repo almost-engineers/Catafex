@@ -23,35 +23,43 @@ namespace WebService.Controllers
             this.repositorio = FabricaRepositorio.crearRepositorio();
         }
 
-/*
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("api/reporte/obtenerReporte")]
-        public HttpResponseMessage obtenerReporte(string codPanel)
+        [Route("api/Reporte/obtenerGrafico")]
+        public byte[] obtenerGrafico(string codPanel)
         {   
             if (repositorio.panelTerminado(codPanel))
             {
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(this.repositorio.promedioCatas(codPanel)));
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                return response;
-                
-
-                if (this.repositorio.GenerarImagen(codPanel))
-                {
-                    return new HttpResponseMessage(HttpStatusCode.OK);
-                }
-                else
-                {
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
-                }
-                 
+                return this.repositorio.GenerarImagen(codPanel);
             }
             else
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return null;
             }
             
-        }*/
+        }
+        [HttpGet]
+        [Route("api/Reporte/obtenerObservaciones")]
+        public HttpResponseMessage obtenerObservaciones(string codPanel)
+        {
+            if (repositorio.panelTerminado(codPanel))
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.repositorio.getObservaciones(codPanel)));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            else
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                response.Content = new StringContent("Panel no terminado");
+                return response;
+            }
+        }
         /// <summary>
         /// Este metodo permite obtener todos los reportes almacenados en el repositorio en un formato
         /// que pueda ser interpretado, por el cliente que realiza la solicitud del servicio REST

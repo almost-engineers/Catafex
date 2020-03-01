@@ -6,7 +6,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms.DataVisualization.Charting;
-
+using System.Windows.Forms;
+using System.IO;
 
 namespace Persistencia.Repositorios
 {
@@ -854,7 +855,7 @@ namespace Persistencia.Repositorios
             int i = 0;
             foreach (CATA cata in catas)
             {
-                if (!cata.OBSERVACIONES.Equals("NULL"))
+                if (!cata.OBSERVACIONES.Equals(""))
                 {
                     observaciones[i] = cata.OBSERVACIONES.ToString();
                 }     
@@ -936,7 +937,7 @@ namespace Persistencia.Repositorios
         //--------------------------- Fin calculo promedio de catas ------------------------------------------------
 
         //---------------------------------- Inicio Generar Imagen -------------------------------------------------
-        public bool GenerarImagen(string codPanel)
+        public byte[] GenerarImagen(string codPanel)
         {
             Chart grafico = new Chart();
             ChartArea area = new ChartArea();
@@ -963,9 +964,14 @@ namespace Persistencia.Repositorios
             double[] valoresDefecto = this.getValoresDefectoCafe(this.getTipoCafe(codPanel));
             grafico.Series["Patron"].Points.DataBindXY(promedio.Keys, valoresDefecto);
             grafico.Series["Promedio Catas"].Points.DataBindXY(promedio.Keys, promedio.Values);
-            grafico.SaveImage(".\\Imagenes\\ImagenGrafico.png", ChartImageFormat.Png);
-            return true;
-            //return Image.FromFile("../Repositorios/ImagenGrafico.png");
+
+            //-------------------------------------------------------------------------------------
+            MemoryStream stream = new MemoryStream();
+            grafico.SaveImage(stream, ChartImageFormat.Png);
+            BinaryReader binrayRdr = new BinaryReader(stream);
+            byte[] info = ((MemoryStream)stream).ToArray();
+            //------------------------------------------------------------------------------------
+            return info;
         }
 
         //---------------------------------- Fin Generar Imagen ----------------------------------------------------

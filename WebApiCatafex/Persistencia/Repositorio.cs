@@ -1,6 +1,7 @@
 ﻿using Persistencia.Entity;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace Persistencia
     public interface Repositorio
 
     {
+        byte[] GenerarImagen(string codPanel);
         IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel);
         string[] getObservaciones(string codPanel);
         bool panelTerminado(string codPanel);
