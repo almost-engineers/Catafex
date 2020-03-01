@@ -551,7 +551,7 @@ namespace Persistencia.Listas
         }
 
   
-        public bool GenerarImagen(string codPanel)
+        public byte[] GenerarImagen(string codPanel)
         {
             throw new NotImplementedException();
         }

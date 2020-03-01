@@ -12,7 +12,7 @@ namespace Persistencia
     public interface Repositorio
 
     {
-        bool GenerarImagen(string codPanel);
+        byte[] GenerarImagen(string codPanel);
         IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel);
         string[] getObservaciones(string codPanel);
         bool panelTerminado(string codPanel);
