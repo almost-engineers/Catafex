@@ -68,7 +68,11 @@ namespace WebService.Controllers
         private Evento convertirEVENTO(string codigo)
         {
             EVENTO eventoDB = repositorio.consultarEvento(codigo);
-            Evento evento = new Evento(eventoDB.CODEVENTO, eventoDB.NOMBRE, eventoDB.FECHA);
+            Evento evento = null;
+            if (eventoDB != null)
+            {
+                evento = new Evento(eventoDB.CODEVENTO, eventoDB.NOMBRE, eventoDB.FECHA);
+            }
             return evento;
         }
         /// <summary>

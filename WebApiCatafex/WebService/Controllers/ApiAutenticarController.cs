@@ -93,17 +93,7 @@ namespace WebService.Controllers
             }
             return null;
         }
-        /// <summary>
-        /// Este metodo permite realizar las pruebas a la autenticacion del catador
-        /// </summary>
-        /// <param name="correo">El correo del catador</param>
-        /// <param name="contrasena">La contraseña del catador</param>
-        /// <returns>Retorna un catador si los datos eran correctos, en caso contrario retorna null</returns>
-        [Route("ApiAutenticar/NoEsServicio")]
-        public Catador ValidarCatador(string correo, string contrasena)
-        {
-            return this.buscarCatador(correo, contrasena);
-        }
+      
         /// <summary>
         /// Este metodo se encarga de colsultar y verificar que los datos de autenticacion del 
         /// adimistrador sean correctos

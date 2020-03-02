@@ -258,16 +258,6 @@ namespace PruebasUnitarias
             var response = apiRegistrar.eliminarCatador("");
             Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.BadGateway);
         }
-        /// <summary>
-        /// metodo test para realizar una autenticación dejando los campos en blanco.
-        /// </summary>
-        [TestMethod]
-        public void AutenticarCatadorDatosBlanco()
-        {
-            ApiAutenticarController autenticar = new ApiAutenticarController();
-            Catador catador = new Catador() { correo = "", contrasena = "" };
-            Assert.IsNull(autenticar.ValidarCatador(catador.correo, catador.contrasena));
-        }
 
     }
 }

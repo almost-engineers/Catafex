@@ -566,7 +566,7 @@ namespace Persistencia.Listas
             throw new NotImplementedException();
         }
 
-        public string obtenerValoresDefectoCafes(string tipoCafe)
+        public bool pertenecePanel(string codPanel, string codEvento)
         {
             throw new NotImplementedException();
         }
