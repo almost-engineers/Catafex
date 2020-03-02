@@ -570,6 +570,11 @@ namespace Persistencia.Listas
         {
             throw new NotImplementedException();
         }
+
+        public string obtenerValoresDefectoCafes(string tipoCafe)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
