@@ -12,6 +12,7 @@ namespace Persistencia
     public interface Repositorio
 
     {
+        bool pertenecePanel(string codPanel, string codEvento);
         byte[] GenerarImagen(string codPanel);
         IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel);
         string[] getObservaciones(string codPanel);

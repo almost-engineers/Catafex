@@ -565,6 +565,11 @@ namespace Persistencia.Listas
         {
             throw new NotImplementedException();
         }
+
+        public bool pertenecePanel(string codPanel, string codEvento)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

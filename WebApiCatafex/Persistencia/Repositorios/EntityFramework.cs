@@ -981,5 +981,11 @@ namespace Persistencia.Repositorios
         }
 
         //---------------------------------- Fin Generar Imagen ----------------------------------------------------
+
+        public bool pertenecePanel(string codPanel, string codEvento)
+        {
+            PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
+            return panel.EVENTO.CODEVENTO.Equals(codEvento);
+        }
     }
 }

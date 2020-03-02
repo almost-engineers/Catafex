@@ -24,6 +24,12 @@ namespace WebService.Controllers
         {
             this.repositorio = FabricaRepositorio.crearRepositorio();
         }
+        [HttpGet]
+        [Route("api/Panel/panelPerteneceEvento")]
+        public bool panelPerteneEvento(string codPanel, string codEvento)
+        {
+            return this.repositorio.pertenecePanel(codPanel, codEvento);
+        }
         /// <summary>
         /// 
         /// </summary>
