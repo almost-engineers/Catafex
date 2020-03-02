@@ -810,10 +810,16 @@ namespace Persistencia.Repositorios
             return cataciones.Count() == cataciones.Where(x => x.CANTIDAD == 0).Count();
         }
 
+        private string getCodEvento(string codPanel)
+        {
+            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().CODEVENTO.ToString();
+        }
+
         public IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel)
         {
             string tipoCafe = this.getTipoCafe(codPanel);
-            return this.db.CAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).ToList();
+            string codEvento = this.getCodEvento(codPanel);
+            return this.db.CAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe) && x.CODEVENTO.Equals(codEvento)).ToList();
         }
         //------------------ Calcular Promedio de catas -------------------------------------------------------
        

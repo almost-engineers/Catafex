@@ -18,7 +18,6 @@ namespace WebService.Controllers
     {
 
         private Repositorio repositorio;
-        ApiRegistrarCataController registrar = new ApiRegistrarCataController();
 
         public ApiObtenerReporteController()
         {
