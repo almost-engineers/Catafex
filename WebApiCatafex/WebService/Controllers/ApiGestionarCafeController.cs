@@ -45,7 +45,7 @@ namespace WebService.Controllers
             IList<Cafe> cafes = new List<Cafe>();
             foreach (CAFE cafe in cafesDB)
             {
-                cafes.Add(new Cafe(cafe.CODCAFE, cafe.PROCEDENCIA, cafe.ORIGEN, cafe.NOMBRE, (int)cafe.PUNTOTUESTE, (int)cafe.GRADOMOLIENDA));
+                cafes.Add(new Cafe(cafe.CODCAFE, cafe.PROCEDENCIA, cafe.ORIGEN, cafe.NOMBRE, (int)cafe.PUNTOTUESTE, (int)cafe.GRADOMOLIENDA, cafe.TIPOCAFE));
 
             }
             return cafes;
@@ -63,7 +63,7 @@ namespace WebService.Controllers
             IList<Cafe> cafes = new List<Cafe>();
             foreach (CAFE cafe in cafesDB)
             {
-                cafes.Add(new Cafe(cafe.CODCAFE, cafe.PROCEDENCIA, cafe.ORIGEN, cafe.NOMBRE, (int)cafe.PUNTOTUESTE, (int)cafe.GRADOMOLIENDA));
+                cafes.Add(new Cafe(cafe.CODCAFE, cafe.PROCEDENCIA, cafe.ORIGEN, cafe.NOMBRE, (int)cafe.PUNTOTUESTE, (int)cafe.GRADOMOLIENDA, cafe.TIPOCAFE));
 
             }
             return cafes;
@@ -77,7 +77,7 @@ namespace WebService.Controllers
         [HttpPost]
         public bool ingresarCafe(string nombre, string tipoCafe, string origen, string codEvento, string procedencia, int gradoMolienda, int puntoTueste)
         {
-            return repositorio.insertarCafe( nombre,tipoCafe,origen,codEvento,procedencia, (int) gradoMolienda, (int) puntoTueste);
+            return repositorio.insertarCafe(nombre,tipoCafe,origen,codEvento,procedencia, (int) gradoMolienda, (int) puntoTueste);
         }
 
         /*
