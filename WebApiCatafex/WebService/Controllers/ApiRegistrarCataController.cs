@@ -53,7 +53,7 @@ namespace WebService.Controllers
         /// <returns>Retorna una cata con toda su informacion</returns>
         private Catas convertirCata(Dictionary<string, string> catas) {
 
-            Catas c_catas = new Catas(catas["CodCafe"], int.Parse(catas["cantVez"]), catas["hora"], catas["fecha"], catas["tipoCafe"], catas["atributos"]);
+            Catas c_catas = new Catas(catas["CodCafe"], int.Parse(catas["cantVez"]), catas["hora"], catas["fecha"], catas["tipoCafe"], catas["atributos"], catas["valoresDefecto"]);
             return c_catas;
         }
         /// <summary>

@@ -125,6 +125,7 @@ namespace WebService.Controllers
         {
             try
             {
+
                 if (this.repositorio.actualizarCatador(catador.nombre, catador.cedula, catador.correo, this.getMD5Hash(catador.contrasena))){
                     return new HttpResponseMessage(HttpStatusCode.OK);
                 }

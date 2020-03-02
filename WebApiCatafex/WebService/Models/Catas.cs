@@ -14,10 +14,12 @@ namespace WebService.Models
         public string tipoCafe { get; private set; }
 
         public string atributos { get; private set; }
+
+        public string valoresDefecto { get; private set; }
         
 
 
-        public Catas(string CodCafe, int vezCatada, string hora, string fecha, string tipoCafe,string atributos)
+        public Catas(string CodCafe, int vezCatada, string hora, string fecha, string tipoCafe,string atributos, string valoresDefecto)
         {
             this.codCafe = CodCafe;
             this.vezCatada = vezCatada;
@@ -25,6 +27,7 @@ namespace WebService.Models
             this.fecha = fecha;
             this.tipoCafe = tipoCafe;
             this.atributos = atributos;
+            this.valoresDefecto = valoresDefecto;
         }
     }
 }

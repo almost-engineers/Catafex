@@ -58,5 +58,7 @@ namespace Persistencia
         CAFE consultarCafe(string codCafe);
 
         IList<CATADOR> consultarCatadores();
+
+       string obtenerValoresDefectoCafes(string tipoCafe);
     }
 }

@@ -642,6 +642,20 @@ namespace Persistencia.Repositorios
                 return "no existen datos para ese tipo de cafe";
             }
         }
+
+        public string obtenerValoresDefectoCafes(string tipoCafe)
+        {
+            try
+            {
+
+                return this.db.ATRIBUTOSCAFE.FirstOrDefault(x => x.TIPOCAFE.Equals(tipoCafe)).VALOR_DEFECTO;
+            }
+            //comentario
+            catch (Exception)
+            {
+                return "no existen datos para ese tipo de cafe";
+            }
+        }
         public CATA consultarCata(string codigo)
         {
             return this.db.CATA.FirstOrDefault(x => (x.CODCATACION + "-" + x.VEZCATADA).Equals(codigo));
@@ -737,6 +751,7 @@ namespace Persistencia.Repositorios
             EVENTO evento = consultarEvento(panel.CODEVENTO);
             CAFE cafe = consultarCafe(catacion.CODCAFE);
             string atributosCafe = obtenerAtributosCafes(panel.TIPOCAFE.ToString());
+            string valoresDefectoCafe = obtenerValoresDefectoCafes(panel.TIPOCAFE.ToString());
 
             if (catacion != null && panel != null && evento != null && cafe != null)
             {
@@ -752,6 +767,7 @@ namespace Persistencia.Repositorios
                 catas.Add("CodCafe", CodCafe);
                 catas.Add("cantVez", cantVez);
                 catas.Add("atributos", atributosCafe);
+                catas.Add("valoresDefecto", valoresDefectoCafe);
             }
 
             return catas;
