@@ -12,6 +12,8 @@ namespace Persistencia
     public interface Repositorio
 
     {
+        bool habilitarCatador(string codCatador);
+        List<CATADOR> getCatadoresInhabilitados();
         string getCorreoCatador(string codCatador);
         string construirAsuntoCorreo(string codPanel);
         string construirMensajeCorreo(List<CATACION> cataciones);

@@ -929,7 +929,23 @@ namespace Persistencia.Repositorios
         {
             return this.obtenerCatas(codPanel).Count();
         }
-
+        public bool habilitarCatador(string codCatador)
+        {
+            try
+            {
+                this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().ESTADO = "HABILITADO";
+                this.db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public List<CATADOR> getCatadoresInhabilitados()
+        {
+            return this.db.CATADOR.Where(x => x.ESTADO.Equals("INHABILITADO")).ToList();
+        }
         private double[] getValoresDefectoCafe(string tipoCafe)
         {
             string[] defecto = this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
