@@ -12,6 +12,9 @@ namespace Persistencia
     public interface Repositorio
 
     {
+        string getCorreoCatador(string codCatador);
+        string construirAsuntoCorreo(string codPanel);
+        string construirMensajeCorreo(List<CATACION> cataciones);
         bool pertenecePanel(string codPanel, string codEvento);
         byte[] GenerarImagen(string codPanel);
         IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel);
@@ -37,7 +40,7 @@ namespace Persistencia
         bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora);
         DateTime consultarFecha(string codigo);
         IList<CAFE> consultarCafes(string tipoCafe);
-        bool registrarCatacion(string codCatacion, string codPanel, string codCatador, string codCafe, int cantidad);
+        bool registrarCatacion(string codPanel, string codCatador, string codCafe, int cantidad);
         IList<EVENTO> /*Evento*/ consultarEventos();
         ATRIBUTOSCAFE consultarAtributosCafe(string tipoCafe);
         bool eliminarEvento(string codEvento);

@@ -451,7 +451,7 @@ namespace Persistencia.Repositorios
                 return 1;
             }
         }
-        public bool registrarCatacion(string codCatacion, string codPanel, string codCatador, string codCafe, int cantidad)
+        public bool registrarCatacion(string codPanel, string codCatador, string codCafe, int cantidad)
         {
             try
             {
@@ -561,8 +561,6 @@ namespace Persistencia.Repositorios
         {
 
             string ultimo = "0";
-
-
             switch (encabezado)
             {
                 case "EV":
@@ -615,7 +613,7 @@ namespace Persistencia.Repositorios
                     break;
 
             }
-            return encabezado + '-' + 2;
+            return encabezado + '-' + ultimo;
 
         }
 
@@ -877,7 +875,7 @@ namespace Persistencia.Repositorios
             int i = 0;
             foreach (CATA cata in catas)
             {
-                if (!cata.OBSERVACIONES.Equals(""))
+                if (!cata.OBSERVACIONES.Equals("null"))
                 {
                     observaciones[i] = cata.OBSERVACIONES.ToString();
                 }     
@@ -1002,6 +1000,62 @@ namespace Persistencia.Repositorios
         {
             PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
             return panel.EVENTO.CODEVENTO.Equals(codEvento);
+        }
+
+        // -------------------------------- Metodos para enviar correo -----------------------------------------------
+
+       
+        private string getNombreEvento(string codPanel)
+        {
+            PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
+            return panel.EVENTO.NOMBRE.ToString();
+        }
+
+        private string getNombreCatador(string codCatador)
+        {
+            return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().NOMBRE.ToString();
+        }
+
+        
+
+        private DateTime getFechaEvento(string codPanel)
+        {
+            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().EVENTO.FECHA;
+        }
+        private string getHoraPanel(String codPanel)
+        {
+            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().HORA.ToString();
+        }
+        public string getCorreoCatador(string codCatador)
+        {
+            return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().CORREO.ToString();
+        }
+        public string construirAsuntoCorreo(string codPanel)
+        {
+            string nombreEvento = this.getNombreEvento(codPanel);
+            string asunto = "Seleccionado como catador para el evento : " + nombreEvento;
+            return asunto;
+        }
+        private string getNombreCafe(string codCafe)
+        {
+            return this.db.CAFE.Where(x => x.CODCAFE.Equals(codCafe)).FirstOrDefault().NOMBRE.ToString();
+        }
+        public string construirMensajeCorreo(List<CATACION> cataciones)
+        {
+            StringBuilder mensaje = new StringBuilder();
+            string fecha = this.getFechaEvento(cataciones.First().CODPANEL).ToString("yyyy/MM/dd");
+            mensaje.Append("Señor (a) " + this.getNombreCatador(cataciones.First().CODCATADOR) + ", usted ha sido seleccionado (a) " +
+                "para catar en el evento " + this.getNombreEvento(cataciones.First().CODPANEL) + ", el dia " + fecha
+                 + ". " + "En el panel : " + cataciones.First().CODPANEL + ", a la hora " + this.getHoraPanel(cataciones.First().CODPANEL) + ", " +
+                 "las siguientes muestras de cafe: \n");
+            foreach(CATACION catacion in cataciones)
+            {
+                mensaje.Append("\t Nombre del cafe: " + this.getNombreCafe(catacion.CODCAFE) + ", Codigo: " + catacion.CODCAFE+ "\n");
+            }
+            mensaje.Append("\n\n\n\n");
+            mensaje.Append("\t\t Mensaje generado de manera automatica \n");
+            mensaje.Append("\t\t\t Por favor NO RESPONDER \n");
+            return mensaje.ToString();
         }
     }
 }

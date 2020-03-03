@@ -520,7 +520,7 @@ namespace Persistencia.Listas
 
         }
 
-        public bool registrarCatacion(string codCatacion, string codPanel, string codCatador, string codCafe, int cantidad)
+        public bool registrarCatacion(string codPanel, string codCatador, string codCafe, int cantidad)
         {
             return false;
         }
@@ -572,6 +572,21 @@ namespace Persistencia.Listas
         }
 
         public string obtenerValoresDefectoCafes(string tipoCafe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string getCorreoCatador(string codCatador)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string construirAsuntoCorreo(string codPanel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string construirMensajeCorreo(List<CATACION> cataciones)
         {
             throw new NotImplementedException();
         }

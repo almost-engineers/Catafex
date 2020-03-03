@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Persistencia;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -12,9 +13,9 @@ namespace WebService.Controllers
     {
 
         private Correo correo = new Correo();
-        [HttpPost]
-        [Route("api/Notificacion/enviarMensaje")]
-        public HttpResponseMessage enviarNotificacion(string correoDestinatario, string asunto, string mensaje)
+        private Repositorio repositorio;
+       
+        protected internal HttpResponseMessage enviarNotificacion(string correoDestinatario, string asunto, string mensaje)
         {
             HttpResponseMessage response;
             if (correo.enviarMensaje(correoDestinatario, asunto, mensaje))
