@@ -221,6 +221,16 @@ namespace WebService.Controllers
             return response;
         }
 
+        [HttpGet]
+        [Route("api/RegistrarCatador/obtenerHabilitados")]
+        public HttpResponseMessage getCatadoresHabilitados()
+        {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADORES(this.repositorio.getCatadoresHabilitados())));
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            return response;
+        }
+
         [HttpPut]
         [Route("api/RegistrarCatador/cambiarEstado")]
         public HttpResponseMessage habilitarCatador(string codCatador)

@@ -600,6 +600,11 @@ namespace Persistencia.Listas
         {
             throw new NotImplementedException();
         }
+
+        public List<CATADOR> getCatadoresHabilitados()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

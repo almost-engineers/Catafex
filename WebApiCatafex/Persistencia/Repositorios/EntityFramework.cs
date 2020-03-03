@@ -946,6 +946,10 @@ namespace Persistencia.Repositorios
         {
             return this.db.CATADOR.Where(x => x.ESTADO.Equals("INHABILITADO")).ToList();
         }
+        public List<CATADOR> getCatadoresHabilitados()
+        {
+            return this.db.CATADOR.Where(x => x.ESTADO.Equals("HABILITADO")).ToList();
+        }
         private double[] getValoresDefectoCafe(string tipoCafe)
         {
             string[] defecto = this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
@@ -1019,7 +1023,6 @@ namespace Persistencia.Repositorios
         }
 
         // -------------------------------- Metodos para enviar correo -----------------------------------------------
-
        
         private string getNombreEvento(string codPanel)
         {
@@ -1031,8 +1034,6 @@ namespace Persistencia.Repositorios
         {
             return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().NOMBRE.ToString();
         }
-
-        
 
         private DateTime getFechaEvento(string codPanel)
         {
