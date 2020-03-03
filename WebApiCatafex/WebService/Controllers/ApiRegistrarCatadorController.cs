@@ -211,12 +211,34 @@ namespace WebService.Controllers
             return this.convertirCATADORES(repositorio.consultarCatadores());
         }
 
+        [HttpGet]
+        [Route("api/RegistrarCatador/obtenerInhabilitados")]
+        public HttpResponseMessage getCatadoresInhabilitados()
+        {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADORES(this.repositorio.getCatadoresInhabilitados())));
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            return response;
+        }
+
+        [HttpPut]
+        [Route("api/RegistrarCatador/cambiarEstado")]
+        public HttpResponseMessage habilitarCatador(string codCatador)
+        {
+            if (this.repositorio.habilitarCatador(codCatador))
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            return new HttpResponseMessage(HttpStatusCode.NotFound);
+        }
         private IEnumerable<Catador> convertirCATADORES(IList<CATADOR> catadoresDB)
         {
             IList<Catador> catadores = new List<Catador>();
             foreach (CATADOR catador in catadoresDB)
             {
-                catadores.Add(new Catador(catador.NOMBRE,catador.CEDULA,catador.CORREO,catador.CONTRASEÑA,catador.NIVELEXP,catador.CODIGO));
+                Catador ctador = new Catador(catador.NOMBRE, catador.CEDULA, catador.CORREO, catador.CONTRASEÑA, catador.NIVELEXP, catador.CODIGO);
+                ctador.estado = catador.ESTADO;
+                catadores.Add(ctador);
 
             }
             return catadores;

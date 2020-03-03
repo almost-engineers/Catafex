@@ -590,6 +590,16 @@ namespace Persistencia.Listas
         {
             throw new NotImplementedException();
         }
+
+        public List<CATADOR> getCatadoresInhabilitados()
+        {
+            throw new NotImplementedException();
+        }
+
+        bool Repositorio.habilitarCatador(string codCatador)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
