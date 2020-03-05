@@ -605,6 +605,11 @@ namespace Persistencia.Listas
         {
             throw new NotImplementedException();
         }
+
+        public CATADOR catadorHabilitado(string codCatador)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

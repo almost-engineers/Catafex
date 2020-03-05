@@ -23,6 +23,21 @@ namespace WebService.Controllers
         {
             this.repositorio = FabricaRepositorio.crearRepositorio();
         }
+
+        [HttpGet]
+        [Route("api/ApiRegistrarCatador/catadorHabilitado")]
+        public HttpResponseMessage catadorHabilitado(string codCatador)
+        {
+            CATADOR catador = this.repositorio.catadorHabilitado(codCatador);
+            if ( catador!= null)
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADOR(catador.CEDULA)));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            return new HttpResponseMessage(HttpStatusCode.NotFound);
+        }
         // POST: api/ApiRegistrarCatador
         /// <summary>
         /// El metodo insertar Catador recibe como parametros todos los datos necesarios para crear un catador, inlcuido el codigo dado que este es 
@@ -159,6 +174,7 @@ namespace WebService.Controllers
                     catador.correo = catadorDB.CORREO;
                     catador.nivelExp = catadorDB.NIVELEXP;
                     catador.nombre = catadorDB.NOMBRE;
+                    catador.estado = catadorDB.ESTADO;
                 }
                 return catador;
             }

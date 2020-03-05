@@ -837,6 +837,23 @@ namespace Persistencia.Repositorios
             string codEvento = this.getCodEvento(codPanel);
             return this.db.CAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe) && x.CODEVENTO.Equals(codEvento)).ToList();
         }
+
+        public CATADOR catadorHabilitado(string codCatador)
+        {
+            CATADOR catador = this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault();
+
+            if (catador != null)
+            {
+                if (catador.ESTADO.Equals("HABILITADO"))
+                {
+                    return catador;
+                }
+                return null;
+            }
+            return null;
+
+
+        }
         //------------------ Calcular Promedio de catas -------------------------------------------------------
 
         private Dictionary<string, double> promedioCatas(string codPanel)
