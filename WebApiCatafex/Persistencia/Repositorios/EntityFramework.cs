@@ -444,7 +444,7 @@ namespace Persistencia.Repositorios
         {
             try
             {
-                return this.db.CATA.ToList<CATA>().Last(x => x.CODCATACION.Equals(codCatacion)).VEZCATADA + 1;
+                return this.db.CATA.Last(x => x.CODCATACION.Equals(codCatacion)).VEZCATADA + 1;
             }
             catch (Exception)
             {
@@ -455,10 +455,10 @@ namespace Persistencia.Repositorios
         {
             try
             {
-                this.db.CATACION.Add(new CATACION()
+                this.db.CATACION.Add(new CATACION
                 {
 
-                    CODCATACION = generarCodigo("CT"),
+                    CODCATACION = generarCodigo("CAT"),
                     CODPANEL = codPanel,
                     CODCATADOR = codCatador,
                     CODCAFE = codCafe,
@@ -493,7 +493,7 @@ namespace Persistencia.Repositorios
 
             try
             {
-                this.db.CATA.Add(new CATA()
+                this.db.CATA.Add(new CATA
                 {
 
                     CODCATACION = codCatacion,
@@ -559,7 +559,6 @@ namespace Persistencia.Repositorios
 
         private string generarCodigo(string encabezado)
         {
-
             string ultimo = "0";
             switch (encabezado)
             {
@@ -611,7 +610,10 @@ namespace Persistencia.Repositorios
                         ultimo = "1";
                     }
                     break;
-
+                case "CAT":
+                    int cantidadE = this.db.CATACION.ToList().Count + 1;
+                    ultimo = cantidadE.ToString();        
+                    break;
             }
             return encabezado + '-' + ultimo;
 
@@ -836,38 +838,38 @@ namespace Persistencia.Repositorios
             return this.db.CAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe) && x.CODEVENTO.Equals(codEvento)).ToList();
         }
         //------------------ Calcular Promedio de catas -------------------------------------------------------
-       
-        private Dictionary<string,double> promedioCatas(string codPanel)
+
+        private Dictionary<string, double> promedioCatas(string codPanel)
         {
             string[] atri = this.getAtributosCafe(this.getTipoCafe(codPanel));
             Dictionary<string, double> promedio = new Dictionary<string, double>();
             int cantidad = this.getCantidadCatasporPanel(codPanel);
-            foreach(string str in atri)
+            foreach (string str in atri)
             {
                 promedio.Add(str, 0);
             }
             List<Dictionary<string, int>> valoresCata = getValores_AtributosCata(codPanel);
-            foreach(Dictionary<string, int> datos in valoresCata)
+            foreach (Dictionary<string, int> datos in valoresCata)
             {
-                foreach(string atributos in datos.Keys)
+                foreach (string atributos in datos.Keys)
                 {
-                    foreach(string atr in atri)
+                    foreach (string atr in atri)
                     {
                         if (atr.Equals(atributos))
                         {
-                            promedio[atr] += datos[atributos] ;
+                            promedio[atr] += datos[atributos];
                         }
                     }
                 }
 
             }
-            foreach(string prom in atri)
+            foreach (string prom in atri)
             {
                 promedio[prom] = promedio[prom] / cantidad;
             }
             return promedio;
         }
-      
+
         public string[] getObservaciones(string codPanel)
         {
             List<CATA> catas = this.obtenerCatas(codPanel).ToList();
@@ -878,14 +880,14 @@ namespace Persistencia.Repositorios
                 if (!cata.OBSERVACIONES.Equals("null"))
                 {
                     observaciones[i] = cata.OBSERVACIONES.ToString();
-                }     
+                }
             }
             return observaciones;
         }
 
         private List<Dictionary<string, int>> getValores_AtributosCata(string codPanel)
         {
-           
+
             List<CATA> catas = this.obtenerCatas(codPanel).ToList();
             List<Dictionary<string, int>> datosFinales = new List<Dictionary<string, int>>();
             foreach (CATA cata in catas)
@@ -905,14 +907,14 @@ namespace Persistencia.Repositorios
             return datosFinales;
         }
 
-       
+
         private IList<CATA> obtenerCatas(string codPanel)
         {
             List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
             List<CATA> catas = new List<CATA>();
-            foreach(CATACION catacion in cataciones)
+            foreach (CATACION catacion in cataciones)
             {
-                foreach(CATA cata in this.getCatas(catacion.CODCATACION))
+                foreach (CATA cata in this.getCatas(catacion.CODCATACION))
                 {
                     catas.Add(cata);
                 }
@@ -955,7 +957,7 @@ namespace Persistencia.Repositorios
             string[] defecto = this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
             double[] valores = new double[defecto.Length];
             int i = 0;
-            foreach(string defect in defecto)
+            foreach (string defect in defecto)
             {
                 valores[i] = Double.Parse(defect);
                 i++;
@@ -1023,7 +1025,7 @@ namespace Persistencia.Repositorios
         }
 
         // -------------------------------- Metodos para enviar correo -----------------------------------------------
-       
+
         private string getNombreEvento(string codPanel)
         {
             PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
@@ -1060,14 +1062,14 @@ namespace Persistencia.Repositorios
         public string construirMensajeCorreo(List<CATACION> cataciones)
         {
             StringBuilder mensaje = new StringBuilder();
-            string fecha = this.getFechaEvento(cataciones.First().CODPANEL).ToString("yyyy/MM/dd");
+            string fecha = this.getFechaEvento(cataciones.First().CODPANEL).ToString("dd/MM/yyyy");
             mensaje.Append("Señor (a) " + this.getNombreCatador(cataciones.First().CODCATADOR) + ", usted ha sido seleccionado (a) " +
                 "para catar en el evento " + this.getNombreEvento(cataciones.First().CODPANEL) + ", el dia " + fecha
                  + ". " + "En el panel : " + cataciones.First().CODPANEL + ", a la hora " + this.getHoraPanel(cataciones.First().CODPANEL) + ", " +
                  "las siguientes muestras de cafe: \n");
-            foreach(CATACION catacion in cataciones)
+            foreach (CATACION catacion in cataciones)
             {
-                mensaje.Append("\t Nombre del cafe: " + this.getNombreCafe(catacion.CODCAFE) + ", Codigo: " + catacion.CODCAFE+ "\n");
+                mensaje.Append("\t Nombre del cafe: " + this.getNombreCafe(catacion.CODCAFE) + ", Codigo: " + catacion.CODCAFE + "\n");
             }
             mensaje.Append("\n\n\n\n");
             mensaje.Append("\t\t Mensaje generado de manera automatica \n");

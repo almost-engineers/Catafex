@@ -38,12 +38,16 @@ namespace WebService.Controllers
         [Route("api/ApiAsignarCatador/asignar")]
         public HttpResponseMessage asignarCatador(List<Catacion> cataciones)
         {
+
+            if (cataciones == null) {
+                return new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
+            }
             string correoDestino = this.repositorio.getCorreoCatador(cataciones.First().codCatador);
             string asunto = this.repositorio.construirAsuntoCorreo(cataciones.First().codPanel);
             string mensaje = this.repositorio.construirMensajeCorreo(this.convertirCatacion(cataciones));
             try
             {
-                foreach (Catacion catacion in cataciones)
+              foreach (Catacion catacion in cataciones)
                 {
                     if(!this.repositorio.registrarCatacion(catacion.codPanel, catacion.codCatador, catacion.codCafe, catacion.cantidad))
                     {

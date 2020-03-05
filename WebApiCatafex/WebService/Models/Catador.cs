@@ -9,7 +9,6 @@ namespace WebService.Models
     {
         public string codigo { get; set; }
         public string nivelExp { get; set; }
-
         public string estado { get; set; }
 
         public Catador() : base() { }
