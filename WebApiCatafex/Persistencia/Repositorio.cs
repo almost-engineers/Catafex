@@ -12,6 +12,7 @@ namespace Persistencia
     public interface Repositorio
 
     {
+        CATADOR catadorHabilitado(string codCatador);
         List<CATADOR> getCatadoresHabilitados();
         bool habilitarCatador(string codCatador);
         List<CATADOR> getCatadoresInhabilitados();
