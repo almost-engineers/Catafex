@@ -41,7 +41,10 @@ namespace WebService.Controllers
             Catador nuevoC = buscarCatador(catador.correo, catador.contrasena);
             if (nuevoC == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Content = new StringContent("correo: " + catador.correo + " contraseña: " +  catador.contrasena);
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
             }
             response.Content = new StringContent(JsonConvert.SerializeObject(nuevoC));
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -87,6 +90,7 @@ namespace WebService.Controllers
                         catador.nivelExp = catadorDB.NIVELEXP;
                         catador.nombre = catadorDB.NOMBRE;
                         catador.contrasena = catadorDB.CONTRASEÑA;
+                        catador.estado = catadorDB.ESTADO;
                     }
                     return catador;
                 }

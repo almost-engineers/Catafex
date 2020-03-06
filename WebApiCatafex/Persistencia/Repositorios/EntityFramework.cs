@@ -361,7 +361,7 @@ namespace Persistencia.Repositorios
         }
         public CATADOR consultarCatador(string correo)
         {
-            return this.db.CATADOR.FirstOrDefault(x => x.CORREO.Equals(correo));
+            return this.db.CATADOR.Where(x => x.CORREO.Equals(correo)).FirstOrDefault();
         }
         public bool consultarUsuario(string cedula)
         {
@@ -458,7 +458,7 @@ namespace Persistencia.Repositorios
                 this.db.CATACION.Add(new CATACION()
                 {
 
-                    CODCATACION = generarCodigo("CT"),
+                    CODCATACION = generarCodigo("CAT"),
                     CODPANEL = codPanel,
                     CODCATADOR = codCatador,
                     CODCAFE = codCafe,
@@ -473,54 +473,7 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool registrarCata()
-        {
-
-            string codCatacion = "ct1";
-            int rancidez = 0;
-            int dulce = 0;
-            int acidez = 0;
-            int cuerpo = 0;
-            int aroma = 0;
-            int amargo = 0;
-            int impresionGlobal = 0;
-            int fragancia = 0;
-            int saborResidual = 0;
-            string observaciones = "obs";
-
-
-            int vezCatada = obtenerUltimaCata(codCatacion);
-
-            try
-            {
-                this.db.CATA.Add(new CATA()
-                {
-
-                    CODCATACION = codCatacion,
-                    VEZCATADA = vezCatada,
-                    RANCIDEZ = rancidez,
-                    DULCE = dulce,
-                    ACIDEZ = null,
-                    AROMA = null,
-                    AMARGO = amargo,
-                    FRAGANCIA = fragancia,
-                    SABORESIDUAL = saborResidual,
-                    CUERPO = cuerpo,
-                    IMPRESIONGLOBAL = impresionGlobal,
-                    OBSERVACIONES = observaciones
-
-                }); ;
-                this.db.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-
-        }
-
+       
         public IList<EVENTO> consultarEventos()
         {
             return this.db.EVENTO.ToList();
@@ -542,21 +495,7 @@ namespace Persistencia.Repositorios
             return this.db.EVENTO.FirstOrDefault(x => x.CODEVENTO.Equals(codEvento));
         }
 
-        private string getMD5Hash(string contraseña)
-        {
-            using (MD5 md5Hash = MD5.Create())
-            {
-                byte[] datos = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(contraseña));
-                StringBuilder sBuilder = new StringBuilder();
-                foreach (byte b in datos)
-                {
-                    //Le da un formato hexadecimal a cada byte de informacion, ademas de transformalo en string
-                    sBuilder.Append(b.ToString("x2"));
-                }
-                return sBuilder.ToString();
-            }
-        }
-
+       
         private string generarCodigo(string encabezado)
         {
 
@@ -610,6 +549,10 @@ namespace Persistencia.Repositorios
                     {
                         ultimo = "1";
                     }
+                    break;
+                case "CAT":
+                    int cantidad = this.db.CATACION.ToList().Count() + 1;
+                    ultimo = cantidad.ToString();
                     break;
 
             }
