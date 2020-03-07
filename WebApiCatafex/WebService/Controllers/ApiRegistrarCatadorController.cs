@@ -141,7 +141,7 @@ namespace WebService.Controllers
             try
             {
                 string nContrasena;
-                if (this.VerificarMd5Hash(this.convertirCATADOR(catador.cedula).contrasena, catador.contrasena))
+                if (this.convertirCATADOR(catador.cedula).contrasena.Equals(catador.contrasena))
                 {
                     nContrasena = catador.contrasena;
                 }
