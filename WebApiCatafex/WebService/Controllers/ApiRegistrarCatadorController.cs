@@ -54,26 +54,36 @@ namespace WebService.Controllers
         ///[Route("api/RegistrarCatador")]
         public HttpResponseMessage insertarCatador(Catador catador)
         {
-            var result = this.validarCedula(catador.cedula);
-            if (result.StatusCode.Equals(HttpStatusCode.NotFound))
+            if (catador.cedula != "" && catador.nombre != "" && catador.correo != "" && catador.codigo!="" && catador.contrasena!="" && catador.nivelExp !="")
             {
-                try
+                var result = this.validarCedula(catador.cedula);
+                if (result.StatusCode.Equals(HttpStatusCode.NotFound))
                 {
-                    if (repositorio.insertarCatador(catador.nombre, catador.cedula, catador.codigo, catador.correo, this.getMD5Hash(catador.contrasena), catador.nivelExp))
+                    try
                     {
-                        return new HttpResponseMessage(HttpStatusCode.OK);
+                        if (repositorio.insertarCatador(catador.nombre, catador.cedula, catador.codigo, catador.correo, this.getMD5Hash(catador.contrasena), catador.nivelExp))
+                        {
+                            return new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        return new HttpResponseMessage(HttpStatusCode.BadGateway);
                     }
-                    return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    catch (Exception)
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    }
                 }
-                catch (Exception)
+                else
                 {
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    return new HttpResponseMessage(HttpStatusCode.BadGateway);
                 }
             }
             else
             {
-                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
+                response.Content = new StringContent("Los datos del catador no pueden estar vacios");
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json")
             }
+            
         }
         /// <summary>
         /// Este metodo recibe por parametro la cedula del catador para ser consultada en la base de datos
