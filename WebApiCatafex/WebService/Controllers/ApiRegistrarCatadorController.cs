@@ -29,7 +29,7 @@ namespace WebService.Controllers
         public HttpResponseMessage catadorHabilitado(string codCatador)
         {
             CATADOR catador = this.repositorio.catadorHabilitado(codCatador);
-            if ( catador!= null)
+            if (catador != null)
             {
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADOR(catador.CEDULA)));
@@ -123,7 +123,7 @@ namespace WebService.Controllers
                 {
                     return new HttpResponseMessage(HttpStatusCode.BadGateway);
                 }
-               
+
             }
             catch
             {
@@ -140,8 +140,17 @@ namespace WebService.Controllers
         {
             try
             {
-
-                if (this.repositorio.actualizarCatador(catador.nombre, catador.cedula, catador.correo, this.getMD5Hash(catador.contrasena))){
+                string nContrasena;
+                if (this.VerificarMd5Hash(this.convertirCATADOR(catador.cedula).contrasena, catador.contrasena))
+                {
+                    nContrasena = catador.contrasena;
+                }
+                else
+                {
+                    nContrasena = this.getMD5Hash(catador.contrasena);
+                }
+                if (this.repositorio.actualizarCatador(catador.nombre, catador.cedula, catador.correo, nContrasena))
+                {
                     return new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -271,5 +280,5 @@ namespace WebService.Controllers
         }
     }
 
-   
+
 }
