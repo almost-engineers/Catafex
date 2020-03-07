@@ -361,7 +361,7 @@ namespace Persistencia.Repositorios
         }
         public CATADOR consultarCatador(string correo)
         {
-            return this.db.CATADOR.FirstOrDefault(x => x.CORREO.Equals(correo));
+            return this.db.CATADOR.Where(x => x.CORREO.Equals(correo)).FirstOrDefault();
         }
         public bool consultarUsuario(string cedula)
         {
@@ -444,7 +444,7 @@ namespace Persistencia.Repositorios
         {
             try
             {
-                return this.db.CATA.Last(x => x.CODCATACION.Equals(codCatacion)).VEZCATADA + 1;
+                return this.db.CATA.ToList<CATA>().Last(x => x.CODCATACION.Equals(codCatacion)).VEZCATADA + 1;
             }
             catch (Exception)
             {
@@ -455,7 +455,7 @@ namespace Persistencia.Repositorios
         {
             try
             {
-                this.db.CATACION.Add(new CATACION
+                this.db.CATACION.Add(new CATACION()
                 {
 
                     CODCATACION = generarCodigo("CAT"),
@@ -473,54 +473,7 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool registrarCata()
-        {
-
-            string codCatacion = "ct1";
-            int rancidez = 0;
-            int dulce = 0;
-            int acidez = 0;
-            int cuerpo = 0;
-            int aroma = 0;
-            int amargo = 0;
-            int impresionGlobal = 0;
-            int fragancia = 0;
-            int saborResidual = 0;
-            string observaciones = "obs";
-
-
-            int vezCatada = obtenerUltimaCata(codCatacion);
-
-            try
-            {
-                this.db.CATA.Add(new CATA
-                {
-
-                    CODCATACION = codCatacion,
-                    VEZCATADA = vezCatada,
-                    RANCIDEZ = rancidez,
-                    DULCE = dulce,
-                    ACIDEZ = null,
-                    AROMA = null,
-                    AMARGO = amargo,
-                    FRAGANCIA = fragancia,
-                    SABORESIDUAL = saborResidual,
-                    CUERPO = cuerpo,
-                    IMPRESIONGLOBAL = impresionGlobal,
-                    OBSERVACIONES = observaciones
-
-                }); ;
-                this.db.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-
-        }
-
+       
         public IList<EVENTO> consultarEventos()
         {
             return this.db.EVENTO.ToList();
@@ -542,23 +495,10 @@ namespace Persistencia.Repositorios
             return this.db.EVENTO.FirstOrDefault(x => x.CODEVENTO.Equals(codEvento));
         }
 
-        private string getMD5Hash(string contraseña)
-        {
-            using (MD5 md5Hash = MD5.Create())
-            {
-                byte[] datos = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(contraseña));
-                StringBuilder sBuilder = new StringBuilder();
-                foreach (byte b in datos)
-                {
-                    //Le da un formato hexadecimal a cada byte de informacion, ademas de transformalo en string
-                    sBuilder.Append(b.ToString("x2"));
-                }
-                return sBuilder.ToString();
-            }
-        }
-
+       
         private string generarCodigo(string encabezado)
         {
+
             string ultimo = "0";
             switch (encabezado)
             {
@@ -611,9 +551,10 @@ namespace Persistencia.Repositorios
                     }
                     break;
                 case "CAT":
-                    int cantidadE = this.db.CATACION.ToList().Count + 1;
-                    ultimo = cantidadE.ToString();        
+                    int cantidad = this.db.CATACION.ToList().Count() + 1;
+                    ultimo = cantidad.ToString();
                     break;
+
             }
             return encabezado + '-' + ultimo;
 
@@ -1079,7 +1020,7 @@ namespace Persistencia.Repositorios
         public string construirMensajeCorreo(List<CATACION> cataciones)
         {
             StringBuilder mensaje = new StringBuilder();
-            string fecha = this.getFechaEvento(cataciones.First().CODPANEL).ToString("dd/MM/yyyy");
+            string fecha = this.getFechaEvento(cataciones.First().CODPANEL).ToString("yyyy/MM/dd");
             mensaje.Append("Señor (a) " + this.getNombreCatador(cataciones.First().CODCATADOR) + ", usted ha sido seleccionado (a) " +
                 "para catar en el evento " + this.getNombreEvento(cataciones.First().CODPANEL) + ", el dia " + fecha
                  + ". " + "En el panel : " + cataciones.First().CODPANEL + ", a la hora " + this.getHoraPanel(cataciones.First().CODPANEL) + ", " +
