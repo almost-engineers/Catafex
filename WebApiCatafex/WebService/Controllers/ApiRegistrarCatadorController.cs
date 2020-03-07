@@ -81,7 +81,8 @@ namespace WebService.Controllers
             {
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
                 response.Content = new StringContent("Los datos del catador no pueden estar vacios");
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json")
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
             }
             
         }
