@@ -28,14 +28,18 @@ namespace WebService.Controllers
         [Route("api/ApiRegistrarCatador/catadorHabilitado")]
         public HttpResponseMessage catadorHabilitado(string codCatador)
         {
+            HttpResponseMessage response;
             CATADOR catador = this.repositorio.catadorHabilitado(codCatador);
             if (catador != null)
             {
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                response = new HttpResponseMessage(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADOR(catador.CEDULA)));
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return response;
             }
+            response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StringContent(null);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
         // POST: api/ApiRegistrarCatador
@@ -54,7 +58,7 @@ namespace WebService.Controllers
         ///[Route("api/RegistrarCatador")]
         public HttpResponseMessage insertarCatador(Catador catador)
         {
-            if (catador.cedula != "" && catador.nombre != "" && catador.correo != "" && catador.codigo!="" && catador.contrasena!="" && catador.nivelExp !=null)
+            if (catador.cedula != "" && catador.nombre != "" && catador.correo != "" && catador.codigo != "" && catador.contrasena != "" && catador.nivelExp != null)
             {
                 var result = this.validarCedula(catador.cedula);
                 if (result.StatusCode.Equals(HttpStatusCode.NotFound))
@@ -84,7 +88,7 @@ namespace WebService.Controllers
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return response;
             }
-            
+
         }
         /// <summary>
         /// Este metodo recibe por parametro la cedula del catador para ser consultada en la base de datos
