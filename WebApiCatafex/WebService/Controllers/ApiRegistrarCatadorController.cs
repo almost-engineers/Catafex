@@ -54,7 +54,7 @@ namespace WebService.Controllers
         ///[Route("api/RegistrarCatador")]
         public HttpResponseMessage insertarCatador(Catador catador)
         {
-            if (catador.cedula != "" && catador.nombre != "" && catador.correo != "" && catador.codigo!="" && catador.contrasena!="" && catador.nivelExp !="")
+            if (catador.cedula != "" && catador.nombre != "" && catador.correo != "" && catador.codigo!="" && catador.contrasena!="" && catador.nivelExp !=null)
             {
                 var result = this.validarCedula(catador.cedula);
                 if (result.StatusCode.Equals(HttpStatusCode.NotFound))
