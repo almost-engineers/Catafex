@@ -37,11 +37,12 @@ namespace WebService.Controllers
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return response;
             }
-            response = new HttpResponseMessage(HttpStatusCode.OK);
+            response = new HttpResponseMessage(HttpStatusCode.NotFound);
             response.Content = new StringContent(null);
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            return new HttpResponseMessage(HttpStatusCode.NotFound);
+            return response;
         }
+
         // POST: api/ApiRegistrarCatador
         /// <summary>
         /// El metodo insertar Catador recibe como parametros todos los datos necesarios para crear un catador, inlcuido el codigo dado que este es 
