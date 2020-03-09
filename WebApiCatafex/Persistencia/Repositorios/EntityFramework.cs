@@ -964,7 +964,6 @@ namespace Persistencia.Repositorios
             double[] valoresDefecto = this.getValoresDefectoCafe(this.getTipoCafe(codPanel));
             grafico.Series["Patron"].Points.DataBindXY(promedio.Keys, valoresDefecto);
             grafico.Series["Promedio Catas"].Points.DataBindXY(promedio.Keys, promedio.Values);
-
             //-------------------------------------------------------------------------------------
             MemoryStream stream = new MemoryStream();
             grafico.SaveImage(stream, ChartImageFormat.Png);
@@ -1020,7 +1019,7 @@ namespace Persistencia.Repositorios
         public string construirMensajeCorreo(List<CATACION> cataciones)
         {
             StringBuilder mensaje = new StringBuilder();
-            string fecha = this.getFechaEvento(cataciones.First().CODPANEL).ToString("yyyy/MM/dd");
+            string fecha = this.getFechaEvento(cataciones.First().CODPANEL).ToString("dd/MM/yyyy");
             mensaje.Append("Señor (a) " + this.getNombreCatador(cataciones.First().CODCATADOR) + ", usted ha sido seleccionado (a) " +
                 "para catar en el evento " + this.getNombreEvento(cataciones.First().CODPANEL) + ", el dia " + fecha
                  + ". " + "En el panel : " + cataciones.First().CODPANEL + ", a la hora " + this.getHoraPanel(cataciones.First().CODPANEL) + ", " +
