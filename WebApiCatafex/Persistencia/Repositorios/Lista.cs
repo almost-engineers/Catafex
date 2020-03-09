@@ -520,7 +520,7 @@ namespace Persistencia.Listas
 
         }
 
-        public bool registrarCatacion(string codCatacion, string codPanel, string codCatador, string codCafe, int cantidad)
+        public bool registrarCatacion(string codPanel, string codCatador, string codCafe, int cantidad)
         {
             return false;
         }
@@ -533,6 +533,82 @@ namespace Persistencia.Listas
                 return false;
             }
             return true;
+        }
+
+        public IList<CATADOR> consultarCatadores()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<PANEL> consultarPanelesPorEvento(string codEvento)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool panelTerminado(string codPanel)
+        {
+            throw new NotImplementedException();
+        }
+
+  
+        public byte[] GenerarImagen(string codPanel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string[] getObservaciones(string codPanel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool pertenecePanel(string codPanel, string codEvento)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string obtenerValoresDefectoCafes(string tipoCafe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string getCorreoCatador(string codCatador)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string construirAsuntoCorreo(string codPanel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string construirMensajeCorreo(List<CATACION> cataciones)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CATADOR> getCatadoresInhabilitados()
+        {
+            throw new NotImplementedException();
+        }
+
+        bool Repositorio.habilitarCatador(string codCatador)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CATADOR> getCatadoresHabilitados()
+        {
+            throw new NotImplementedException();
+        }
+
+        public CATADOR catadorHabilitado(string codCatador)
+        {
+            throw new NotImplementedException();
         }
     }
 

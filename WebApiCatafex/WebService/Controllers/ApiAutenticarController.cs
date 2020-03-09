@@ -9,9 +9,11 @@ using Persistencia.Entity;
 using WebService.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Web.Http.Cors;
 
 namespace WebService.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiAutenticarController : ApiController
     {
         private Repositorio repositorio;
@@ -39,7 +41,10 @@ namespace WebService.Controllers
             Catador nuevoC = buscarCatador(catador.correo, catador.contrasena);
             if (nuevoC == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Content = new StringContent("correo: " + catador.correo + " contraseña: " +  catador.contrasena);
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
             }
             response.Content = new StringContent(JsonConvert.SerializeObject(nuevoC));
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -85,23 +90,14 @@ namespace WebService.Controllers
                         catador.nivelExp = catadorDB.NIVELEXP;
                         catador.nombre = catadorDB.NOMBRE;
                         catador.contrasena = catadorDB.CONTRASEÑA;
+                        catador.estado = catadorDB.ESTADO;
                     }
                     return catador;
                 }
             }
             return null;
         }
-        /// <summary>
-        /// Este metodo permite realizar las pruebas a la autenticacion del catador
-        /// </summary>
-        /// <param name="correo">El correo del catador</param>
-        /// <param name="contrasena">La contraseña del catador</param>
-        /// <returns>Retorna un catador si los datos eran correctos, en caso contrario retorna null</returns>
-        [Route("ApiAutenticar/NoEsServicio")]
-        public Catador ValidarCatador(string correo, string contrasena)
-        {
-            return this.buscarCatador(correo, contrasena);
-        }
+      
         /// <summary>
         /// Este metodo se encarga de colsultar y verificar que los datos de autenticacion del 
         /// adimistrador sean correctos

@@ -7,9 +7,11 @@ using System.Web.Http;
 using WebService.Models;
 using Persistencia;
 using Persistencia.Entity;
+using System.Web.Http.Cors;
 
 namespace WebService.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiGestionarEventoController : ApiController
     {
         Repositorio repositorio;
@@ -66,7 +68,11 @@ namespace WebService.Controllers
         private Evento convertirEVENTO(string codigo)
         {
             EVENTO eventoDB = repositorio.consultarEvento(codigo);
-            Evento evento = new Evento(eventoDB.CODEVENTO, eventoDB.NOMBRE, eventoDB.FECHA);
+            Evento evento = null;
+            if (eventoDB != null)
+            {
+                evento = new Evento(eventoDB.CODEVENTO, eventoDB.NOMBRE, eventoDB.FECHA);
+            }
             return evento;
         }
         /// <summary>

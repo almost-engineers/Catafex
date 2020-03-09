@@ -9,20 +9,49 @@ using Persistencia;
 using Persistencia.Entity;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Web.Http.Cors;
 
 namespace WebService.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiGestionarPanelController : ApiController
     {
 
         /// Se crea una variable tipo Repositorio, que retorna ya sea un EntityFramework o una lista
         private Repositorio repositorio;
-        
+        private ApiGestionarCafeController gestionarCafe = new ApiGestionarCafeController();
         public ApiGestionarPanelController()
         {
             this.repositorio = FabricaRepositorio.crearRepositorio();
         }
-
+        [HttpGet]
+        [Route("api/Panel/panelPerteneceEvento")]
+        public bool panelPerteneEvento(string codPanel, string codEvento)
+        {
+            return this.repositorio.pertenecePanel(codPanel, codEvento);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/Panel/cafesTipoCafePanel")]
+        public HttpResponseMessage obtenerCafesTipoCafePanel(string codPanel)
+        {
+            try
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.gestionarCafe.convertirCAFE(this.repositorio.obtenerCafesMismoTipoPanel(codPanel))));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            catch (Exception)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+           
+        }
         // GET: api/ApiGestionarPanel/consultarPaneles
        /// <summary>
        ///      Este metodo hace uso del metodo convertirPANEL para trasformar un dato de tipo PANEL proveniente de Entity a un
@@ -67,6 +96,22 @@ namespace WebService.Controllers
                 });
             }
             return paneles;
+        }
+        [HttpGet]
+        [Route("api/Panel/obtenerPanelesPorEvento")]
+        public HttpResponseMessage obtenerPanelesporEvento(string codEvento)
+        {
+            try
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirPANEL(repositorio.consultarPanelesPorEvento(codEvento))));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            catch (Exception)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
         }
 
         // GET: api/ApiGestionarPanel/5

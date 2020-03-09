@@ -53,7 +53,7 @@ namespace WebService.Controllers
         /// <returns>Retorna una cata con toda su informacion</returns>
         private Catas convertirCata(Dictionary<string, string> catas) {
 
-            Catas c_catas = new Catas(catas["CodCafe"], int.Parse(catas["cantVez"]), catas["hora"], catas["fecha"], catas["tipoCafe"], catas["atributos"]);
+            Catas c_catas = new Catas(catas["CodCafe"], int.Parse(catas["cantVez"]), catas["hora"], catas["fecha"], catas["tipoCafe"], catas["atributos"], catas["valoresDefecto"]);
             return c_catas;
         }
         /// <summary>
@@ -121,11 +121,10 @@ namespace WebService.Controllers
         /// </summary>
         /// <param name="codigo">Codigo de la cata</param>
         /// <returns>Retorna una cata con la informacion del repositorio</returns>
-        private Cata convertirCATA(string codigo)
+        protected internal Cata convertirCATA(string codigo)
         {
             CATA cataDB = repositorio.consultarCata(codigo);
             Cata cata = new Cata(
-
                 cataDB.CODCATACION,
                 cataDB.VEZCATADA,
                 cataDB.RANCIDEZ.GetValueOrDefault(),

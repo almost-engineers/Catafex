@@ -20,6 +20,7 @@
           </Key>
           <Property Name="TIPOCAFE" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="DATOS" Type="varchar" MaxLength="200" />
+          <Property Name="VALOR_DEFECTO" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CAFE">
           <Key>
@@ -271,6 +272,7 @@
           </Key>
           <Property Name="TIPOCAFE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DATOS" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="VALOR_DEFECTO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CAFE" Relationship="Self.FK__CAFE__TIPOCAFE__4D94879B" FromRole="ATRIBUTOSCAFE" ToRole="CAFE" />
         </EntityType>
         <EntityType Name="CAFE">
@@ -539,6 +541,7 @@
               <MappingFragment StoreEntitySet="ATRIBUTOSCAFE">
                 <ScalarProperty Name="TIPOCAFE" ColumnName="TIPOCAFE" />
                 <ScalarProperty Name="DATOS" ColumnName="DATOS" />
+                <ScalarProperty Name="VALOR_DEFECTO" ColumnName="VALOR_DEFECTO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

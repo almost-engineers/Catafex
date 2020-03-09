@@ -22,6 +22,7 @@ namespace Persistencia.Entity
     
         public string TIPOCAFE { get; set; }
         public string DATOS { get; set; }
+        public string VALOR_DEFECTO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CAFE> CAFE { get; set; }

@@ -1,9 +1,13 @@
 ﻿using Persistencia.Entity;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Windows.Forms;
+using System.IO;
 
 namespace Persistencia.Repositorios
 {
@@ -316,7 +320,7 @@ namespace Persistencia.Repositorios
 
             foreach (CATACION cat in this.db.CATACION.ToList())
             {
-                if (cat.CODCATADOR.Equals(codCatador) && cat.CANTIDAD>0)
+                if (cat.CODCATADOR.Equals(codCatador) && cat.CANTIDAD > 0)
                 {
                     catacionesPendientes.Add(cat);
                 }
@@ -357,7 +361,7 @@ namespace Persistencia.Repositorios
         }
         public CATADOR consultarCatador(string correo)
         {
-            return this.db.CATADOR.FirstOrDefault(x => x.CORREO.Equals(correo));
+            return this.db.CATADOR.Where(x => x.CORREO.Equals(correo)).FirstOrDefault();
         }
         public bool consultarUsuario(string cedula)
         {
@@ -447,14 +451,14 @@ namespace Persistencia.Repositorios
                 return 1;
             }
         }
-        public bool registrarCatacion(string codCatacion, string codPanel, string codCatador, string codCafe, int cantidad)
+        public bool registrarCatacion(string codPanel, string codCatador, string codCafe, int cantidad)
         {
             try
             {
                 this.db.CATACION.Add(new CATACION()
                 {
 
-                    CODCATACION = generarCodigo("CT"),
+                    CODCATACION = generarCodigo("CAT"),
                     CODPANEL = codPanel,
                     CODCATADOR = codCatador,
                     CODCAFE = codCafe,
@@ -469,54 +473,7 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool registrarCata()
-        {
-
-            string codCatacion = "ct1";
-            int rancidez = 0;
-            int dulce = 0;
-            int acidez = 0;
-            int cuerpo = 0;
-            int aroma = 0;
-            int amargo = 0;
-            int impresionGlobal = 0;
-            int fragancia = 0;
-            int saborResidual = 0;
-            string observaciones = "obs";
-
-
-            int vezCatada = obtenerUltimaCata(codCatacion);
-
-            try
-            {
-                this.db.CATA.Add(new CATA()
-                {
-
-                    CODCATACION = codCatacion,
-                    VEZCATADA = vezCatada,
-                    RANCIDEZ = rancidez,
-                    DULCE = dulce,
-                    ACIDEZ = null,
-                    AROMA = null,
-                    AMARGO = amargo,
-                    FRAGANCIA = fragancia,
-                    SABORESIDUAL = saborResidual,
-                    CUERPO = cuerpo,
-                    IMPRESIONGLOBAL = impresionGlobal,
-                    OBSERVACIONES = observaciones
-
-                }); ;
-                this.db.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-
-        }
-
+       
         public IList<EVENTO> consultarEventos()
         {
             return this.db.EVENTO.ToList();
@@ -538,27 +495,11 @@ namespace Persistencia.Repositorios
             return this.db.EVENTO.FirstOrDefault(x => x.CODEVENTO.Equals(codEvento));
         }
 
-        private string getMD5Hash(string contraseña)
-        {
-            using (MD5 md5Hash = MD5.Create())
-            {
-                byte[] datos = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(contraseña));
-                StringBuilder sBuilder = new StringBuilder();
-                foreach (byte b in datos)
-                {
-                    //Le da un formato hexadecimal a cada byte de informacion, ademas de transformalo en string
-                    sBuilder.Append(b.ToString("x2"));
-                }
-                return sBuilder.ToString();
-            }
-        }
-
+       
         private string generarCodigo(string encabezado)
         {
 
             string ultimo = "0";
-
-
             switch (encabezado)
             {
                 case "EV":
@@ -609,9 +550,13 @@ namespace Persistencia.Repositorios
                         ultimo = "1";
                     }
                     break;
+                case "CAT":
+                    int cantidad = this.db.CATACION.ToList().Count() + 1;
+                    ultimo = cantidad.ToString();
+                    break;
 
             }
-            return encabezado + '-' + 2;
+            return encabezado + '-' + ultimo;
 
         }
 
@@ -631,6 +576,20 @@ namespace Persistencia.Repositorios
             {
 
                 return this.db.ATRIBUTOSCAFE.FirstOrDefault(x => x.TIPOCAFE.Equals(tipoCafe)).DATOS;
+            }
+            //comentario
+            catch (Exception)
+            {
+                return "no existen datos para ese tipo de cafe";
+            }
+        }
+
+        public string obtenerValoresDefectoCafes(string tipoCafe)
+        {
+            try
+            {
+
+                return this.db.ATRIBUTOSCAFE.FirstOrDefault(x => x.TIPOCAFE.Equals(tipoCafe)).VALOR_DEFECTO;
             }
             //comentario
             catch (Exception)
@@ -733,6 +692,7 @@ namespace Persistencia.Repositorios
             EVENTO evento = consultarEvento(panel.CODEVENTO);
             CAFE cafe = consultarCafe(catacion.CODCAFE);
             string atributosCafe = obtenerAtributosCafes(panel.TIPOCAFE.ToString());
+            string valoresDefectoCafe = obtenerValoresDefectoCafes(panel.TIPOCAFE.ToString());
 
             if (catacion != null && panel != null && evento != null && cafe != null)
             {
@@ -748,6 +708,7 @@ namespace Persistencia.Repositorios
                 catas.Add("CodCafe", CodCafe);
                 catas.Add("cantVez", cantVez);
                 catas.Add("atributos", atributosCafe);
+                catas.Add("valoresDefecto", valoresDefectoCafe);
             }
 
             return catas;
@@ -788,6 +749,289 @@ namespace Persistencia.Repositorios
                 return false;
             }
             return true;
+        }
+
+        public IList<CATADOR> consultarCatadores()
+        {
+            return this.db.CATADOR.ToList();
+        }
+
+        public IList<PANEL> consultarPanelesPorEvento(string codEvento)
+        {
+            return this.db.PANEL.Where(x => x.CODEVENTO.Equals(codEvento)).ToList();
+        }
+
+        public bool panelTerminado(string codPanel)
+        {
+            List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
+            return cataciones.Count() == cataciones.Where(x => x.CANTIDAD == 0).Count();
+        }
+
+        private string getCodEvento(string codPanel)
+        {
+            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().CODEVENTO.ToString();
+        }
+
+        public IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel)
+        {
+            string tipoCafe = this.getTipoCafe(codPanel);
+            string codEvento = this.getCodEvento(codPanel);
+            return this.db.CAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe) && x.CODEVENTO.Equals(codEvento)).ToList();
+        }
+
+        public CATADOR catadorHabilitado(string codCatador)
+        {
+            CATADOR catador = this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault();
+
+            if (catador != null)
+            {
+                if (catador.ESTADO.Equals("HABILITADO"))
+                {
+                    return catador;
+                }
+                return null;
+            }
+            return null;
+
+
+        }
+        //------------------ Calcular Promedio de catas -------------------------------------------------------
+
+        private Dictionary<string, double> promedioCatas(string codPanel)
+        {
+            string[] atri = this.getAtributosCafe(this.getTipoCafe(codPanel));
+            Dictionary<string, double> promedio = new Dictionary<string, double>();
+            int cantidad = this.getCantidadCatasporPanel(codPanel);
+            foreach (string str in atri)
+            {
+                promedio.Add(str, 0);
+            }
+            List<Dictionary<string, int>> valoresCata = getValores_AtributosCata(codPanel);
+            foreach (Dictionary<string, int> datos in valoresCata)
+            {
+                foreach (string atributos in datos.Keys)
+                {
+                    foreach (string atr in atri)
+                    {
+                        if (atr.Equals(atributos))
+                        {
+                            promedio[atr] += datos[atributos];
+                        }
+                    }
+                }
+
+            }
+            foreach (string prom in atri)
+            {
+                promedio[prom] = promedio[prom] / cantidad;
+            }
+            return promedio;
+        }
+
+        public string[] getObservaciones(string codPanel)
+        {
+            List<CATA> catas = this.obtenerCatas(codPanel).ToList();
+            string[] observaciones = new string[catas.Count];
+            int i = 0;
+            foreach (CATA cata in catas)
+            {
+                if (!cata.OBSERVACIONES.Equals("null"))
+                {
+                    observaciones[i] = cata.OBSERVACIONES.ToString();
+                }
+            }
+            return observaciones;
+        }
+
+        private List<Dictionary<string, int>> getValores_AtributosCata(string codPanel)
+        {
+
+            List<CATA> catas = this.obtenerCatas(codPanel).ToList();
+            List<Dictionary<string, int>> datosFinales = new List<Dictionary<string, int>>();
+            foreach (CATA cata in catas)
+            {
+                Dictionary<string, int> datos = new Dictionary<string, int>();
+                datos.Add("RANCIDEZ", cata.RANCIDEZ.Value);
+                datos.Add("DULCE", cata.DULCE.Value);
+                datos.Add("ACIDEZ", cata.ACIDEZ.Value);
+                datos.Add("AROMA", cata.AROMA.Value);
+                datos.Add("AMARGO", cata.AMARGO.Value);
+                datos.Add("FRAGANCIA", cata.FRAGANCIA.Value);
+                datos.Add("SABOR_RESIDUAL", cata.SABORESIDUAL.Value);
+                datos.Add("CUERPO", cata.CUERPO.Value);
+                datos.Add("IMPRESION_GLOBAL", cata.IMPRESIONGLOBAL.Value);
+                datosFinales.Add(datos);
+            }
+            return datosFinales;
+        }
+
+
+        private IList<CATA> obtenerCatas(string codPanel)
+        {
+            List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
+            List<CATA> catas = new List<CATA>();
+            foreach (CATACION catacion in cataciones)
+            {
+                foreach (CATA cata in this.getCatas(catacion.CODCATACION))
+                {
+                    catas.Add(cata);
+                }
+            }
+            return catas;
+        }
+
+        private IList<CATA> getCatas(string codCatacion)
+        {
+            return this.db.CATA.Where(x => x.CODCATACION.Equals(codCatacion)).ToList();
+        }
+
+        private int getCantidadCatasporPanel(string codPanel)
+        {
+            return this.obtenerCatas(codPanel).Count();
+        }
+        public bool habilitarCatador(string codCatador)
+        {
+            try
+            {
+                this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().ESTADO = "HABILITADO";
+                this.db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public List<CATADOR> getCatadoresInhabilitados()
+        {
+            return this.db.CATADOR.Where(x => x.ESTADO.Equals("INHABILITADO")).ToList();
+        }
+        public List<CATADOR> getCatadoresHabilitados()
+        {
+            return this.db.CATADOR.Where(x => x.ESTADO.Equals("HABILITADO")).ToList();
+        }
+        private double[] getValoresDefectoCafe(string tipoCafe)
+        {
+            string[] defecto = this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
+            double[] valores = new double[defecto.Length];
+            int i = 0;
+            foreach (string defect in defecto)
+            {
+                valores[i] = Double.Parse(defect);
+                i++;
+            }
+            return valores;
+        }
+
+        private string[] getAtributosCafe(string tipoCafe)
+        {
+            char[] charSeparators = new char[] { ';' };
+            return this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().DATOS.Split(';');
+        }
+
+        private string getTipoCafe(string codPanel)
+        {
+            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().TIPOCAFE.ToString();
+        }
+
+        //--------------------------- Fin calculo promedio de catas ------------------------------------------------
+
+        //---------------------------------- Inicio Generar Imagen -------------------------------------------------
+        public byte[] GenerarImagen(string codPanel)
+        {
+            Chart grafico = new Chart();
+            ChartArea area = new ChartArea();
+            area.Visible = true;
+            grafico.ChartAreas.Add(area);
+            grafico.ChartAreas[0].Area3DStyle.Enable3D = false;
+            grafico.ChartAreas[0].AxisX.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            grafico.ChartAreas[0].AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            grafico.Width = 800;
+            grafico.Titles.Add("Grafico del panel: " + codPanel);
+            grafico.Series.Add("Patron");
+            grafico.Series["Patron"].LabelToolTip = "Patron";
+            grafico.Series.Add("Promedio Catas");
+            grafico.Series["Patron"].ChartType = SeriesChartType.Radar;
+            grafico.Series["Patron"]["RadarDrawingStyle"] = "Line";
+            grafico.Series["Patron"]["AreaDrawingStyle"] = "Polygon";
+            grafico.Series["Promedio Catas"].ChartType = SeriesChartType.Radar;
+            grafico.Series["Promedio Catas"]["RadarDrawingStyle"] = "Line";
+            grafico.Series["Promedio Catas"]["AreaDrawingStyle"] = "Polygon";
+            grafico.Legends.Add(new Legend("Patron"));
+            grafico.TextAntiAliasingQuality = TextAntiAliasingQuality.High;
+            grafico.Series["Patron"].LegendText = "Patron";
+            Dictionary<string, double> promedio = this.promedioCatas(codPanel);
+            double[] valoresDefecto = this.getValoresDefectoCafe(this.getTipoCafe(codPanel));
+            grafico.Series["Patron"].Points.DataBindXY(promedio.Keys, valoresDefecto);
+            grafico.Series["Promedio Catas"].Points.DataBindXY(promedio.Keys, promedio.Values);
+            //-------------------------------------------------------------------------------------
+            MemoryStream stream = new MemoryStream();
+            grafico.SaveImage(stream, ChartImageFormat.Png);
+            BinaryReader binrayRdr = new BinaryReader(stream);
+            byte[] info = ((MemoryStream)stream).ToArray();
+            //------------------------------------------------------------------------------------
+            return info;
+        }
+
+        //---------------------------------- Fin Generar Imagen ----------------------------------------------------
+
+        public bool pertenecePanel(string codPanel, string codEvento)
+        {
+            PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
+            return panel.EVENTO.CODEVENTO.Equals(codEvento);
+        }
+
+        // -------------------------------- Metodos para enviar correo -----------------------------------------------
+
+        private string getNombreEvento(string codPanel)
+        {
+            PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
+            return panel.EVENTO.NOMBRE.ToString();
+        }
+
+        private string getNombreCatador(string codCatador)
+        {
+            return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().NOMBRE.ToString();
+        }
+
+        private DateTime getFechaEvento(string codPanel)
+        {
+            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().EVENTO.FECHA;
+        }
+        private string getHoraPanel(String codPanel)
+        {
+            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().HORA.ToString();
+        }
+        public string getCorreoCatador(string codCatador)
+        {
+            return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().CORREO.ToString();
+        }
+        public string construirAsuntoCorreo(string codPanel)
+        {
+            string nombreEvento = this.getNombreEvento(codPanel);
+            string asunto = "Seleccionado como catador para el evento : " + nombreEvento;
+            return asunto;
+        }
+        private string getNombreCafe(string codCafe)
+        {
+            return this.db.CAFE.Where(x => x.CODCAFE.Equals(codCafe)).FirstOrDefault().NOMBRE.ToString();
+        }
+        public string construirMensajeCorreo(List<CATACION> cataciones)
+        {
+            StringBuilder mensaje = new StringBuilder();
+            string fecha = this.getFechaEvento(cataciones.First().CODPANEL).ToString("dd/MM/yyyy");
+            mensaje.Append("Señor (a) " + this.getNombreCatador(cataciones.First().CODCATADOR) + ", usted ha sido seleccionado (a) " +
+                "para catar en el evento " + this.getNombreEvento(cataciones.First().CODPANEL) + ", el dia " + fecha
+                 + ". " + "En el panel : " + cataciones.First().CODPANEL + ", a la hora " + this.getHoraPanel(cataciones.First().CODPANEL) + ", " +
+                 "las siguientes muestras de cafe: \n");
+            foreach (CATACION catacion in cataciones)
+            {
+                mensaje.Append("\t Nombre del cafe: " + this.getNombreCafe(catacion.CODCAFE) + ", Codigo: " + catacion.CODCAFE + "\n");
+            }
+            mensaje.Append("\n\n\n\n");
+            mensaje.Append("\t\t Mensaje generado de manera automatica \n");
+            mensaje.Append("\t\t\t Por favor NO RESPONDER \n");
+            return mensaje.ToString();
         }
     }
 }

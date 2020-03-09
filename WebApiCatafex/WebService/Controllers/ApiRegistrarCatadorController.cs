@@ -2,16 +2,19 @@
 using Persistencia;
 using Persistencia.Entity;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using WebService.Models;
 
 namespace WebService.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiRegistrarCatadorController : ApiController
     {
 
@@ -20,6 +23,26 @@ namespace WebService.Controllers
         {
             this.repositorio = FabricaRepositorio.crearRepositorio();
         }
+
+        [HttpGet]
+        [Route("api/ApiRegistrarCatador/catadorHabilitado")]
+        public HttpResponseMessage catadorHabilitado(string codCatador)
+        {
+            HttpResponseMessage response;
+            CATADOR catador = this.repositorio.catadorHabilitado(codCatador);
+            if (catador != null)
+            {
+                response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADOR(catador.CEDULA)));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            }
+            response = new HttpResponseMessage(HttpStatusCode.NotFound);
+            response.Content = new StringContent(null);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            return response;
+        }
+
         // POST: api/ApiRegistrarCatador
         /// <summary>
         /// El metodo insertar Catador recibe como parametros todos los datos necesarios para crear un catador, inlcuido el codigo dado que este es 
@@ -36,26 +59,37 @@ namespace WebService.Controllers
         ///[Route("api/RegistrarCatador")]
         public HttpResponseMessage insertarCatador(Catador catador)
         {
-            var result = this.validarCedula(catador.cedula);
-            if (result.StatusCode.Equals(HttpStatusCode.NotFound))
+            if (catador.cedula != "" && catador.nombre != "" && catador.correo != "" && catador.codigo != "" && catador.contrasena != "" && catador.nivelExp != null)
             {
-                try
+                var result = this.validarCedula(catador.cedula);
+                if (result.StatusCode.Equals(HttpStatusCode.NotFound))
                 {
-                    if (repositorio.insertarCatador(catador.nombre, catador.cedula, catador.codigo, catador.correo, this.getMD5Hash(catador.contrasena), catador.nivelExp))
+                    try
                     {
-                        return new HttpResponseMessage(HttpStatusCode.OK);
+                        if (repositorio.insertarCatador(catador.nombre, catador.cedula, catador.codigo, catador.correo, this.getMD5Hash(catador.contrasena), catador.nivelExp))
+                        {
+                            return new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        return new HttpResponseMessage(HttpStatusCode.BadGateway);
                     }
-                    return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    catch (Exception)
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    }
                 }
-                catch (Exception)
+                else
                 {
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    return new HttpResponseMessage(HttpStatusCode.BadGateway);
                 }
             }
             else
             {
-                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
+                response.Content = new StringContent("Los datos del catador no pueden estar vacios");
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
             }
+
         }
         /// <summary>
         /// Este metodo recibe por parametro la cedula del catador para ser consultada en la base de datos
@@ -105,7 +139,7 @@ namespace WebService.Controllers
                 {
                     return new HttpResponseMessage(HttpStatusCode.BadGateway);
                 }
-               
+
             }
             catch
             {
@@ -122,7 +156,17 @@ namespace WebService.Controllers
         {
             try
             {
-                if (this.repositorio.actualizarCatador(catador.nombre, catador.cedula, catador.correo, this.getMD5Hash(catador.contrasena))){
+                string nContrasena;
+                if (this.convertirCATADOR(catador.cedula).contrasena.Equals(catador.contrasena))
+                {
+                    nContrasena = catador.contrasena;
+                }
+                else
+                {
+                    nContrasena = this.getMD5Hash(catador.contrasena);
+                }
+                if (this.repositorio.actualizarCatador(catador.nombre, catador.cedula, catador.correo, nContrasena))
+                {
                     return new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -155,6 +199,7 @@ namespace WebService.Controllers
                     catador.correo = catadorDB.CORREO;
                     catador.nivelExp = catadorDB.NIVELEXP;
                     catador.nombre = catadorDB.NOMBRE;
+                    catador.estado = catadorDB.ESTADO;
                 }
                 return catador;
             }
@@ -201,5 +246,55 @@ namespace WebService.Controllers
             return comparer.Compare(hashContraseña, hash) == RESPUESTACOMPARER;
         }
 
+        [HttpGet]
+        public IEnumerable<Catador> consultarCatadores()
+        {
+            return this.convertirCATADORES(repositorio.consultarCatadores());
+        }
+
+        [HttpGet]
+        [Route("api/RegistrarCatador/obtenerInhabilitados")]
+        public HttpResponseMessage getCatadoresInhabilitados()
+        {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADORES(this.repositorio.getCatadoresInhabilitados())));
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            return response;
+        }
+
+        [HttpGet]
+        [Route("api/RegistrarCatador/obtenerHabilitados")]
+        public HttpResponseMessage getCatadoresHabilitados()
+        {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADORES(this.repositorio.getCatadoresHabilitados())));
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            return response;
+        }
+
+        [HttpPut]
+        [Route("api/RegistrarCatador/cambiarEstado")]
+        public HttpResponseMessage habilitarCatador(string codCatador)
+        {
+            if (this.repositorio.habilitarCatador(codCatador))
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            return new HttpResponseMessage(HttpStatusCode.NotFound);
+        }
+        private IEnumerable<Catador> convertirCATADORES(IList<CATADOR> catadoresDB)
+        {
+            IList<Catador> catadores = new List<Catador>();
+            foreach (CATADOR catador in catadoresDB)
+            {
+                Catador ctador = new Catador(catador.NOMBRE, catador.CEDULA, catador.CORREO, catador.CONTRASEÑA, catador.NIVELEXP, catador.CODIGO);
+                ctador.estado = catador.ESTADO;
+                catadores.Add(ctador);
+
+            }
+            return catadores;
+        }
     }
+
+
 }
