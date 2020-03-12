@@ -25,29 +25,39 @@ namespace WebService.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Este metodo se encarga de devolver un array de bytes, en este array se encuentra almacenada toda la informacion
+        /// del grafico de estrella, en este se encuentran dos diferentes series, una serie para el patron, previamente establecido
+        /// y otrra para el promedio de catas obtenido de ese panel. Esta informacion solo sera devuelta si el panel ya ha finalzado.
         /// </summary>
-        /// <param name="codPanel"></param>
-        /// <returns></returns>
+        /// <param name="codPanel">el codigo del panel</param>
+        /// <returns>un array de bytes con la informacion del grafico</returns>
         [HttpGet]
         [Route("api/Reporte/obtenerGrafico")]
         public byte[] obtenerGrafico(string codPanel)
-        {   
-            if (repositorio.panelTerminado(codPanel))
+        {
+            byte[] info = null;
+            if (!codPanel.Equals("") && !this.repositorio.existePanel(codPanel)) 
             {
-                return this.repositorio.GenerarImagen(codPanel);
+                if (repositorio.panelTerminado(codPanel))
+                {
+                    info = this.repositorio.GenerarImagen(codPanel);
+                    return info;
+                }
+                else
+                {
+                    return info;
+                }
             }
-            else
-            {
-                return null;
-            }
+            return info;
+               
             
         }
         /// <summary>
-        /// 
+        /// este metodo se encarga de obtener un array con todas las observaciones que se realizaron en el panel
+        /// por parte de los catadores, se descartan aquellas observaciones que solo tienen espacio en blanco
         /// </summary>
         /// <param name="codPanel"></param>
-        /// <returns></returns>
+        /// <returns>un arry con todas las obervaciones del panel</returns>
         [HttpGet]
         [Route("api/Reporte/obtenerObservaciones")]
         public HttpResponseMessage obtenerObservaciones(string codPanel)

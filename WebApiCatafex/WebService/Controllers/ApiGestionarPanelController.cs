@@ -24,6 +24,13 @@ namespace WebService.Controllers
         {
             this.repositorio = FabricaRepositorio.crearRepositorio();
         }
+        /// <summary>
+        /// Este metodo se encarga de validar que un panel pertenece a un evento, esto se realiza a partir de la llave primaria
+        /// de panel (codPanel) y su llave foranea con Evento (codEvento), cabe aclarar que un evento puede tener diversos paneles
+        /// </summary>
+        /// <param name="codPanel">El codigo perteneciente a un panel</param>
+        /// <param name="codEvento">el evento que es llave foranea del panel</param>
+        /// <returns>un valor de verdadero si el panel pertenece al evento y falso en caso contrario</returns>
         [HttpGet]
         [Route("api/Panel/panelPerteneceEvento")]
         public bool panelPerteneEvento(string codPanel, string codEvento)
@@ -31,10 +38,12 @@ namespace WebService.Controllers
             return this.repositorio.pertenecePanel(codPanel, codEvento);
         }
         /// <summary>
-        /// 
+        /// Este metodo se encarga de listar todos los cafes cuyo tipo de cafe (VERDE, SOLUBLE, etc) sea el mismo que el del panel
+        /// al cual se pretenden ser asignados para su posterior catacion
         /// </summary>
-        /// <param name="codPanel"></param>
-        /// <returns></returns>
+        /// <param name="codPanel">La llave primaria del panel</param>
+        /// <returns>una lista con todos los cafes cuyo tipo de cafe sea el mismo que el del panel, o una lista vacia, en caso
+        /// de que dicha condicion no se cumpla</returns>
         [HttpGet]
         [Route("api/Panel/cafesTipoCafePanel")]
         public HttpResponseMessage obtenerCafesTipoCafePanel(string codPanel)
@@ -97,6 +106,12 @@ namespace WebService.Controllers
             }
             return paneles;
         }
+        /// <summary>
+        /// Este metodo se encarga de listar todos los paneles que existen dentro de un evento, estos paneles
+        /// se obtienen a partir de la llave foranea que tienen de evento, es decir, el codEvento
+        /// </summary>
+        /// <param name="codEvento">El codigo del evento al cual pertenecen los paneles que se van a listar</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/Panel/obtenerPanelesPorEvento")]
         public HttpResponseMessage obtenerPanelesporEvento(string codEvento)
