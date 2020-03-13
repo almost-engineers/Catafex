@@ -67,5 +67,10 @@ namespace WebService.Models
             this.smtpClient.Send(this.mailMessage);
             this.smtpClient.Dispose();
         }
+
+        public bool correoValido(string correoDestinatario)
+        {
+            return correoDestinatario.Contains("@") && (correoDestinatario.Contains("hotmail") || correoDestinatario.Contains("gmail") || correoDestinatario.Contains("ucaldas") || correoDestinatario.Contains("outlook"));
+        }
     }
 }

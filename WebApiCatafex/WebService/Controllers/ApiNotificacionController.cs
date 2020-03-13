@@ -27,19 +27,29 @@ namespace WebService.Controllers
         protected internal HttpResponseMessage enviarNotificacion(string correoDestinatario, string asunto, string mensaje)
         {
             HttpResponseMessage response;
-            if (correo.enviarMensaje(correoDestinatario, asunto, mensaje))
+            if (correo.correoValido(correoDestinatario))
             {
-                response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StringContent("Mensaje enviado exitosamente");
-                return response;
+                if (correo.enviarMensaje(correoDestinatario, asunto, mensaje))
+                {
+                    response = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Content = new StringContent("Mensaje enviado exitosamente");
+                    return response;
 
+                }
+                else
+                {
+                    response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    response.Content = new StringContent("No se ha podido establecer conexion");
+                    return response;
+                }
             }
             else
             {
-                response = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                response.Content = new StringContent("No se ha podido establecer conexion");
+                response = new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
+                response.Content = new StringContent("El correo no es valido");
                 return response;
             }
+            
         }
     }
 }
