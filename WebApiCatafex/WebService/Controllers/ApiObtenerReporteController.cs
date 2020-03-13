@@ -45,12 +45,10 @@ namespace WebService.Controllers
                 }
                 else
                 {
-                    return info;
+                    return null;
                 }
             }
-            return info;
-               
-            
+            return null;     
         }
         /// <summary>
         /// este metodo se encarga de obtener un array con todas las observaciones que se realizaron en el panel
