@@ -768,6 +768,10 @@ namespace Persistencia.Repositorios
         public bool panelTerminado(string codPanel)
         {
             List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
+            if(cataciones.Count() == 0)
+            {
+                return false;
+            }
             return cataciones.Count() == cataciones.Where(x => x.CANTIDAD == 0).Count();
         }
 
