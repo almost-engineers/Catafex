@@ -24,7 +24,7 @@ namespace WebService.Controllers
         /// <param name="mensaje">Toda la informacion que se quiere enviar al destinatario</param>
         /// <returns>un mensaje de exito o error, junto con su correspondiente codigo HttpSatusCode, OK y BadRequest
         /// respectivamente</returns>
-        protected internal HttpResponseMessage enviarNotificacion(string correoDestinatario, string asunto, string mensaje)
+        public HttpResponseMessage enviarNotificacion(string correoDestinatario, string asunto, string mensaje)
         {
             HttpResponseMessage response;
             if (correo.correoValido(correoDestinatario))
