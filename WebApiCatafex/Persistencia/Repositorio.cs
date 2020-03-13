@@ -12,6 +12,7 @@ namespace Persistencia
     public interface Repositorio
 
     {
+        bool existePanel(string codPanel);
         CATADOR catadorHabilitado(string codCatador);
         List<CATADOR> getCatadoresHabilitados();
         bool habilitarCatador(string codCatador);

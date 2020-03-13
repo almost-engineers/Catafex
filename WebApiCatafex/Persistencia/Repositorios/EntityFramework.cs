@@ -837,7 +837,7 @@ namespace Persistencia.Repositorios
             {
                 if (!cata.OBSERVACIONES.Equals("null"))
                 {
-                    observaciones[i] = cata.OBSERVACIONES.ToString();
+                    observaciones[i] = cata.OBSERVACIONES.ToString() + "\n";
                 }
             }
             return observaciones;
@@ -879,7 +879,11 @@ namespace Persistencia.Repositorios
             }
             return catas;
         }
-
+        public bool existePanel(string codPanel)
+        {
+            PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
+            return panel == null;
+        }
         private IList<CATA> getCatas(string codCatacion)
         {
             return this.db.CATA.Where(x => x.CODCATACION.Equals(codCatacion)).ToList();

@@ -23,7 +23,15 @@ namespace WebService.Controllers
         {
             this.repositorio = FabricaRepositorio.crearRepositorio();
         }
-
+        /// <summary>
+        /// Este metodo me permite conocer si un catador se encuentra habilitado para catar, el objeto devuelto se genera en formato
+        /// JSON para que el cliente puede interpretar dicha informacion. En caso de que el codigo del catador ingresado no sea valido
+        /// la respuesta sera HttpStatusCode NotFound.
+        /// </summary>
+        /// <param name="codCatador"></param>
+        /// <returns>Este metodo tiene dos respuestas, en la primer posible respuesta, si el catador se encuentra habilitado
+        /// se retorna un HttpStatusCode con Ok y el catador encontrado, en caso contrario, se retorna un HttpStatusCode 
+        /// NotFound y null</returns>
         [HttpGet]
         [Route("api/ApiRegistrarCatador/catadorHabilitado")]
         public HttpResponseMessage catadorHabilitado(string codCatador)
@@ -245,13 +253,21 @@ namespace WebService.Controllers
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
             return comparer.Compare(hashContraseña, hash) == RESPUESTACOMPARER;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<Catador> consultarCatadores()
         {
             return this.convertirCATADORES(repositorio.consultarCatadores());
         }
-
+        /// <summary>
+        /// Este metodo permite obtener una lista de todos los catadores que se encuentran registrados en la aplicacion, 
+        /// pero cuyo estado es INHABILITADO. En caso de que no existan catadores en esta situacion, se retorna una
+        /// lista vacia
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/RegistrarCatador/obtenerInhabilitados")]
         public HttpResponseMessage getCatadoresInhabilitados()
@@ -261,7 +277,12 @@ namespace WebService.Controllers
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return response;
         }
-
+        /// <summary>
+        /// Este metodo permite obtener una lista de todos los catadores que se encuentran registrados en la aplicacion, 
+        /// pero cuyo estado es HABILITADO. En caso de que no existan catadores en esta situacion, se retorna una
+        /// lista vacia
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/RegistrarCatador/obtenerHabilitados")]
         public HttpResponseMessage getCatadoresHabilitados()
@@ -271,7 +292,11 @@ namespace WebService.Controllers
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return response;
         }
-
+        /// <summary>
+        /// Este metodo permite acutalizar el estado de un catador, es decir, pasar el estado de INHABILITADO a HABILITADO
+        /// </summary>
+        /// <param name="codCatador"></param>
+        /// <returns>retorna un Ok si el codigo del catdor existe, y si la operacion fue exitosa, o NotFound en caso contrario.</returns>
         [HttpPut]
         [Route("api/RegistrarCatador/cambiarEstado")]
         public HttpResponseMessage habilitarCatador(string codCatador)
@@ -282,6 +307,12 @@ namespace WebService.Controllers
             }
             return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
+        /// <summary>
+        /// Este metodo permite convertir una lista de catadores que tienen un formato de Entity Framework que no puede ser interpretado
+        /// por el cliente, en un objeto Catador, que puede ser serializado en un JSON para ser devuelto al cliente
+        /// </summary>
+        /// <param name="catadoresDB"></param>
+        /// <returns>una lista de catadores</returns>
         private IEnumerable<Catador> convertirCATADORES(IList<CATADOR> catadoresDB)
         {
             IList<Catador> catadores = new List<Catador>();

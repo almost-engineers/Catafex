@@ -610,6 +610,11 @@ namespace Persistencia.Listas
         {
             throw new NotImplementedException();
         }
+
+        public bool existePanel(string codPanel)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

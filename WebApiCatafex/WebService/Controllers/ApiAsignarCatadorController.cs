@@ -62,7 +62,12 @@ namespace WebService.Controllers
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
         }
-
+        /// <summary>
+        /// Metodo que se encarga de trasformar la informacion enviada por el cliente, en informacion que pueda ser
+        /// leida por la base de datos
+        /// </summary>
+        /// <param name="cataciones">Lista de catadores asignados a las diferentes muestras de un panel</param>
+        /// <returns>una lista de CATACION, elementos de la base de datos</returns>
         private List<CATACION> convertirCatacion(List<Catacion> cataciones)
         {
             List<CATACION> catacionesDb = new List<CATACION>();
