@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using WebService.Models;
@@ -49,10 +50,21 @@ namespace WebService.Controllers
             {
               foreach (Catacion catacion in cataciones)
                 {
-                    if(!this.repositorio.registrarCatacion(catacion.codPanel, catacion.codCatador, catacion.codCafe, catacion.cantidad))
+                    if(catacion.cantidad > 0)
                     {
-                        return new HttpResponseMessage(HttpStatusCode.NotFound);
-                    }          
+                        if (!this.repositorio.registrarCatacion(catacion.codPanel, catacion.codCatador, catacion.codCafe, catacion.cantidad))
+                        {
+                            return new HttpResponseMessage(HttpStatusCode.NotFound);
+                        }
+                    }
+                    else
+                    {
+                        HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.NotFound);
+                        response.Content = new StringContent("la cantidad a catar no puede ser menor o igual a cero");
+                        response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        return response;
+                    }
+                            
                 }
                 this.notificacion.enviarNotificacion(correoDestino, asunto, mensaje);
                 return new HttpResponseMessage(HttpStatusCode.OK);
