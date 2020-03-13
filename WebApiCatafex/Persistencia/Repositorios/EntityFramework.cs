@@ -473,7 +473,7 @@ namespace Persistencia.Repositorios
             }
         }
 
-       
+
         public IList<EVENTO> consultarEventos()
         {
             return this.db.EVENTO.ToList();
@@ -495,7 +495,7 @@ namespace Persistencia.Repositorios
             return this.db.EVENTO.FirstOrDefault(x => x.CODEVENTO.Equals(codEvento));
         }
 
-       
+
         private string generarCodigo(string encabezado)
         {
 
@@ -750,7 +750,11 @@ namespace Persistencia.Repositorios
             }
             return true;
         }
-
+        //--> Desde aca cuarta entrega
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IList<CATADOR> consultarCatadores()
         {
             return this.db.CATADOR.ToList();
@@ -796,7 +800,13 @@ namespace Persistencia.Repositorios
 
         }
         //------------------ Calcular Promedio de catas -------------------------------------------------------
-
+        /// <summary>
+        /// Este metodo permite almacenar en un diccionario el promedio de catas de un panel, este diccionario
+        /// contendra los atributos del cafe que correspondan con el tipo de cafe del panel, y el promedio sera
+        /// calculado a partir de todas las catas realizadas para dicho panel
+        /// </summary>
+        /// <param name="codPanel">El codigo del panel para el cual se reliza el promedio</param>
+        /// <returns>Un diccionario con el promedio de catas</returns>
         private Dictionary<string, double> promedioCatas(string codPanel)
         {
             string[] atri = this.getAtributosCafe(this.getTipoCafe(codPanel));
@@ -827,28 +837,34 @@ namespace Persistencia.Repositorios
             }
             return promedio;
         }
-
+        /// <summary>
+        /// Este metodo permite obtener los comentarios que se realizaron en todas las catas. Esto con la finalidad de 
+        /// que se pueda generar un archivo donde se contengan las observaciones y un grafico
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns>un arreglo con las observaciones del panel</returns>
         public string[] getObservaciones(string codPanel)
         {
             List<CATA> catas = this.obtenerCatas(codPanel).ToList();
-            List<string> comentarios = new List<string>(); 
+            List<string> comentarios = new List<string>();
             int i = 0;
             foreach (CATA cata in catas)
             {
-                if (!cata.OBSERVACIONES.Equals("null"))
-                {
-                    comentarios.Add((cata.OBSERVACIONES + "\n").ToString());
-                }
+                comentarios.Add((cata.OBSERVACIONES + "\n").ToString());
             }
             string[] observaciones = new string[comentarios.Count];
-            foreach(string comentario in observaciones)
+            foreach (string comentario in observaciones)
             {
                 observaciones[i] = comentario;
                 i++;
             }
             return observaciones;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns></returns>
         private List<Dictionary<string, int>> getValores_AtributosCata(string codPanel)
         {
 
@@ -870,8 +886,11 @@ namespace Persistencia.Repositorios
             }
             return datosFinales;
         }
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns></returns>
         private IList<CATA> obtenerCatas(string codPanel)
         {
             List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
@@ -885,20 +904,39 @@ namespace Persistencia.Repositorios
             }
             return catas;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns></returns>
         public bool existePanel(string codPanel)
         {
             PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
             return panel == null;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codCatacion"></param>
+        /// <returns></returns>
         private IList<CATA> getCatas(string codCatacion)
         {
             return this.db.CATA.Where(x => x.CODCATACION.Equals(codCatacion)).ToList();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns></returns>
         private int getCantidadCatasporPanel(string codPanel)
         {
             return this.obtenerCatas(codPanel).Count();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codCatador"></param>
+        /// <returns></returns>
         public bool habilitarCatador(string codCatador)
         {
             try
@@ -912,14 +950,27 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<CATADOR> getCatadoresInhabilitados()
         {
             return this.db.CATADOR.Where(x => x.ESTADO.Equals("INHABILITADO")).ToList();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<CATADOR> getCatadoresHabilitados()
         {
             return this.db.CATADOR.Where(x => x.ESTADO.Equals("HABILITADO")).ToList();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tipoCafe"></param>
+        /// <returns></returns>
         private double[] getValoresDefectoCafe(string tipoCafe)
         {
             string[] defecto = this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
@@ -932,13 +983,21 @@ namespace Persistencia.Repositorios
             }
             return valores;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tipoCafe"></param>
+        /// <returns></returns>
         private string[] getAtributosCafe(string tipoCafe)
         {
             char[] charSeparators = new char[] { ';' };
             return this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().DATOS.Split(';');
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns></returns>
         private string getTipoCafe(string codPanel)
         {
             return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().TIPOCAFE.ToString();
@@ -947,6 +1006,13 @@ namespace Persistencia.Repositorios
         //--------------------------- Fin calculo promedio de catas ------------------------------------------------
 
         //---------------------------------- Inicio Generar Imagen -------------------------------------------------
+        /// <summary>
+        /// Este metodo permite construir un array de bytes, el cual en su interior contendra la informacion de una imagen. 
+        /// Dicha imagen a su vez esta conformada por una grafico de estrella generado a partir de el promedio de las cataciones
+        /// 
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns></returns>
         public byte[] GenerarImagen(string codPanel)
         {
             Chart grafico = new Chart();
@@ -982,9 +1048,15 @@ namespace Persistencia.Repositorios
             //------------------------------------------------------------------------------------
             return info;
         }
-
+        
         //---------------------------------- Fin Generar Imagen ----------------------------------------------------
-
+        /// <summary>
+        /// Este metodo permite validar si un panel pertenece a un determinado evento, esto con la finalidad de que en el frontend
+        /// no se puedan asignar paneles a eventos que no corresponden o viceversa
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <param name="codEvento"></param>
+        /// <returns>verdadero si el panel pertenece a el evento o falso en caso contrario</returns>
         public bool pertenecePanel(string codPanel, string codEvento)
         {
             PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
@@ -992,40 +1064,85 @@ namespace Persistencia.Repositorios
         }
 
         // -------------------------------- Metodos para enviar correo -----------------------------------------------
-
+        /// <summary>
+        /// Este metodo permite obtener el nombre del evento a partir del codigo del panel, dado que el codEvento es una 
+        /// llave foranea de la tabla panel
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns>el nombre del evento al cual pertenece el panel</returns>
         private string getNombreEvento(string codPanel)
         {
             PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
             return panel.EVENTO.NOMBRE.ToString();
         }
-
+        /// <summary>
+        /// Este metodo se encarga de validar 
+        /// </summary>
+        /// <param name="codCatador"></param>
+        /// <returns></returns>
         private string getNombreCatador(string codCatador)
         {
             return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().NOMBRE.ToString();
         }
-
+        /// <summary>
+        /// Este metodo me permite obtener la fecha del evento, a partir de su llave primaria, es decir el codEvento, esta fecha
+        /// se contempla el formato (dd/MM/yyyy)
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns>retorna la fecha del evento</returns>
         private DateTime getFechaEvento(string codPanel)
         {
             return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().EVENTO.FECHA;
         }
+        /// <summary>
+        /// Este metodo obtiene la hora en la que un panel esta establecido, a partir de su llave primaria, es decir el codigo del panel
+        /// Esta hora contempla el formato (hh/mm/ss)
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns>retorna la hora del panel</returns>
         private string getHoraPanel(String codPanel)
         {
             return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().HORA.ToString();
         }
+        /// <summary>
+        /// Este metodo permite obtener el correo de un catador a partir de la llave primaria de la tabla, para este caso
+        /// dicha llave primaria es el codigo del catador
+        /// </summary>
+        /// <param name="codCatador"></param>
+        /// <returns></returns>
         public string getCorreoCatador(string codCatador)
         {
             return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().CORREO.ToString();
         }
+        /// <summary>
+        /// Este metodo se encarga de construir una cabecera generica para todos los correos, en la cual se incluye 
+        /// el nombre del evento al cual fue asignado un catador
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns>El asunto de un correo</returns>
         public string construirAsuntoCorreo(string codPanel)
         {
             string nombreEvento = this.getNombreEvento(codPanel);
             string asunto = "Seleccionado como catador para el evento : " + nombreEvento;
             return asunto;
         }
+        /// <summary>
+        /// Este metodo se encarga de obtener el nombre de un cafe de la base de datos a partir de su llave primaria, es decir, 
+        /// el codCafe
+        /// </summary>
+        /// <param name="codCafe"></param>
+        /// <returns>El nombre del cafe</returns>
         private string getNombreCafe(string codCafe)
         {
             return this.db.CAFE.Where(x => x.CODCAFE.Equals(codCafe)).FirstOrDefault().NOMBRE.ToString();
         }
+        /// <summary>
+        /// Este metodo se encarga de construir un correo a partir de las cataciones, es decir las asignaciones correspondientes que se le 
+        /// hacen a un catador, a partir de estos datos se construye una plantilla generica para todos los correos, de manera que el usuario
+        /// pueda visualiuzar una informacion clara, y que sepa que es de manera automatica
+        /// </summary>
+        /// <param name="cataciones"></param>
+        /// <returns>Retorna el contenido de un correo electronico, en formato de texto</returns>
         public string construirMensajeCorreo(List<CATACION> cataciones)
         {
             StringBuilder mensaje = new StringBuilder();
