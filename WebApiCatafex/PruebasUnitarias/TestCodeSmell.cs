@@ -19,8 +19,8 @@ namespace PruebasUnitarias
             string contraserña = "contraseña";
             string hash = "4C882DCB24BCB1BC225391A602FECA7C";
             ApiRegistrarCatadorController catador = new ApiRegistrarCatadorController();
-            // bool verificar = catador.VerificarMd5Hash(contraserña, hash);
-            //Assert.IsTrue(verificar);
+            ///bool verificar = catador.VerificarMd5Hash(contraserña, hash);
+            ///Assert.IsTrue(verificar);
         }
 
         [TestMethod]
@@ -29,8 +29,8 @@ namespace PruebasUnitarias
             string contraserña = "contraseña";
             string hash = "Abc";
             ApiRegistrarCatadorController catador = new ApiRegistrarCatadorController();
-            //bool verificar = catador.VerificarMd5Hash(contraserña, hash);
-            //Assert.IsFalse(verificar);
+            ///bool verificar = catador.VerificarMd5Hash(contraserña, hash);
+            ///Assert.IsFalse(verificar);
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace PruebasUnitarias
                 IMPRESIONGLOBAL = 3,
                 OBSERVACIONES = ""
             };
-            bool registroCata = catas.registrarCata(cata);
+            bool registroCata = catas.RegistrarCata(cata);
             Assert.IsFalse(registroCata);
         }
 
@@ -75,7 +75,7 @@ namespace PruebasUnitarias
                 IMPRESIONGLOBAL = 3,
                 OBSERVACIONES = ""
             };
-            bool registroCata = catas.registrarCata(cata);
+            bool registroCata = catas.RegistrarCata(cata);
             Assert.IsTrue(registroCata);
         }
 

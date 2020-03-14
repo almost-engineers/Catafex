@@ -17,16 +17,16 @@ namespace WebService.Controllers
     public class ApiObtenerReporteController : ApiController
     {
 
-        private Repositorio repositorio;
+        readonly private IRepositorio repositorio;
 
-        public ApiObtenerReporteController(Repositorio repositorio)
+        public ApiObtenerReporteController(IRepositorio repositorio)
         {
             this.repositorio = repositorio;
         }
 
         public ApiObtenerReporteController()
         {
-            this.repositorio = FabricaRepositorio.crearRepositorio();
+            this.repositorio = FabricaRepositorio.CrearRepositorio();
         }
 
         /// <summary>
@@ -41,19 +41,19 @@ namespace WebService.Controllers
         public byte[] obtenerGrafico(string codPanel)
         {
             byte[] info = null;
-            if (!codPanel.Equals("") && !this.repositorio.existePanel(codPanel)) 
+            if (!string.IsNullOrEmpty(codPanel) && !this.repositorio.ExistePanel(codPanel)) 
             {
-                if (repositorio.panelTerminado(codPanel))
+                if (repositorio.PanelTerminado(codPanel))
                 {
                     info = this.repositorio.GenerarImagen(codPanel);
                     return info;
                 }
                 else
                 {
-                    return null;
+                    return info;
                 }
             }
-            return null;     
+            return info;     
         }
         /// <summary>
         /// este metodo se encarga de obtener un array con todas las observaciones que se realizaron en el panel
@@ -66,12 +66,12 @@ namespace WebService.Controllers
         public HttpResponseMessage obtenerObservaciones(string codPanel)
         {
             HttpResponseMessage response = null;
-            if (!codPanel.Equals("") && !this.repositorio.existePanel(codPanel))
+            if (!string.IsNullOrEmpty(codPanel) && !this.repositorio.ExistePanel(codPanel))
             {
-                if (repositorio.panelTerminado(codPanel))
+                if (repositorio.PanelTerminado(codPanel))
                 {
                     response = new HttpResponseMessage(HttpStatusCode.OK);
-                    response.Content = new StringContent(JsonConvert.SerializeObject(this.repositorio.getObservaciones(codPanel)));
+                    response.Content = new StringContent(JsonConvert.SerializeObject(this.repositorio.GetObservaciones(codPanel)));
                     response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return response;
                 }

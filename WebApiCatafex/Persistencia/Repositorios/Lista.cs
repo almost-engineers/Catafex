@@ -8,15 +8,15 @@ using Persistencia.Entity;
 
 namespace Persistencia.Listas
 {
-    public class Lista : Repositorio
+    public class Lista : IRepositorio
     {
-        IList<CATA> Catas;
-        IList<CATADOR> catadores;
-        IList<PANEL> paneles;
-        IList<EVENTO> eventos;
-        IList<ATRIBUTOSCAFE> atributosCafe;
-        IList<CAFE> cafes;
-        IList<CATACION> cataciones;
+        readonly IList<CATA> Catas;
+        readonly IList<CATADOR> catadores;
+        readonly IList<PANEL> paneles;
+        readonly IList<EVENTO> eventos;
+        readonly IList<ATRIBUTOSCAFE> atributosCafe;
+        readonly IList<CAFE> cafes;
+        readonly IList<CATACION> cataciones;
 
         public Lista()
         {
@@ -33,32 +33,32 @@ namespace Persistencia.Listas
 
         private void LlenarListas()
         {
-
-            this.eventos.Add(new EVENTO()
+            const int CANTIDAD_CATAR = 3;
+            this.eventos.Add(new EVENTO
             {
                 CODEVENTO = "EV-01",
                 NOMBRE = "EVENTO 1",
                 FECHA = DateTime.Parse("05/12/2019")
             });
-            this.paneles.Add(new PANEL()
+            this.paneles.Add(new PANEL
             {
                 CODPANEL = "PA-01",
                 CODEVENTO = "EV-01",
                 TIPOCAFE = "VERDE",
                 HORA = TimeSpan.Parse("16:00")
             });
-            this.cafes.Add(new CAFE()
+            this.cafes.Add(new CAFE
             {
                 CODCAFE = "CA-01",
                 TIPOCAFE = "VERDE",
                 CODEVENTO = "EV-01",
             });
-            this.atributosCafe.Add(new ATRIBUTOSCAFE()
+            this.atributosCafe.Add(new ATRIBUTOSCAFE
             {
                 TIPOCAFE = "VERDE",
                 DATOS = "FRAGANCIA;AROMA;ACIDEZ;AMARGO;CUERPO;SABOR_RESIDUAL;IMPRESION_GLOBAL"
             });
-            this.catadores.Add(new CATADOR()
+            this.catadores.Add(new CATADOR
             {
                 NOMBRE = "Jhonathan",
                 CEDULA = "1234",
@@ -68,36 +68,36 @@ namespace Persistencia.Listas
                 CONTRASEÑA = "e10adc3949ba59abbe56e057f20f883e",
                 ESTADO = "HABILITADO"
             });
-            this.cataciones.Add(new CATACION()
+            this.cataciones.Add(new CATACION
             {
                 CODCATACION = "CAT-01",
                 CODPANEL = "PA-01",
                 CODCATADOR = "CATADOR001",
                 CODCAFE = "CA-01",
-                CANTIDAD = 3
+                CANTIDAD = CANTIDAD_CATAR
             });
         }
-        public bool actualizarCafe(string codCafe, string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste)
+        public bool ActualizarCafe(string codCafe, string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste)
         {
             return true;
         }
 
-        public bool actualizarCatación(string codCatacion, string codCafe, string codPanel, string codCatador, int cantidad)
+        public bool ActualizarCatación(string codCatacion, string codCafe, string codPanel, string codCatador, int cantidad)
         {
             throw new NotImplementedException();
         }
-        private bool validarDatosCatador2(string nombre, string cedula, string correo, string contraseña)
+        private static bool ValidarDatosCatador2(string nombre, string cedula, string correo, string contraseña)
         {
-            if (nombre.Equals("") || cedula.Equals("") || correo.Equals("") || contraseña.Equals(""))
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(cedula) || string.IsNullOrEmpty(correo) || string.IsNullOrEmpty(contraseña))
             {
                 return false;
             }
             return true;
         }
 
-        public bool actualizarCatador(string nombre, string cedula, string correo, string contraseña)
+        public bool ActualizarCatador(string nombre, string cedula, string correo, string contraseña)
         {
-            if (!validarDatosCatador2(nombre, cedula, correo, contraseña))
+            if (!ValidarDatosCatador2(nombre, cedula, correo, contraseña))
             {
                 return false;
             }
@@ -114,17 +114,17 @@ namespace Persistencia.Listas
             return false;
         }
 
-        public bool actualizarEvento(string codigo, string nombre, DateTime fecha)
+        public bool ActualizarEvento(string codigo, string nombre, DateTime fecha)
         {
             return true;
         }
 
-        public bool actualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora)
+        public bool ActualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora)
         {
             return true;
         }
 
-        public CATADOR buscarCedulaCatador(string cedula)
+        public CATADOR BuscarCedulaCatador(string cedula)
         {
             foreach (CATADOR catador in this.catadores)
             {
@@ -135,9 +135,9 @@ namespace Persistencia.Listas
             }
             return null;
         }
-        public CATADOR buscarCatador(string correo, string contraseña)
+        public CATADOR BuscarCatador(string correo, string contraseña)
         {
-            CATADOR catador = this.obtenerCatador(correo);
+            CATADOR catador = this.ObtenerCatador(correo);
             if (catador != null)
             {
                 if (VerificarMd5Hash(contraseña, catador.CONTRASEÑA) && catador.ESTADO.Equals("HABILITADO") && correo.Equals(catador.CORREO))
@@ -152,7 +152,7 @@ namespace Persistencia.Listas
             return null;
         }
 
-        private CATADOR obtenerCatador(string correo)
+        private CATADOR ObtenerCatador(string correo)
         {
 
             foreach (CATADOR catador in this.catadores)
@@ -164,22 +164,22 @@ namespace Persistencia.Listas
             }
             return null;
         }
-        public REPORTE buscarReporte(string codReporte)
+        public REPORTE BuscarReporte(string codReporte)
         {
             return null;
         }
 
-        public ADMINISTRADOR consultarAdministrador(string correo)
+        public ADMINISTRADOR ConsultarAdministrador(string correo)
         {
             return null;
         }
 
-        public ATRIBUTOSCAFE consultarAtributosCafe(string tipoCafe)
+        public ATRIBUTOSCAFE ConsultarAtributosCafe(string tipoCafe)
         {
             return null;
         }
 
-        public CAFE consultarCafe(string codCafe)
+        public CAFE ConsultarCafe(string codCafe)
         {
             foreach (CAFE cafe in this.cafes)
             {
@@ -191,18 +191,18 @@ namespace Persistencia.Listas
             return null;
         }
 
-        public IList<CAFE> consultarCafes() => null;
+        public IList<CAFE> ConsultarCafes() => null;
 
 
-        public IList<CAFE> consultarCafes(string tipoCafe) => null;
+        public IList<CAFE> CconsultarCafes(string tipoCafe) => null;
 
 
-        public CATA consultarCata(string codigo)
+        public CATA ConsultarCata(string codigo)
         {
             return null;
         }
 
-        public CATACION consultarCatacion(string codCatacion)
+        public CATACION ConsultarCatacion(string codCatacion)
         {
 
             foreach (CATACION catacion in this.cataciones)
@@ -215,22 +215,22 @@ namespace Persistencia.Listas
             return null;
         }
 
-        public IList<CATACION> consultarCataciones() => null;
+        public IList<CATACION> ConsultarCataciones() => null;
 
 
-        public IList<CATACION> consultarCatacionesAsignadas(string codCatador)
+        public IList<CATACION> ConsultarCatacionesAsignadas(string codCatador)
         {
-            IList<CATACION> cataciones = new List<CATACION>();
+            IList<CATACION> catacionesAsignadas = new List<CATACION>();
             foreach (CATACION catacion in this.cataciones)
             {
                 if (catacion.CODCATADOR.Equals(codCatador))
                 {
-                    cataciones.Add(catacion);
+                    catacionesAsignadas.Add(catacion);
                 }
             }
-            if (cataciones.Count > 0)
+            if (catacionesAsignadas.Count > 0)
             {
-                return cataciones;
+                return catacionesAsignadas;
             }
             else
             {
@@ -241,7 +241,7 @@ namespace Persistencia.Listas
 
 
 
-        public CATADOR consultarCatador(string correo)
+        public CATADOR ConsultarCatador(string correo)
         {
             this.LlenarListas();
             foreach (CATADOR catador in this.catadores)
@@ -255,7 +255,7 @@ namespace Persistencia.Listas
 
         }
 
-        public EVENTO consultarEvento(string codEvento)
+        public EVENTO ConsultarEvento(string codEvento)
         {
 
             foreach (EVENTO evento in this.eventos)
@@ -269,14 +269,14 @@ namespace Persistencia.Listas
         }
 
 
-        public IList<EVENTO> consultarEventos() => null;
+        public IList<EVENTO> ConsultarEventos() => null;
 
-        public DateTime consultarFecha(string codigo)
+        public DateTime ConsultarFecha(string codigo)
         {
             return DateTime.Now;
         }
 
-        public PANEL consultarPanel(string codPanel)
+        public PANEL ConsultarPanel(string codPanel)
         {
             foreach (PANEL panel in this.paneles)
             {
@@ -288,21 +288,19 @@ namespace Persistencia.Listas
             return null;
         }
 
-        public IList<PANEL> consultarPaneles() => null;
+        public IList<PANEL> ConsultarPaneles() => null;
 
-        public IList<REPORTE> consultarReportes() => null;
-
-        public bool consultarUsuario(string cedula)
+        public bool ConsultarUsuario(string cedula)
         {
             return false;
         }
 
-        public bool eliminarCafe(string codigo)
+        public bool EliminarCafe(string codigo)
         {
             return false;
         }
 
-        public bool eliminarCatador(string cedula)
+        public bool EliminarCatador(string cedula)
         {
             foreach (CATADOR catador in this.catadores)
             {
@@ -314,7 +312,7 @@ namespace Persistencia.Listas
             }
             return false;
         }
-        private string getMD5Hash(string contraseña)
+        private static string GetMD5Hash(string contraseña)
         {
             using (MD5 md5Hash = MD5.Create())
             {
@@ -328,34 +326,34 @@ namespace Persistencia.Listas
                 return sBuilder.ToString();
             }
         }
-        private bool VerificarMd5Hash(string contraseña, string hash)
+        private static bool VerificarMd5Hash(string contraseña, string hash)
         {
 
             const int RESPUESTACOMPARER = 0;
 
 
-            string hashContraseña = getMD5Hash(contraseña);
+            string hashContraseña = GetMD5Hash(contraseña);
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
             return comparer.Compare(hashContraseña, hash) == RESPUESTACOMPARER;
         }
 
-        public bool eliminarEvento(string codEvento)
+        public bool EliminarEvento(string codEvento)
         {
             return false;
         }
 
-        public bool eliminarPanel(string codigo)
+        public bool EliminarPanel(string codigo)
         {
             return false;
         }
 
-        public bool insertarCafe(string nombre, string tipoCafe, string origen, string codEvento, string procedencia, int gradoMolienda, int puntoTueste)
+        public bool InsertarCafe(string nombre, string tipoCafe, string origen, string codEvento, string procedencia, int gradoMolienda, int puntoTueste)
         {
 
             return false;
         }
 
-        public void habilitarCatador(string cedula)
+        public void HabilitarCatador(string cedula)
         {
             foreach (CATADOR catador in this.catadores)
             {
@@ -366,15 +364,16 @@ namespace Persistencia.Listas
                 }
             }
         }
-        private bool validarDatosCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
+        private static bool ValidarDatosCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
         {
-            if (nombre.Equals("") || cedula.Equals("") || codigo.Equals("") || correo.Equals("") || contraseña.Equals("") || nivelExp.Equals(""))
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(cedula) || string.IsNullOrEmpty(codigo) || string.IsNullOrEmpty(correo) ||
+                string.IsNullOrEmpty(contraseña) || string.IsNullOrEmpty(nivelExp))
             {
                 return false;
             }
             return true;
         }
-        public bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
+        public bool InsertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
         {
             try
             {
@@ -384,13 +383,13 @@ namespace Persistencia.Listas
             {
                 return false;
             }
-            if (!validarDatosCatador(nombre, cedula, codigo, correo, contraseña, nivelExp))
+            if (!ValidarDatosCatador(nombre, cedula, codigo, correo, contraseña, nivelExp))
             {
                 return false;
             }
             try
             {
-                this.catadores.Add(new CATADOR()
+                this.catadores.Add(new CATADOR
                 {
                     NOMBRE = nombre,
                     CEDULA = cedula,
@@ -408,21 +407,21 @@ namespace Persistencia.Listas
             }
         }
 
-        public bool insertarEvento(string nombre, DateTime fecha)
+        public bool InsertarEvento(string nombre, DateTime fecha)
         {
             return false;
         }
 
-        public bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora)
+        public bool InsertarPanel(string codEvento, string tipoCafe, TimeSpan hora)
         {
             return false;
         }
 
-        public bool insertarReporte()
+        public bool InsertarReporte()
         {
             return false;
         }
-        private string obtenerAtributosCafes(string tipoCafe)
+        private string ObtenerAtributosCafes(string tipoCafe)
         {
             string datos = null;
             foreach (ATRIBUTOSCAFE atributos in this.atributosCafe)
@@ -434,15 +433,15 @@ namespace Persistencia.Listas
             }
             return datos;
         }
-        public Dictionary<string, string> obtenerInformacionCatacion(string codCatacion)
+        public Dictionary<string, string> ObtenerInformacionCatacion(string codCatacion)
         {
             Dictionary<string, string> catas = new Dictionary<string, string>();
 
-            CATACION catacion = consultarCatacion(codCatacion);
-            PANEL panel = consultarPanel(catacion.CODPANEL);
-            EVENTO evento = consultarEvento(panel.CODEVENTO);
-            CAFE cafe = consultarCafe(catacion.CODCAFE);
-            string atributosCafe = obtenerAtributosCafes(panel.TIPOCAFE.ToString());
+            CATACION catacion = ConsultarCatacion(codCatacion);
+            PANEL panel = ConsultarPanel(catacion.CODPANEL);
+            EVENTO evento = ConsultarEvento(panel.CODEVENTO);
+            CAFE cafe = ConsultarCafe(catacion.CODCAFE);
+            string atributosCafeCatas = ObtenerAtributosCafes(panel.TIPOCAFE);
 
             if (catacion != null && panel != null && evento != null && cafe != null)
             {
@@ -457,7 +456,7 @@ namespace Persistencia.Listas
                 catas.Add("tipoCafe", tipoCafe);
                 catas.Add("CodCafe", CodCafe);
                 catas.Add("cantVez", cantVez);
-                catas.Add("atributos", atributosCafe);
+                catas.Add("atributos", atributosCafeCatas);
             }
 
             return catas;
@@ -466,7 +465,7 @@ namespace Persistencia.Listas
 
 
 
-        public bool registrarCata(CATA cata)
+        public bool RegistrarCata(CATA cata)
         {
             try
             {
@@ -481,11 +480,11 @@ namespace Persistencia.Listas
         }
 
 
-        public bool registrarCata(string codCatacion, int rancidez,
+        public bool RegistrarCata(string codCatacion, int rancidez,
             int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal
             , int fragancia, int saborResidual, string observaciones)
         {
-            if (!verificarRango(rancidez, dulce, acidez, cuerpo, aroma,
+            if (!VerificarRango(rancidez, dulce, acidez, cuerpo, aroma,
              amargo, impresionGlobal, fragancia, saborResidual))
             {
                 return false;
@@ -493,7 +492,7 @@ namespace Persistencia.Listas
 
             try
             {
-                Catas.Add(new CATA()
+                Catas.Add(new CATA
                 {
 
                     CODCATACION = codCatacion,
@@ -520,32 +519,35 @@ namespace Persistencia.Listas
 
         }
 
-        public bool registrarCatacion(string codPanel, string codCatador, string codCafe, int cantidad)
+        public bool RegistrarCatacion(string codPanel, string codCatador, string codCafe, int cantidad)
         {
             return false;
         }
-        private bool verificarRango(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual)
+        private static bool VerificarRango(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, 
+                                    int saborResidual)
         {
-            if (rancidez < 0 || dulce < 0 || acidez < 0 || cuerpo < 0 || aroma < 0 || amargo < 0 || impresionGlobal < 0 || fragancia < 0 || saborResidual < 0 ||
-                 rancidez > 10 || dulce > 10 || acidez > 10 || cuerpo > 10 || aroma > 10 || amargo > 10 || impresionGlobal > 10 || fragancia > 10 || saborResidual > 10
-                )
+            const int MAXIMO_RANGO = 10;
+            if (rancidez < 0 || dulce < 0 || acidez < 0 || cuerpo < 0 || aroma < 0 || amargo < 0 || impresionGlobal < 0 || fragancia < 0 || 
+                saborResidual < 0 || rancidez > MAXIMO_RANGO || dulce > MAXIMO_RANGO || acidez > MAXIMO_RANGO || cuerpo > MAXIMO_RANGO || 
+                aroma > MAXIMO_RANGO || amargo > MAXIMO_RANGO || impresionGlobal > MAXIMO_RANGO || fragancia > MAXIMO_RANGO || 
+                saborResidual > MAXIMO_RANGO )
             {
                 return false;
             }
             return true;
         }
 
-        public IList<CATADOR> consultarCatadores()
+        public IList<CATADOR> ConsultarCatadores()
         {
             throw new NotImplementedException();
         }
 
-        public IList<PANEL> consultarPanelesPorEvento(string codEvento)
+        public IList<PANEL> ConsultarPanelesPorEvento(string codEvento)
         {
             throw new NotImplementedException();
         }
 
-        public bool panelTerminado(string codPanel)
+        public bool PanelTerminado(string codPanel)
         {
             throw new NotImplementedException();
         }
@@ -556,62 +558,62 @@ namespace Persistencia.Listas
             throw new NotImplementedException();
         }
 
-        public IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel)
+        public IList<CAFE> ObtenerCafesMismoTipoPanel(string codPanel)
         {
             throw new NotImplementedException();
         }
 
-        public string[] getObservaciones(string codPanel)
+        public string[] GetObservaciones(string codPanel)
         {
             throw new NotImplementedException();
         }
 
-        public bool pertenecePanel(string codPanel, string codEvento)
+        public bool PertenecePanel(string codPanel, string codEvento)
         {
             throw new NotImplementedException();
         }
 
-        public string obtenerValoresDefectoCafes(string tipoCafe)
+        public string ObtenerValoresDefectoCafes(string tipoCafe)
         {
             throw new NotImplementedException();
         }
 
-        public string getCorreoCatador(string codCatador)
+        public string GetCorreoCatador(string codCatador)
         {
             throw new NotImplementedException();
         }
 
-        public string construirAsuntoCorreo(string codPanel)
+        public string ConstruirAsuntoCorreo(string codPanel)
         {
             throw new NotImplementedException();
         }
 
-        public string construirMensajeCorreo(List<CATACION> cataciones)
+        public string ConstruirMensajeCorreo(List<CATACION> cataciones)
         {
             throw new NotImplementedException();
         }
 
-        public List<CATADOR> getCatadoresInhabilitados()
+        public List<CATADOR> ObtenerCatadoresInhabilitados()
         {
             throw new NotImplementedException();
         }
 
-        bool Repositorio.habilitarCatador(string codCatador)
+        bool IRepositorio.HabilitarCatador(string codCatador)
         {
             throw new NotImplementedException();
         }
 
-        public List<CATADOR> getCatadoresHabilitados()
+        public List<CATADOR> ObtenerCatadoresHabilitados()
         {
             throw new NotImplementedException();
         }
 
-        public CATADOR catadorHabilitado(string codCatador)
+        public CATADOR CatadorHabilitado(string codCatador)
         {
             throw new NotImplementedException();
         }
 
-        public bool existePanel(string codPanel)
+        public bool ExistePanel(string codPanel)
         {
             throw new NotImplementedException();
         }

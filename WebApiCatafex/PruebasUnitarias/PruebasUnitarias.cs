@@ -12,9 +12,9 @@ namespace PruebasUnitarias
     [TestClass]
     public class PruebasUnitarias
     {
-        private ApiAutenticarController apiAutenticar;
-        private ApiRegistrarCataController apiCata;
-        private ApiRegistrarCatadorController apiRegistrar;
+        readonly private ApiAutenticarController apiAutenticar;
+        readonly private ApiRegistrarCataController apiCata;
+        readonly private ApiRegistrarCatadorController apiRegistrar;
 
         public PruebasUnitarias()
         {

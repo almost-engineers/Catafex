@@ -16,11 +16,11 @@ namespace WebService.Controllers
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiAutenticarController : ApiController
     {
-        private Repositorio repositorio;
-        private ApiRegistrarCatadorController controladoraRCatador;
+        readonly private IRepositorio repositorio;
+        readonly private ApiRegistrarCatadorController controladoraRCatador;
         public ApiAutenticarController()
         {
-            this.repositorio = FabricaRepositorio.crearRepositorio();
+            this.repositorio = FabricaRepositorio.CrearRepositorio();
             controladoraRCatador = new ApiRegistrarCatadorController();
         }
         /// <summary>
@@ -76,7 +76,7 @@ namespace WebService.Controllers
         /// en otro caso retorna null</returns>
         private Catador buscarCatador(string correo, string contraseña)
         {
-            CATADOR catadorDB = repositorio.consultarCatador(correo);
+            CATADOR catadorDB = repositorio.ConsultarCatador(correo);
 
             if (catadorDB != null)
             {
@@ -108,7 +108,7 @@ namespace WebService.Controllers
         /// caso contrario retorna false</returns>
         private bool buscarAdministrador(string correo, string contraseña)
         {
-            ADMINISTRADOR administradorDB = repositorio.consultarAdministrador(correo);
+            ADMINISTRADOR administradorDB = repositorio.ConsultarAdministrador(correo);
             if (administradorDB != null)
             {
                 return controladoraRCatador.VerificarMd5Hash(contraseña, administradorDB.CONTRASEÑA);

@@ -14,11 +14,11 @@ namespace WebService.Controllers
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiGestionarEventoController : ApiController
     {
-        Repositorio repositorio;
+        readonly IRepositorio repositorio;
 
         public ApiGestionarEventoController()
         {
-            this.repositorio = FabricaRepositorio.crearRepositorio();
+            this.repositorio = FabricaRepositorio.CrearRepositorio();
         }
         /// <summary>
         /// Este metodo se encarga de consultar y listar todos los eventos
@@ -27,7 +27,7 @@ namespace WebService.Controllers
         [HttpGet]
         public IEnumerable<Evento> consultarEventos()
         {
-            return this.convertirEVENTO(repositorio.consultarEventos());
+            return this.convertirEVENTO(repositorio.ConsultarEventos());
         }
         /// <summary>
         /// Este metodo se encarga de transformar el tipo de EVENTO en Evento de este modo, el 
@@ -67,7 +67,7 @@ namespace WebService.Controllers
         /// <returns>Un Evento de tipo Evento (Models)</returns>
         private Evento convertirEVENTO(string codigo)
         {
-            EVENTO eventoDB = repositorio.consultarEvento(codigo);
+            EVENTO eventoDB = repositorio.ConsultarEvento(codigo);
             Evento evento = null;
             if (eventoDB != null)
             {
@@ -85,7 +85,7 @@ namespace WebService.Controllers
         [HttpPost]
         public bool ingresarEvento(string nombre, string fecha)
         {
-            return repositorio.insertarEvento(nombre, Convert.ToDateTime(fecha));
+            return repositorio.InsertarEvento(nombre, Convert.ToDateTime(fecha));
         }
         /// <summary>
         /// Este metodo se encarga de actualizar los datos de un evento, a partir de su codigo
@@ -97,7 +97,7 @@ namespace WebService.Controllers
         [HttpPut]
         public bool actualizarEvento(string codigo, string nombre, string fecha)
         {
-            return repositorio.actualizarEvento(codigo, nombre, Convert.ToDateTime(fecha));
+            return repositorio.ActualizarEvento(codigo, nombre, Convert.ToDateTime(fecha));
         }
         /// <summary>
         /// Este metodo se encarga de eliminar un evento del repositorio a partir del codigo de este
@@ -107,7 +107,7 @@ namespace WebService.Controllers
         [HttpDelete]
         public bool eliminarEvento(string codigo)
         {
-            return repositorio.eliminarEvento(codigo);
+            return repositorio.EliminarEvento(codigo);
         }
 
     }

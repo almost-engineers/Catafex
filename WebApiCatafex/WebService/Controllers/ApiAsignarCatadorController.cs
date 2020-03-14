@@ -16,13 +16,13 @@ namespace WebService.Controllers
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ApiAsignarCatadorController : ApiController
     {
-        private Repositorio repositorio;
-        private ApiNotificacionController notificacion = new ApiNotificacionController();
+        readonly private IRepositorio repositorio;
+        readonly private ApiNotificacionController notificacion = new ApiNotificacionController();
 
 
         public ApiAsignarCatadorController()
         {
-            this.repositorio = FabricaRepositorio.crearRepositorio();
+            this.repositorio = FabricaRepositorio.CrearRepositorio();
         }
 
         /// <summary>
@@ -44,16 +44,16 @@ namespace WebService.Controllers
             if (cataciones == null) {
                 return new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
             }
-            string correoDestino = this.repositorio.getCorreoCatador(cataciones.First().codCatador);
-            string asunto = this.repositorio.construirAsuntoCorreo(cataciones.First().codPanel);
-            string mensaje = this.repositorio.construirMensajeCorreo(this.convertirCatacion(cataciones));
+            string correoDestino = this.repositorio.GetCorreoCatador(cataciones.First().codCatador);
+            string asunto = this.repositorio.ConstruirAsuntoCorreo(cataciones.First().codPanel);
+            string mensaje = this.repositorio.ConstruirMensajeCorreo(this.convertirCatacion(cataciones));
             try
             {
               foreach (Catacion catacion in cataciones)
                 {
                     if(catacion.cantidad > 0)
                     {
-                        if (!this.repositorio.registrarCatacion(catacion.codPanel, catacion.codCatador, catacion.codCafe, catacion.cantidad))
+                        if (!this.repositorio.RegistrarCatacion(catacion.codPanel, catacion.codCatador, catacion.codCafe, catacion.cantidad))
                         {
                             return new HttpResponseMessage(HttpStatusCode.NotFound);
                         }

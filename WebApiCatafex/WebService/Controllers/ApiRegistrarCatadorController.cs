@@ -18,11 +18,11 @@ namespace WebService.Controllers
     public class ApiRegistrarCatadorController : ApiController
     {
 
-        private Repositorio repositorio;
+        readonly private IRepositorio repositorio;
         private Correo correo;
         public ApiRegistrarCatadorController()
         {
-            this.repositorio = FabricaRepositorio.crearRepositorio();
+            this.repositorio = FabricaRepositorio.CrearRepositorio();
         }
         /// <summary>
         /// Este metodo me permite conocer si un catador se encuentra habilitado para catar, el objeto devuelto se genera en formato
@@ -38,7 +38,7 @@ namespace WebService.Controllers
         public HttpResponseMessage catadorHabilitado(string codCatador)
         {
             HttpResponseMessage response;
-            CATADOR catador = this.repositorio.catadorHabilitado(codCatador);
+            CATADOR catador = this.repositorio.CatadorHabilitado(codCatador);
             if (catador != null)
             {
                 response = new HttpResponseMessage(HttpStatusCode.OK);
@@ -75,7 +75,7 @@ namespace WebService.Controllers
                 {
                     try
                     {
-                        if (repositorio.insertarCatador(catador.nombre, catador.cedula, catador.codigo, catador.correo, this.getMD5Hash(catador.contrasena), catador.nivelExp))
+                        if (repositorio.InsertarCatador(catador.nombre, catador.cedula, catador.codigo, catador.correo, this.getMD5Hash(catador.contrasena), catador.nivelExp))
                         {
                             return new HttpResponseMessage(HttpStatusCode.OK);
                         }
@@ -140,7 +140,7 @@ namespace WebService.Controllers
         {
             try
             {
-                if (this.repositorio.eliminarCatador(cedula))
+                if (this.repositorio.EliminarCatador(cedula))
                 {
                     return new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -174,7 +174,7 @@ namespace WebService.Controllers
                 {
                     nContrasena = this.getMD5Hash(catador.contrasena);
                 }
-                if (this.repositorio.actualizarCatador(catador.nombre, catador.cedula, catador.correo, nContrasena))
+                if (this.repositorio.ActualizarCatador(catador.nombre, catador.cedula, catador.correo, nContrasena))
                 {
                     return new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -197,7 +197,7 @@ namespace WebService.Controllers
         /// existe en el repositorio, en caso contrario retorna null</returns>
         private Catador convertirCATADOR(string cedula)
         {
-            CATADOR catadorDB = repositorio.buscarCedulaCatador(cedula);
+            CATADOR catadorDB = repositorio.BuscarCedulaCatador(cedula);
             if (catadorDB != null)
             {
                 Catador catador = new Catador();
@@ -261,7 +261,7 @@ namespace WebService.Controllers
         [HttpGet]
         public IEnumerable<Catador> consultarCatadores()
         {
-            return this.convertirCATADORES(repositorio.consultarCatadores());
+            return this.convertirCATADORES(repositorio.ConsultarCatadores());
         }
         /// <summary>
         /// Este metodo permite obtener una lista de todos los catadores que se encuentran registrados en la aplicacion, 
@@ -274,7 +274,7 @@ namespace WebService.Controllers
         public HttpResponseMessage getCatadoresInhabilitados()
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADORES(this.repositorio.getCatadoresInhabilitados())));
+            response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADORES(this.repositorio.ObtenerCatadoresInhabilitados())));
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return response;
         }
@@ -289,7 +289,7 @@ namespace WebService.Controllers
         public HttpResponseMessage getCatadoresHabilitados()
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADORES(this.repositorio.getCatadoresHabilitados())));
+            response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirCATADORES(this.repositorio.ObtenerCatadoresHabilitados())));
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return response;
         }
@@ -302,7 +302,7 @@ namespace WebService.Controllers
         [Route("api/RegistrarCatador/cambiarEstado")]
         public HttpResponseMessage habilitarCatador(string codCatador)
         {
-            if (this.repositorio.habilitarCatador(codCatador))
+            if (this.repositorio.HabilitarCatador(codCatador))
             {
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }

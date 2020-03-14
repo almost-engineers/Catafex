@@ -9,7 +9,6 @@ namespace Persistencia.Migrations
 
     internal sealed class Configuration : DbMigrationsConfiguration<Persistencia.Entity.CatafexEntities>
     {
-        EntityFramework ef;
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
@@ -22,7 +21,7 @@ namespace Persistencia.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
 
-            //ef = new EntityFramework(context);
+          
 
 
         }

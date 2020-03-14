@@ -12,7 +12,7 @@ namespace WebService.Controllers
     public class ApiNotificacionController : ApiController
     {
 
-        private Correo correo = new Correo();
+        readonly private Correo correo = new Correo();
         /// <summary>
         /// Este metodo se encarga de enviar una notificacion de manera generica, lo hace a partir de una clase que implementa
         /// una interfaz con un metodo generico de envio de informacion. A pesar de estar dentro de un api, solo es para uso interno

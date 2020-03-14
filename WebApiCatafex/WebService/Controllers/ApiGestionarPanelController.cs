@@ -18,11 +18,11 @@ namespace WebService.Controllers
     {
 
         /// Se crea una variable tipo Repositorio, que retorna ya sea un EntityFramework o una lista
-        private Repositorio repositorio;
-        private ApiGestionarCafeController gestionarCafe = new ApiGestionarCafeController();
+        readonly private IRepositorio repositorio;
+        readonly private ApiGestionarCafeController gestionarCafe = new ApiGestionarCafeController();
         public ApiGestionarPanelController()
         {
-            this.repositorio = FabricaRepositorio.crearRepositorio();
+            this.repositorio = FabricaRepositorio.CrearRepositorio();
         }
         /// <summary>
         /// Este metodo se encarga de validar que un panel pertenece a un evento, esto se realiza a partir de la llave primaria
@@ -35,7 +35,7 @@ namespace WebService.Controllers
         [Route("api/Panel/panelPerteneceEvento")]
         public bool panelPerteneEvento(string codPanel, string codEvento)
         {
-            return this.repositorio.pertenecePanel(codPanel, codEvento);
+            return this.repositorio.PertenecePanel(codPanel, codEvento);
         }
         /// <summary>
         /// Este metodo se encarga de listar todos los cafes cuyo tipo de cafe (VERDE, SOLUBLE, etc) sea el mismo que el del panel
@@ -51,7 +51,7 @@ namespace WebService.Controllers
             try
             {
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(this.gestionarCafe.convertirCAFE(this.repositorio.obtenerCafesMismoTipoPanel(codPanel))));
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.gestionarCafe.convertirCAFE(this.repositorio.ObtenerCafesMismoTipoPanel(codPanel))));
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return response;
             }
@@ -74,7 +74,7 @@ namespace WebService.Controllers
             try
             {
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirPANEL(repositorio.consultarPaneles())));
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirPANEL(repositorio.ConsultarPaneles())));
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return response;
             }
@@ -119,7 +119,7 @@ namespace WebService.Controllers
             try
             {
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirPANEL(repositorio.consultarPanelesPorEvento(codEvento))));
+                response.Content = new StringContent(JsonConvert.SerializeObject(this.convertirPANEL(repositorio.ConsultarPanelesPorEvento(codEvento))));
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return response;
             }
@@ -159,7 +159,7 @@ namespace WebService.Controllers
         /// <returns>Se retorna un objeto de tipo panel</returns>
         private Panel convertirPANEL(string codigo)
         {
-            PANEL panelDB = repositorio.consultarPanel(codigo);
+            PANEL panelDB = repositorio.ConsultarPanel(codigo);
             if(panelDB != null)
             {
                 Panel panel = new Panel();
@@ -187,7 +187,7 @@ namespace WebService.Controllers
         [HttpPost]
         public bool ingresarPanel(string codEvento, string tipoCafe, string hora)
         {
-            return repositorio.insertarPanel(codEvento, tipoCafe, TimeSpan.Parse(hora));
+            return repositorio.InsertarPanel(codEvento, tipoCafe, TimeSpan.Parse(hora));
         }
         /// <summary>
         /// Este metodo recibe por parametro el codigo de un Panel, y retorna el valor booleando de ejecutar el metodo
@@ -202,7 +202,7 @@ namespace WebService.Controllers
         [HttpPut]
         public bool actualizarPanel(string codigo, string codEvento, string tipoCafe, string hora)
         {
-            return repositorio.actualizarPanel(codigo, codEvento, tipoCafe, TimeSpan.Parse(hora));
+            return repositorio.ActualizarPanel(codigo, codEvento, tipoCafe, TimeSpan.Parse(hora));
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace WebService.Controllers
         [HttpDelete]
         public bool eliminarPanel(string codigo)
         {
-            return repositorio.eliminarPanel(codigo);
+            return repositorio.EliminarPanel(codigo);
         }
     }
 }

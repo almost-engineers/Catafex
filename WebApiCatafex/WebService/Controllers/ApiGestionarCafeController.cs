@@ -12,10 +12,10 @@ namespace WebService.Controllers
 {
     public class ApiGestionarCafeController : ApiController
     {
-        private Repositorio repositorio;
+        readonly private IRepositorio repositorio;
         public ApiGestionarCafeController()
         {
-            this.repositorio = FabricaRepositorio.crearRepositorio();
+            this.repositorio = FabricaRepositorio.CrearRepositorio();
         }
 
         /*
@@ -28,7 +28,7 @@ namespace WebService.Controllers
         [HttpGet]
         public IEnumerable<Cafe> consultarCafes()
         {
-            return this.convertirCAFE(repositorio.consultarCafes());
+            return this.convertirCAFE(repositorio.ConsultarCafes());
         }
 
         /*
@@ -41,7 +41,7 @@ namespace WebService.Controllers
         public IEnumerable<Cafe> consultarCafes(string codigo)
         {
            
-            IList<CAFE> cafesDB = repositorio.consultarCafes(codigo);
+            IList<CAFE> cafesDB = repositorio.CconsultarCafes(codigo);
             IList<Cafe> cafes = new List<Cafe>();
             foreach (CAFE cafe in cafesDB)
             {
@@ -77,7 +77,7 @@ namespace WebService.Controllers
         [HttpPost]
         public bool ingresarCafe(string nombre, string tipoCafe, string origen, string codEvento, string procedencia, int gradoMolienda, int puntoTueste)
         {
-            return repositorio.insertarCafe(nombre,tipoCafe,origen,codEvento,procedencia, (int) gradoMolienda, (int) puntoTueste);
+            return repositorio.InsertarCafe(nombre,tipoCafe,origen,codEvento,procedencia,gradoMolienda, puntoTueste);
         }
 
         /*
@@ -89,7 +89,7 @@ namespace WebService.Controllers
         [HttpPut]
         public bool actualizarCafe(string codCafe, string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste)
         {
-            return repositorio.actualizarCafe(codCafe,nombre,tipoCafe, origen, procedencia, (int)gradoMolienda,(int) puntoTueste);
+            return repositorio.ActualizarCafe(codCafe,nombre,tipoCafe, origen, procedencia, gradoMolienda, puntoTueste);
         }
 
         /*
@@ -101,7 +101,7 @@ namespace WebService.Controllers
         [HttpDelete]
         public bool eliminarCafe(string codCafe)
         {
-            return repositorio.eliminarCafe(codCafe);
+            return repositorio.EliminarCafe(codCafe);
         }
     }
 }

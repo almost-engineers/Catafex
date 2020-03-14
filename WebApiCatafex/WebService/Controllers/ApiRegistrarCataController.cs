@@ -15,10 +15,10 @@ namespace WebService.Controllers
     public class ApiRegistrarCataController : ApiController
     {
 
-        Repositorio repositorio;
+        readonly IRepositorio repositorio;
         public ApiRegistrarCataController()
         {
-            repositorio = FabricaRepositorio.crearRepositorio();
+            repositorio = FabricaRepositorio.CrearRepositorio();
         }
         /// <summary>
         /// Este metodo se encarga de obtener la informacion correspondiente a una catacion a partir de
@@ -35,7 +35,7 @@ namespace WebService.Controllers
             try
             {
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(convertirCata(repositorio.obtenerInformacionCatacion(codCatacion))));
+                response.Content = new StringContent(JsonConvert.SerializeObject(convertirCata(repositorio.ObtenerInformacionCatacion(codCatacion))));
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return response;
             }
@@ -58,7 +58,7 @@ namespace WebService.Controllers
         }
         /// <summary>
         /// Este metodo se encarga de listar todas las cataciones que un catador tiene asignadas, puede tener
-        /// dos respuestas, OK si todo salio bien, BadGateway si el catador no tiene catas asignadas, o el codigo 
+        /// dos respuestas, OK si salio bien, BadGateway si el catador no tiene catas asignadas, o el codigo 
         /// de este es incorrecto 
         /// </summary>
         /// <param name="codCatador">Codigo del catador</param>
@@ -71,10 +71,10 @@ namespace WebService.Controllers
             try
             {
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
-                IList<Catacion> catas = convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador));
+                IList<Catacion> catas = convertirCATACION(repositorio.ConsultarCatacionesAsignadas(codCatador));
                 if (catas != null)
                 {
-                    response.Content = new StringContent(JsonConvert.SerializeObject(convertirCATACION(repositorio.consultarCatacionesAsignadas(codCatador))));
+                    response.Content = new StringContent(JsonConvert.SerializeObject(convertirCATACION(repositorio.ConsultarCatacionesAsignadas(codCatador))));
                     response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return response;
                 }
@@ -123,7 +123,7 @@ namespace WebService.Controllers
         /// <returns>Retorna una cata con la informacion del repositorio</returns>
         protected internal Cata convertirCATA(string codigo)
         {
-            CATA cataDB = repositorio.consultarCata(codigo);
+            CATA cataDB = repositorio.ConsultarCata(codigo);
             Cata cata = new Cata(
                 cataDB.CODCATACION,
                 cataDB.VEZCATADA,
@@ -158,7 +158,7 @@ namespace WebService.Controllers
             try
             {
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
-                if (repositorio.registrarCata(cata.codCata, cata.rancidez, cata.dulce,
+                if (repositorio.RegistrarCata(cata.codCata, cata.rancidez, cata.dulce,
                   cata.acidez, cata.cuerpo, cata.aroma, cata.amargo, cata.impresionGlobal,
                   cata.fragancia, cata.saborResidual, cata.observaciones))
                 {
@@ -177,7 +177,7 @@ namespace WebService.Controllers
         }
         /// <summary>
         /// Este metodo se encarga de actualizar los datos de una catacion, con la informacion proveniente 
-        /// del cliente, esta operacion puede obtener tres respuestas, OK si todo salio bien, NotFound si
+        /// del cliente, esta operacion puede obtener tres respuestas, OK si salio bien, NotFound si
         /// los datos enviados son nulos o BadGateway si sucede algun error durante la actualizacion
         /// </summary>
         /// <param name="catacion">Catacion con los datos para ser actualizados en el repositorio</param>
@@ -189,11 +189,11 @@ namespace WebService.Controllers
         {
             if(catacion == null)
             {
-                new HttpResponseMessage(HttpStatusCode.NotFound);
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
             try
             {
-                this.repositorio.actualizarCatación(catacion.codCatacion,catacion.codCafe,catacion.codPanel,catacion.codCatador,catacion.cantidad);
+                this.repositorio.ActualizarCatación(catacion.codCatacion,catacion.codCafe,catacion.codPanel,catacion.codCatador,catacion.cantidad);
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch

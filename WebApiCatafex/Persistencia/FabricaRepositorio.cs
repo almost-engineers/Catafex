@@ -1,10 +1,4 @@
-﻿using Persistencia.Listas;
-using Persistencia.Repositorios;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Persistencia.Repositorios;
 
 namespace Persistencia
 {
@@ -18,7 +12,7 @@ namespace Persistencia
         /// o un objeto de la clase Lista
         /// </summary>
         /// <returns></returns>
-        public static Repositorio crearRepositorio()
+        public static IRepositorio CrearRepositorio()
         {
             return new EntityFramework();
         }

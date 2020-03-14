@@ -11,12 +11,12 @@ using System.IO;
 
 namespace Persistencia.Repositorios
 {
-    public class EntityFramework : Repositorio
+    public class EntityFramework : IRepositorio
 
     {
         /// Variable de Tipo de Base de datos (Entity Framework), el cual nos permite tener una instancia
         /// de nuestra base de datos, esta variable no debe ser accedida por las demas clases
-        private CatafexEntities db;
+        readonly private CatafexEntities db;
         public EntityFramework()
         {
             this.db = new CatafexEntities();
@@ -27,13 +27,13 @@ namespace Persistencia.Repositorios
          * Recibe como parametros todos los datos  y atributos  nececesarios para la creacion del registro de un cafe  en la base de 
          * datos, estos parametros ya fueron previamente validados 
          */
-        public bool insertarCafe(string nombre, string tipoCafe, string origen, string codEvento, string procedencia, int gradoMolienda, int puntoTueste)
+        public bool InsertarCafe(string nombre, string tipoCafe, string origen, string codEvento, string procedencia, int gradoMolienda, int puntoTueste)
         {
             try
             {
-                this.db.CAFE.Add(new CAFE()
+                this.db.CAFE.Add(new CAFE
                 {
-                    CODCAFE = this.generarCodigo("CF"),
+                    CODCAFE = this.GenerarCodigo("CF"),
                     CODEVENTO = codEvento,
                     TIPOCAFE = tipoCafe,
                     NOMBRE = nombre,
@@ -50,10 +50,7 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
-        public bool insertarCatador()
-        {
-            return false;
-        }
+
         /// <summary>
         /// Recibe como parametros los atributos necesarios para la creacion de un panel, en estos no se incluye el codigo del panel
         /// dado que este se genera a partir de un metodo denominado generarCodigoPanel, que en su version 1.0 solo retorna 1.
@@ -65,13 +62,13 @@ namespace Persistencia.Repositorios
         /// <param name="hora"></param>
         /// <returns>Verdadero o Falso dependiendo de si sucede o no una excepcion, en caso de no suceder una excepcion retorna true,
         /// por lo contrario retorna false</returns>
-        public bool insertarPanel(string codEvento, string tipoCafe, TimeSpan hora)
+        public bool InsertarPanel(string codEvento, string tipoCafe, TimeSpan hora)
         {
             try
             {
-                this.db.PANEL.Add(new PANEL()
+                this.db.PANEL.Add(new PANEL
                 {
-                    CODPANEL = this.generarCodigo("P"),
+                    CODPANEL = this.GenerarCodigo("P"),
                     CODEVENTO = codEvento,
                     TIPOCAFE = tipoCafe,
                     HORA = hora
@@ -84,13 +81,13 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
-        public bool insertarEvento(string nombre, DateTime fecha)
+        public bool InsertarEvento(string nombre, DateTime fecha)
         {
             try
             {
-                this.db.EVENTO.Add(new EVENTO()
+                this.db.EVENTO.Add(new EVENTO
                 {
-                    CODEVENTO = this.generarCodigo("E"),
+                    CODEVENTO = this.GenerarCodigo("E"),
                     NOMBRE = nombre,
                     FECHA = fecha
                 });
@@ -102,7 +99,7 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
-        public bool insertarReporte()
+        public bool InsertarReporte()
         {
             return false;
         }
@@ -111,7 +108,7 @@ namespace Persistencia.Repositorios
          *  Reibe como parametros los atributos de Cafe, se obtiene el cafe correspondiente al codigo ingesado por parametro,
          *  y si este codigo coincide los datos son actualizados, finalmente se guardan los cambios en la base de datos
          */
-        public bool actualizarCafe(string codCafe, string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste)
+        public bool ActualizarCafe(string codCafe, string nombre, string tipoCafe, string origen, string procedencia, int gradoMolienda, int puntoTueste)
         {
             try
             {
@@ -145,7 +142,7 @@ namespace Persistencia.Repositorios
         /// <param name="tipoCafe"></param>
         /// <param name="hora"></param>
         /// <returns>erdadero o falso dependiendo del exito de la operacion de actualizacion</returns>
-        public bool actualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora)
+        public bool ActualizarPanel(string codigo, string codEvento, string tipoCafe, TimeSpan hora)
         {
             try
             {
@@ -167,7 +164,7 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool actualizarCatador(string nombre, string cedula, string correo, string contraseña)
+        public bool ActualizarCatador(string nombre, string cedula, string correo, string contraseña)
         {
             try
             {
@@ -189,7 +186,7 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool actualizarCatación(string codCatacion, string codCafe, string codPanel, string codCatador, int cantidad)
+        public bool ActualizarCatación(string codCatacion, string codCafe, string codPanel, string codCatador, int cantidad)
         {
             try
             {
@@ -212,7 +209,7 @@ namespace Persistencia.Repositorios
             }
 
         }
-        public bool actualizarEvento(string codigo, string nombre, DateTime fecha)
+        public bool ActualizarEvento(string codigo, string nombre, DateTime fecha)
         {
             try
             {
@@ -232,7 +229,7 @@ namespace Persistencia.Repositorios
                 return false;
             }
         }
-        public REPORTE buscarReporte(string codReporte)
+        public REPORTE BuscarReporte(string codReporte)
         {
             return null;
         }
@@ -241,7 +238,7 @@ namespace Persistencia.Repositorios
          * Este metodo se encarga de  buscar en la base de datos, en la tabla atributos de cafe los 
          * atributos correspondientes del cafe de acuerdo al parametro tipo cafe 
          */
-        public ATRIBUTOSCAFE consultarAtributosCafe(string tipoCafe)
+        public ATRIBUTOSCAFE ConsultarAtributosCafe(string tipoCafe)
         {
             return this.db.ATRIBUTOSCAFE.FirstOrDefault(x => x.CAFE.Equals(tipoCafe));
         }
@@ -249,7 +246,7 @@ namespace Persistencia.Repositorios
          * Este  metodo se conecta a la base de datos y me trae una lista de cafes los cuales son aquellos registrados
          * en la base de datos
          */
-        public IList<CAFE> consultarCafes()
+        public IList<CAFE> ConsultarCafes()
         {
             return this.db.CAFE.ToList();
         }
@@ -259,7 +256,7 @@ namespace Persistencia.Repositorios
          * recorremos todos los cafes que se encuentran en la base de datos y añadimos a una lista todos aquellos 
          * que concuerden con  el tipo del cafe buscado y luego retornamos esta lista 
          */
-        public IList<CAFE> consultarCafes(string tipoCafe)
+        public IList<CAFE> CconsultarCafes(string tipoCafe)
         {
             IList<CAFE> cafesTipo = new List<CAFE>();
             foreach (CAFE cafe in this.db.CAFE.ToList())
@@ -271,15 +268,15 @@ namespace Persistencia.Repositorios
             }
             return cafesTipo;
         }
-        public IList<CATACION> consultarCataciones()
+        public IList<CATACION> ConsultarCataciones()
         {
 
             IList<CATACION> catacionesPendientes = new List<CATACION>();
 
             foreach (CATACION cat in this.db.CATACION.ToList())
             {
-                PANEL panel = obtenerPanel(cat.CODPANEL);
-                EVENTO evento = obtenerEvento(panel.CODEVENTO);
+                PANEL panel = ObtenerPanel(cat.CODPANEL);
+                EVENTO evento = ObtenerEvento(panel.CODEVENTO);
 
 
                 if (evento.FECHA.CompareTo(DateTime.Today) >= 1 && panel.HORA.CompareTo(DateTime.Now) >= 1)
@@ -291,7 +288,7 @@ namespace Persistencia.Repositorios
             }
             return catacionesPendientes;
         }
-        private EVENTO obtenerEvento(string codigo)
+        private EVENTO ObtenerEvento(string codigo)
         {
             foreach (EVENTO evento in this.db.EVENTO.ToList())
             {
@@ -302,7 +299,7 @@ namespace Persistencia.Repositorios
             }
             return null;
         }
-        private PANEL obtenerPanel(string codigo)
+        private PANEL ObtenerPanel(string codigo)
         {
             foreach (PANEL panel in this.db.PANEL.ToList())
             {
@@ -313,7 +310,7 @@ namespace Persistencia.Repositorios
             }
             return null;
         }
-        public IList<CATACION> consultarCatacionesAsignadas(string codCatador)
+        public IList<CATACION> ConsultarCatacionesAsignadas(string codCatador)
         {
 
             IList<CATACION> catacionesPendientes = new List<CATACION>();
@@ -328,7 +325,7 @@ namespace Persistencia.Repositorios
             return catacionesPendientes;
         }
 
-        public DateTime consultarFecha(string codigo)
+        public DateTime ConsultarFecha(string codigo)
         {
             return DateTime.Now;
         }
@@ -339,7 +336,7 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>retorna un PANEL (objeto de la base de datos)</returns>
-        public PANEL consultarPanel(string codPanel)
+        public PANEL ConsultarPanel(string codPanel)
         {
             return this.db.PANEL.FirstOrDefault(x => x.CODPANEL.Equals(codPanel));
         }
@@ -347,23 +344,19 @@ namespace Persistencia.Repositorios
         /// Convierte en una lista todos los paneles de la base de datos y los retorna
         /// </summary>
         /// <returns>Una lista de PANELES</returns>
-        public IList<PANEL> consultarPaneles()
+        public IList<PANEL> ConsultarPaneles()
         {
             return this.db.PANEL.ToList();
         }
-        public IList<REPORTE> consultarReportes()
-        {
-            return null;
-        }
-        public ADMINISTRADOR consultarAdministrador(string correo)
+        public ADMINISTRADOR ConsultarAdministrador(string correo)
         {
             return this.db.ADMINISTRADOR.FirstOrDefault(x => x.CORREO.Equals(correo));
         }
-        public CATADOR consultarCatador(string correo)
+        public CATADOR ConsultarCatador(string correo)
         {
             return this.db.CATADOR.Where(x => x.CORREO.Equals(correo)).FirstOrDefault();
         }
-        public bool consultarUsuario(string cedula)
+        public bool ConsultarUsuario(string cedula)
         {
             return false;
         }
@@ -372,13 +365,13 @@ namespace Persistencia.Repositorios
          * si coinciden, el cafe sera eliminado de la base da datos. Por ultimo los cambios de la base de datos deben ser aceptados
          * con la la funcion saveChanges
          */
-        public bool eliminarCafe(string codCafe)
+        public bool EliminarCafe(string codigo)
         {
             try
             {
                 foreach (CAFE cafe in this.db.CAFE.ToList())
                 {
-                    if (cafe.CODCAFE.Equals(codCafe))
+                    if (cafe.CODCAFE.Equals(codigo))
                     {
                         this.db.CAFE.Remove(cafe);
                     }
@@ -398,7 +391,7 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codigo"></param>
         /// <returns>erdadero o Falso dependiendo del estado de eliminacion del panel</returns>
-        public bool eliminarPanel(string codigo)
+        public bool EliminarPanel(string codigo)
         {
             try
             {
@@ -419,7 +412,7 @@ namespace Persistencia.Repositorios
         }
 
 
-        public bool eliminarCatador(string cedula)
+        public bool EliminarCatador(string cedula)
         {
             try
             {
@@ -440,25 +433,25 @@ namespace Persistencia.Repositorios
         }
 
 
-        public int obtenerUltimaCata(string codCatacion)
+        public int ObtenerUltimaCata(string codCatacion)
         {
             try
             {
-                return this.db.CATA.ToList<CATA>().Last(x => x.CODCATACION.Equals(codCatacion)).VEZCATADA + 1;
+                return this.db.CATA.AsEnumerable<CATA>().Last(x => x.CODCATACION.Equals(codCatacion)).VEZCATADA + 1;
             }
             catch (Exception)
             {
                 return 1;
             }
         }
-        public bool registrarCatacion(string codPanel, string codCatador, string codCafe, int cantidad)
+        public bool RegistrarCatacion(string codPanel, string codCatador, string codCafe, int cantidad)
         {
             try
             {
-                this.db.CATACION.Add(new CATACION()
+                this.db.CATACION.Add(new CATACION
                 {
 
-                    CODCATACION = generarCodigo("CAT"),
+                    CODCATACION = GenerarCodigo("CAT"),
                     CODPANEL = codPanel,
                     CODCATADOR = codCatador,
                     CODCAFE = codCafe,
@@ -474,11 +467,11 @@ namespace Persistencia.Repositorios
         }
 
 
-        public IList<EVENTO> consultarEventos()
+        public IList<EVENTO> ConsultarEventos()
         {
             return this.db.EVENTO.ToList();
         }
-        public bool eliminarEvento(string codEvento)
+        public bool EliminarEvento(string codEvento)
         {
             foreach (EVENTO e in this.db.EVENTO.ToList())
             {
@@ -490,13 +483,13 @@ namespace Persistencia.Repositorios
             return false;
         }
 
-        public EVENTO consultarEvento(string codEvento)
+        public EVENTO ConsultarEvento(string codEvento)
         {
             return this.db.EVENTO.FirstOrDefault(x => x.CODEVENTO.Equals(codEvento));
         }
 
 
-        private string generarCodigo(string encabezado)
+        private string GenerarCodigo(string encabezado)
         {
 
             string ultimo = "0";
@@ -505,7 +498,7 @@ namespace Persistencia.Repositorios
                 case "EV":
                     try
                     {
-                        EVENTO ev = this.db.EVENTO.ToList().Last();
+                        EVENTO ev = this.db.EVENTO.AsEnumerable().Last();
                         string[] cod = ev.CODEVENTO.Split('-');
                         ultimo = (int.Parse(cod[1]) + 1).ToString();
                     }
@@ -517,7 +510,7 @@ namespace Persistencia.Repositorios
                 case "CT":
                     try
                     {
-                        CATACION ev = this.db.CATACION.ToList().Last();
+                        CATACION ev = this.db.CATACION.AsEnumerable().Last();
                         string[] cod = ev.CODCATACION.Split('-');
                         ultimo = (int.Parse(cod[1]) + 1).ToString();
                     }
@@ -529,7 +522,7 @@ namespace Persistencia.Repositorios
                 case "PA":
                     try
                     {
-                        PANEL pa = this.db.PANEL.ToList().Last();
+                        PANEL pa = this.db.PANEL.AsEnumerable().Last();
                         string[] cod = pa.CODPANEL.Split('-');
                         ultimo = (int.Parse(cod[1]) + 1).ToString();
                     }
@@ -541,7 +534,7 @@ namespace Persistencia.Repositorios
                 case "CF":
                     try
                     {
-                        CAFE ca = this.db.CAFE.ToList().Last();
+                        CAFE ca = this.db.CAFE.AsEnumerable().Last();
                         string[] cod = ca.CODCAFE.Split('-');
                         ultimo = (int.Parse(cod[1]) + 1).ToString();
                     }
@@ -551,7 +544,7 @@ namespace Persistencia.Repositorios
                     }
                     break;
                 case "CAT":
-                    int cantidad = this.db.CATACION.ToList().Count() + 1;
+                    int cantidad = this.db.CATACION.AsEnumerable().Count() + 1;
                     ultimo = cantidad.ToString();
                     break;
 
@@ -560,17 +553,7 @@ namespace Persistencia.Repositorios
 
         }
 
-        public string obtenerTipoCafe(string codigo)
-        {
-            foreach (CATACION cat in this.db.CATACION.ToList())
-            {
-                if (cat.CODCATACION.Equals(codigo))
-                    return this.consultarPanel(cat.CODPANEL).TIPOCAFE;
-            }
-            return "no se encuentra";
-        }
-
-        public string obtenerAtributosCafes(string tipoCafe)
+        public string ObtenerAtributosCafes(string tipoCafe)
         {
             try
             {
@@ -584,7 +567,7 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public string obtenerValoresDefectoCafes(string tipoCafe)
+        public string ObtenerValoresDefectoCafes(string tipoCafe)
         {
             try
             {
@@ -597,16 +580,16 @@ namespace Persistencia.Repositorios
                 return "no existen datos para ese tipo de cafe";
             }
         }
-        public CATA consultarCata(string codigo)
+        public CATA ConsultarCata(string codigo)
         {
             return this.db.CATA.FirstOrDefault(x => (x.CODCATACION + "-" + x.VEZCATADA).Equals(codigo));
         }
 
-        public bool insertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
+        public bool InsertarCatador(string nombre, string cedula, string codigo, string correo, string contraseña, string nivelExp)
         {
             try
             {
-                this.db.CATADOR.Add(new CATADOR()
+                this.db.CATADOR.Add(new CATADOR
                 {
                     NOMBRE = nombre,
                     CEDULA = cedula,
@@ -624,16 +607,16 @@ namespace Persistencia.Repositorios
             }
         }
 
-        public bool registrarCata(string codCatacion,
+        public bool RegistrarCata(string codCatacion,
             int rancidez, int dulce, int acidez, int cuerpo, int aroma,
             int amargo, int impresionGlobal, int fragancia, int saborResidual,
             string observaciones)
         {
-            int vezCatada = obtenerUltimaCata(codCatacion);
-            CATACION catacionAux = this.consultarCatacion(codCatacion);
+            int vezCatada = ObtenerUltimaCata(codCatacion);
+            CATACION catacionAux = this.ConsultarCatacion(codCatacion);
 
 
-            if (!verificarRango(rancidez, dulce, acidez, cuerpo, aroma,
+            if (!VerificarRango(rancidez, dulce, acidez, cuerpo, aroma,
              amargo, impresionGlobal, fragancia, saborResidual))
             {
                 return false;
@@ -642,7 +625,7 @@ namespace Persistencia.Repositorios
             {
                 if (catacionAux.CANTIDAD >= 1)
                 {
-                    this.db.CATA.Add(new CATA()
+                    this.db.CATA.Add(new CATA
                     {
 
                         CODCATACION = codCatacion,
@@ -658,7 +641,7 @@ namespace Persistencia.Repositorios
                         IMPRESIONGLOBAL = impresionGlobal,
                         OBSERVACIONES = observaciones
 
-                    }); ;
+                    }); 
                     this.db.SaveChanges();
                     return true;
                 }
@@ -675,24 +658,24 @@ namespace Persistencia.Repositorios
         }
 
 
-        public CATADOR buscarCedulaCatador(string cedula)
+        public CATADOR BuscarCedulaCatador(string cedula)
         {
             return this.db.CATADOR.FirstOrDefault(x => x.CEDULA.Equals(cedula));
         }
 
-        public Dictionary<string, string> obtenerInformacionCatacion(string codCatacion)
+        public Dictionary<string, string> ObtenerInformacionCatacion(string codCatacion)
 
         {
 
             Dictionary<string, string> catas = new Dictionary<string, string>();
 
 
-            CATACION catacion = consultarCatacion(codCatacion);
-            PANEL panel = consultarPanel(catacion.CODPANEL);
-            EVENTO evento = consultarEvento(panel.CODEVENTO);
-            CAFE cafe = consultarCafe(catacion.CODCAFE);
-            string atributosCafe = obtenerAtributosCafes(panel.TIPOCAFE.ToString());
-            string valoresDefectoCafe = obtenerValoresDefectoCafes(panel.TIPOCAFE.ToString());
+            CATACION catacion = ConsultarCatacion(codCatacion);
+            PANEL panel = ConsultarPanel(catacion.CODPANEL);
+            EVENTO evento = ConsultarEvento(panel.CODEVENTO);
+            CAFE cafe = ConsultarCafe(catacion.CODCAFE);
+            string atributosCafe = ObtenerAtributosCafes(panel.TIPOCAFE);
+            string valoresDefectoCafe = ObtenerValoresDefectoCafes(panel.TIPOCAFE);
 
             if (catacion != null && panel != null && evento != null && cafe != null)
             {
@@ -714,7 +697,7 @@ namespace Persistencia.Repositorios
             return catas;
         }
 
-        public CATACION consultarCatacion(string codCatacion)
+        public CATACION ConsultarCatacion(string codCatacion)
         {
             try
             {
@@ -727,7 +710,7 @@ namespace Persistencia.Repositorios
 
         }
 
-        public CAFE consultarCafe(string codCafe)
+        public CAFE ConsultarCafe(string codCafe)
         {
             try
             {
@@ -740,11 +723,14 @@ namespace Persistencia.Repositorios
         }
 
 
-        public bool verificarRango(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, int fragancia, int saborResidual)
+        public static bool VerificarRango(int rancidez, int dulce, int acidez, int cuerpo, int aroma, int amargo, int impresionGlobal, 
+                                    int fragancia, int saborResidual)
         {
-            if (rancidez < 0 || dulce < 0 || acidez < 0 || cuerpo < 0 || aroma < 0 || amargo < 0 || impresionGlobal < 0 || fragancia < 0 || saborResidual < 0 ||
-                 rancidez > 10 || dulce > 10 || acidez > 10 || cuerpo > 10 || aroma > 10 || amargo > 10 || impresionGlobal > 10 || fragancia > 10 || saborResidual > 10
-                )
+            const int MAXIMO_RANGO = 10;
+            if (rancidez < 0 || dulce < 0 || acidez < 0 || cuerpo < 0 || aroma < 0 || amargo < 0 || impresionGlobal < 0 || fragancia < 0 || 
+                saborResidual < 0 || rancidez > MAXIMO_RANGO || dulce > MAXIMO_RANGO || acidez > MAXIMO_RANGO || cuerpo > MAXIMO_RANGO || 
+                aroma > MAXIMO_RANGO || amargo > MAXIMO_RANGO || impresionGlobal > MAXIMO_RANGO || fragancia > MAXIMO_RANGO || 
+                saborResidual > MAXIMO_RANGO )
             {
                 return false;
             }
@@ -755,7 +741,7 @@ namespace Persistencia.Repositorios
         /// Este metodo se encarga de listar todos los catadores que existen en la base de datos
         /// </summary>
         /// <returns>una lista con todos los catadores</returns>
-        public IList<CATADOR> consultarCatadores()
+        public IList<CATADOR> ConsultarCatadores()
         {
             return this.db.CATADOR.ToList();
         }
@@ -764,7 +750,7 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codEvento"></param>
         /// <returns>retorna una lista de paneles</returns>
-        public IList<PANEL> consultarPanelesPorEvento(string codEvento)
+        public IList<PANEL> ConsultarPanelesPorEvento(string codEvento)
         {
             return this.db.PANEL.Where(x => x.CODEVENTO.Equals(codEvento)).ToList();
         }
@@ -773,7 +759,7 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns></returns>
-        public bool panelTerminado(string codPanel)
+        public bool PanelTerminado(string codPanel)
         {
             List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
             if(cataciones.Count() == 0)
@@ -787,9 +773,9 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>es codigo de un evento</returns>
-        private string getCodEvento(string codPanel)
+        private string GetCodEvento(string codPanel)
         {
-            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().CODEVENTO.ToString();
+            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().CODEVENTO;
         }
         /// <summary>
         /// Este metodo permite obtener todos los cafes cuyo tipo de cafe coincida con el tipo de cafe que tiene un panel, pero que 
@@ -797,10 +783,10 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>retorna lista de CAFE</returns>
-        public IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel)
+        public IList<CAFE> ObtenerCafesMismoTipoPanel(string codPanel)
         {
-            string tipoCafe = this.getTipoCafe(codPanel);
-            string codEvento = this.getCodEvento(codPanel);
+            string tipoCafe = this.GetTipoCafe(codPanel);
+            string codEvento = this.GetCodEvento(codPanel);
             return this.db.CAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe) && x.CODEVENTO.Equals(codEvento)).ToList();
         }
         /// <summary>
@@ -809,7 +795,7 @@ namespace Persistencia.Repositorios
         /// <param name="codCatador"></param>
         /// <returns>retorna un catador si se encuentra habilitado o null en caso contrario o si el codigo
         /// del catador no existe</returns>
-        public CATADOR catadorHabilitado(string codCatador)
+        public CATADOR CatadorHabilitado(string codCatador)
         {
             CATADOR catador = this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault();
 
@@ -833,11 +819,11 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel">El codigo del panel para el cual se reliza el promedio</param>
         /// <returns>Un diccionario con el promedio de catas</returns>
-        private Dictionary<string, double> promedioCatas(string codPanel)
+        private Dictionary<string, double> PromedioCatas(string codPanel)
         {
-            string[] atri = this.getAtributosCafe(this.getTipoCafe(codPanel));
+            string[] atri = this.GetAtributosCafe(this.GetTipoCafe(codPanel));
             Dictionary<string, double> promedio = new Dictionary<string, double>();
-            int cantidad = this.getCantidadCatasporPanel(codPanel);
+            int cantidad = this.GetCantidadCatasporPanel(codPanel);
             foreach (string str in atri)
             {
                 promedio.Add(str, 0);
@@ -869,9 +855,9 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>un arreglo con las observaciones del panel</returns>
-        public string[] getObservaciones(string codPanel)
+        public string[] GetObservaciones(string codPanel)
         {
-            List<CATA> catas = this.obtenerCatas(codPanel).ToList();
+            List<CATA> catas = this.ObtenerCatas(codPanel).ToList();
             List<string> comentarios = new List<string>();
             foreach (CATA cata in catas)
             {
@@ -888,7 +874,7 @@ namespace Persistencia.Repositorios
         private List<Dictionary<string, int>> getValores_AtributosCata(string codPanel)
         {
 
-            List<CATA> catas = this.obtenerCatas(codPanel).ToList();
+            List<CATA> catas = this.ObtenerCatas(codPanel).ToList();
             List<Dictionary<string, int>> datosFinales = new List<Dictionary<string, int>>();
             foreach (CATA cata in catas)
             {
@@ -912,13 +898,13 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>una lista de todas las catas que se realizaron para un determinado panel</returns>
-        private IList<CATA> obtenerCatas(string codPanel)
+        private IList<CATA> ObtenerCatas(string codPanel)
         {
             List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
             List<CATA> catas = new List<CATA>();
             foreach (CATACION catacion in cataciones)
             {
-                foreach (CATA cata in this.getCatas(catacion.CODCATACION))
+                foreach (CATA cata in this.GetCatas(catacion.CODCATACION))
                 {
                     catas.Add(cata);
                 }
@@ -930,7 +916,7 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>verdadero si el panel existe, falso en caso contrario</returns>
-        public bool existePanel(string codPanel)
+        public bool ExistePanel(string codPanel)
         {
             PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
             return panel == null;
@@ -940,7 +926,7 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codCatacion"></param>
         /// <returns></returns>
-        private IList<CATA> getCatas(string codCatacion)
+        private IList<CATA> GetCatas(string codCatacion)
         {
             return this.db.CATA.Where(x => x.CODCATACION.Equals(codCatacion)).ToList();
         }
@@ -949,9 +935,9 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns></returns>
-        private int getCantidadCatasporPanel(string codPanel)
+        private int GetCantidadCatasporPanel(string codPanel)
         {
-            return this.obtenerCatas(codPanel).Count();
+            return this.ObtenerCatas(codPanel).Count();
         }
         /// <summary>
         /// Este metodo permite cambiar en la base de datos el estado de unc atdor en especifico, es decir cambiar el valor
@@ -959,7 +945,7 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codCatador"></param>
         /// <returns>retorna verdadero si no existieron problemas en la base datos, falso en caso contrario</returns>
-        public bool habilitarCatador(string codCatador)
+        public bool HabilitarCatador(string codCatador)
         {
             try
             {
@@ -976,7 +962,7 @@ namespace Persistencia.Repositorios
         /// este metodo se encarga de listar todos los catadores, cuyo estado sea habilitado
         /// </summary>
         /// <returns>una lista con los catadores inhabilitados</returns>
-        public List<CATADOR> getCatadoresInhabilitados()
+        public List<CATADOR> ObtenerCatadoresInhabilitados()
         {
             return this.db.CATADOR.Where(x => x.ESTADO.Equals("INHABILITADO")).ToList();
         }
@@ -984,7 +970,7 @@ namespace Persistencia.Repositorios
         /// este metodo se encarga de listar todos los catadores, cuyo estado sea habilitado
         /// </summary>
         /// <returns>una lista con los catdores habilitados</returns>
-        public List<CATADOR> getCatadoresHabilitados()
+        public List<CATADOR> ObtenerCatadoresHabilitados()
         {
             return this.db.CATADOR.Where(x => x.ESTADO.Equals("HABILITADO")).ToList();
         }
@@ -994,7 +980,7 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="tipoCafe"></param>
         /// <returns>Retorna un arreglo de numeros correspondientes al patron del cafe</returns>
-        private double[] getValoresDefectoCafe(string tipoCafe)
+        private double[] GetValoresDefectoCafe(string tipoCafe)
         {
             string[] defecto = this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
             double[] valores = new double[defecto.Length];
@@ -1012,9 +998,9 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="tipoCafe"></param>
         /// <returns>los atributos del cafe</returns>
-        private string[] getAtributosCafe(string tipoCafe)
+        private string[] GetAtributosCafe(string tipoCafe)
         {
-            char[] charSeparators = new char[] { ';' };
+            ///char[] charSeparators = new char[] { ';' };
             return this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().DATOS.Split(';');
         }
         /// <summary>
@@ -1023,9 +1009,9 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>El tipo de cafe del panel</returns>
-        private string getTipoCafe(string codPanel)
+        private string GetTipoCafe(string codPanel)
         {
-            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().TIPOCAFE.ToString();
+            return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().TIPOCAFE;
         }
 
         //--------------------------- Fin calculo promedio de catas ------------------------------------------------
@@ -1041,6 +1027,9 @@ namespace Persistencia.Repositorios
         /// <returns>un array de bytes con la imagen del panel</returns>
         public byte[] GenerarImagen(string codPanel)
         {
+            const int ANCHO_GRAFICO = 800;
+            const string PATRON = "Patron";
+            const string PROMEDIO_CATAS = "Promedio Catas";
             Chart grafico = new Chart();
             ChartArea area = new ChartArea();
             area.Visible = true;
@@ -1048,29 +1037,29 @@ namespace Persistencia.Repositorios
             grafico.ChartAreas[0].Area3DStyle.Enable3D = false;
             grafico.ChartAreas[0].AxisX.MajorGrid.LineColor = System.Drawing.Color.LightGray;
             grafico.ChartAreas[0].AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            grafico.Width = 800;
+            grafico.Width = ANCHO_GRAFICO;
             grafico.Titles.Add("Grafico del panel: " + codPanel);
-            grafico.Series.Add("Patron");
-            grafico.Series["Patron"].LabelToolTip = "Patron";
-            grafico.Series.Add("Promedio Catas");
-            grafico.Series["Patron"].ChartType = SeriesChartType.Radar;
-            grafico.Series["Patron"]["RadarDrawingStyle"] = "Line";
-            grafico.Series["Patron"]["AreaDrawingStyle"] = "Polygon";
-            grafico.Series["Promedio Catas"].ChartType = SeriesChartType.Radar;
-            grafico.Series["Promedio Catas"]["RadarDrawingStyle"] = "Line";
-            grafico.Series["Promedio Catas"]["AreaDrawingStyle"] = "Polygon";
-            grafico.Legends.Add(new Legend("Patron"));
+            grafico.Series.Add(PATRON);
+            grafico.Series[PATRON].LabelToolTip = PATRON;
+            grafico.Series.Add(PROMEDIO_CATAS);
+            grafico.Series[PATRON].ChartType = SeriesChartType.Radar;
+            grafico.Series[PATRON]["RadarDrawingStyle"] = "Line";
+            grafico.Series[PATRON]["AreaDrawingStyle"] = "Polygon";
+            grafico.Series[PROMEDIO_CATAS].ChartType = SeriesChartType.Radar;
+            grafico.Series[PROMEDIO_CATAS]["RadarDrawingStyle"] = "Line";
+            grafico.Series[PROMEDIO_CATAS]["AreaDrawingStyle"] = "Polygon";
+            grafico.Legends.Add(new Legend(PATRON));
             grafico.TextAntiAliasingQuality = TextAntiAliasingQuality.High;
-            grafico.Series["Patron"].LegendText = "Patron";
-            Dictionary<string, double> promedio = this.promedioCatas(codPanel);
-            double[] valoresDefecto = this.getValoresDefectoCafe(this.getTipoCafe(codPanel));
-            grafico.Series["Patron"].Points.DataBindXY(promedio.Keys, valoresDefecto);
-            grafico.Series["Promedio Catas"].Points.DataBindXY(promedio.Keys, promedio.Values);
+            grafico.Series[PATRON].LegendText = PATRON;
+            Dictionary<string, double> promedio = this.PromedioCatas(codPanel);
+            double[] valoresDefecto = this.GetValoresDefectoCafe(this.GetTipoCafe(codPanel));
+            grafico.Series[PATRON].Points.DataBindXY(promedio.Keys, valoresDefecto);
+            grafico.Series[PROMEDIO_CATAS].Points.DataBindXY(promedio.Keys, promedio.Values);
             //-------------------------------------------------------------------------------------
             MemoryStream stream = new MemoryStream();
             grafico.SaveImage(stream, ChartImageFormat.Png);
             BinaryReader binrayRdr = new BinaryReader(stream);
-            byte[] info = ((MemoryStream)stream).ToArray();
+            byte[] info = (stream).ToArray();
             //------------------------------------------------------------------------------------
             return info;
         }
@@ -1083,7 +1072,7 @@ namespace Persistencia.Repositorios
         /// <param name="codPanel"></param>
         /// <param name="codEvento"></param>
         /// <returns>verdadero si el panel pertenece a el evento o falso en caso contrario</returns>
-        public bool pertenecePanel(string codPanel, string codEvento)
+        public bool PertenecePanel(string codPanel, string codEvento)
         {
             PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
             return panel.EVENTO.CODEVENTO.Equals(codEvento);
@@ -1096,19 +1085,19 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>el nombre del evento al cual pertenece el panel</returns>
-        private string getNombreEvento(string codPanel)
+        private string GetNombreEvento(string codPanel)
         {
             PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
-            return panel.EVENTO.NOMBRE.ToString();
+            return panel.EVENTO.NOMBRE;
         }
         /// <summary>
         /// Este metodo se encarga de validar 
         /// </summary>
         /// <param name="codCatador"></param>
         /// <returns></returns>
-        private string getNombreCatador(string codCatador)
+        private string GetNombreCatador(string codCatador)
         {
-            return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().NOMBRE.ToString();
+            return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().NOMBRE;
         }
         /// <summary>
         /// Este metodo me permite obtener la fecha del evento, a partir de su llave primaria, es decir el codEvento, esta fecha
@@ -1116,7 +1105,7 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>retorna la fecha del evento</returns>
-        private DateTime getFechaEvento(string codPanel)
+        private DateTime GetFechaEvento(string codPanel)
         {
             return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().EVENTO.FECHA;
         }
@@ -1126,7 +1115,7 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>retorna la hora del panel</returns>
-        private string getHoraPanel(String codPanel)
+        private string GetHoraPanel(String codPanel)
         {
             return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().HORA.ToString();
         }
@@ -1136,9 +1125,9 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codCatador"></param>
         /// <returns></returns>
-        public string getCorreoCatador(string codCatador)
+        public string GetCorreoCatador(string codCatador)
         {
-            return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().CORREO.ToString();
+            return this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault().CORREO;
         }
         /// <summary>
         /// Este metodo se encarga de construir una cabecera generica para todos los correos, en la cual se incluye 
@@ -1146,9 +1135,9 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns>El asunto de un correo</returns>
-        public string construirAsuntoCorreo(string codPanel)
+        public string ConstruirAsuntoCorreo(string codPanel)
         {
-            string nombreEvento = this.getNombreEvento(codPanel);
+            string nombreEvento = this.GetNombreEvento(codPanel);
             string asunto = "Seleccionado como catador para el evento : " + nombreEvento;
             return asunto;
         }
@@ -1158,9 +1147,9 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="codCafe"></param>
         /// <returns>El nombre del cafe</returns>
-        private string getNombreCafe(string codCafe)
+        private string GetNombreCafe(string codCafe)
         {
-            return this.db.CAFE.Where(x => x.CODCAFE.Equals(codCafe)).FirstOrDefault().NOMBRE.ToString();
+            return this.db.CAFE.Where(x => x.CODCAFE.Equals(codCafe)).FirstOrDefault().NOMBRE;
         }
         /// <summary>
         /// Este metodo se encarga de construir un correo a partir de las cataciones, es decir las asignaciones correspondientes que se le 
@@ -1169,17 +1158,17 @@ namespace Persistencia.Repositorios
         /// </summary>
         /// <param name="cataciones"></param>
         /// <returns>Retorna el contenido de un correo electronico, en formato de texto</returns>
-        public string construirMensajeCorreo(List<CATACION> cataciones)
+        public string ConstruirMensajeCorreo(List<CATACION> cataciones)
         {
             StringBuilder mensaje = new StringBuilder();
-            string fecha = this.getFechaEvento(cataciones.First().CODPANEL).ToString("dd/MM/yyyy");
-            mensaje.Append("Señor (a) " + this.getNombreCatador(cataciones.First().CODCATADOR) + ", usted ha sido seleccionado (a) " +
-                "para catar en el evento " + this.getNombreEvento(cataciones.First().CODPANEL) + ", el dia " + fecha
-                 + ". " + "En el panel : " + cataciones.First().CODPANEL + ", a la hora " + this.getHoraPanel(cataciones.First().CODPANEL) + ", " +
+            string fecha = this.GetFechaEvento(cataciones.First().CODPANEL).ToString("dd/MM/yyyy");
+            mensaje.Append("Señor (a) " + this.GetNombreCatador(cataciones.First().CODCATADOR) + ", usted ha sido seleccionado (a) " +
+                "para catar en el evento " + this.GetNombreEvento(cataciones.First().CODPANEL) + ", el dia " + fecha
+                 + ". " + "En el panel : " + cataciones.First().CODPANEL + ", a la hora " + this.GetHoraPanel(cataciones.First().CODPANEL) + ", " +
                  "las siguientes muestras de cafe: \n");
             foreach (CATACION catacion in cataciones)
             {
-                mensaje.Append("\t Nombre del cafe: " + this.getNombreCafe(catacion.CODCAFE) + ", Codigo: " + catacion.CODCAFE + "\n");
+                mensaje.Append("\t Nombre del cafe: " + this.GetNombreCafe(catacion.CODCAFE) + ", Codigo: " + catacion.CODCAFE + "\n");
             }
             mensaje.Append("\n\n\n\n");
             mensaje.Append("\t\t Mensaje generado de manera automatica \n");
