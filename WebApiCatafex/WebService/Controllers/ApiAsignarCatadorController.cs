@@ -1,4 +1,5 @@
-﻿using Persistencia;
+﻿using Newtonsoft.Json;
+using Persistencia;
 using Persistencia.Entity;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace WebService.Controllers
         [Route("api/ApiAsignarCatador/asignar")]
         public HttpResponseMessage asignarCatador(List<Catacion> cataciones)
         {
-
+            HttpResponseMessage response = null;
             if (cataciones == null) {
                 return new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
             }
@@ -59,7 +60,7 @@ namespace WebService.Controllers
                     }
                     else
                     {
-                        HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.NotFound);
+                        response = new HttpResponseMessage(HttpStatusCode.NotFound);
                         response.Content = new StringContent("la cantidad a catar no puede ser menor o igual a cero");
                         response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         return response;
@@ -67,7 +68,10 @@ namespace WebService.Controllers
                             
                 }
                 this.notificacion.enviarNotificacion(correoDestino, asunto, mensaje);
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject("Se asignó correctamente"));
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
             }
             catch (Exception)
             {

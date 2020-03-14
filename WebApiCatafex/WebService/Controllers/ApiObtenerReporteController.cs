@@ -19,6 +19,11 @@ namespace WebService.Controllers
 
         private Repositorio repositorio;
 
+        public ApiObtenerReporteController(Repositorio repositorio)
+        {
+            this.repositorio = repositorio;
+        }
+
         public ApiObtenerReporteController()
         {
             this.repositorio = FabricaRepositorio.crearRepositorio();
@@ -60,19 +65,24 @@ namespace WebService.Controllers
         [Route("api/Reporte/obtenerObservaciones")]
         public HttpResponseMessage obtenerObservaciones(string codPanel)
         {
-            if (repositorio.panelTerminado(codPanel))
+            HttpResponseMessage response = null;
+            if (!codPanel.Equals("") && !this.repositorio.existePanel(codPanel))
             {
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(this.repositorio.getObservaciones(codPanel)));
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                return response;
+                if (repositorio.panelTerminado(codPanel))
+                {
+                    response = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Content = new StringContent(JsonConvert.SerializeObject(this.repositorio.getObservaciones(codPanel)));
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    return response;
+                }
+                else
+                {
+                    response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    response.Content = new StringContent("Panel no terminado");
+                    return response;
+                }
             }
-            else
-            {
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                response.Content = new StringContent("Panel no terminado");
-                return response;
-            }
+            return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
             
     }

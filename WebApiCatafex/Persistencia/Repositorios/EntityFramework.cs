@@ -851,18 +851,11 @@ namespace Persistencia.Repositorios
         {
             List<CATA> catas = this.obtenerCatas(codPanel).ToList();
             List<string> comentarios = new List<string>();
-            int i = 0;
             foreach (CATA cata in catas)
             {
-                comentarios.Add((cata.OBSERVACIONES + "\n").ToString());
+                comentarios.Add(cata.OBSERVACIONES);
             }
-            string[] observaciones = new string[comentarios.Count];
-            foreach (string comentario in observaciones)
-            {
-                observaciones[i] = comentario;
-                i++;
-            }
-            return observaciones;
+            return comentarios.ToArray();
         }
         /// <summary>
         /// 
