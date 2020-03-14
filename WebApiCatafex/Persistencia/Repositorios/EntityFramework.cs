@@ -752,19 +752,27 @@ namespace Persistencia.Repositorios
         }
         //--> Desde aca cuarta entrega
         /// <summary>
-        /// 
+        /// Este metodo se encarga de listar todos los catadores que existen en la base de datos
         /// </summary>
-        /// <returns></returns>
+        /// <returns>una lista con todos los catadores</returns>
         public IList<CATADOR> consultarCatadores()
         {
             return this.db.CATADOR.ToList();
         }
-
+        /// <summary>
+        /// Este metodo se encarga se encarga de listar todos los paneles que existen en un evento.
+        /// </summary>
+        /// <param name="codEvento"></param>
+        /// <returns>retorna una lista de paneles</returns>
         public IList<PANEL> consultarPanelesPorEvento(string codEvento)
         {
             return this.db.PANEL.Where(x => x.CODEVENTO.Equals(codEvento)).ToList();
         }
-
+        /// <summary>
+        /// Este metodo se encarga de determinar si un panel esta terminado o no, a partir
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns></returns>
         public bool panelTerminado(string codPanel)
         {
             List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
@@ -774,19 +782,33 @@ namespace Persistencia.Repositorios
             }
             return cataciones.Count() == cataciones.Where(x => x.CANTIDAD == 0).Count();
         }
-
+        /// <summary>
+        /// Este metodo permite obtener el codigo de un evento al cual se encuentra asociado un panel
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns>es codigo de un evento</returns>
         private string getCodEvento(string codPanel)
         {
             return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().CODEVENTO.ToString();
         }
-
+        /// <summary>
+        /// Este metodo permite obtener todos los cafes cuyo tipo de cafe coincida con el tipo de cafe que tiene un panel, pero que 
+        /// dichos cafes existan en el evento en el cual se encuentra el panel
+        /// </summary>
+        /// <param name="codPanel"></param>
+        /// <returns>retorna lista de CAFE</returns>
         public IList<CAFE> obtenerCafesMismoTipoPanel(string codPanel)
         {
             string tipoCafe = this.getTipoCafe(codPanel);
             string codEvento = this.getCodEvento(codPanel);
             return this.db.CAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe) && x.CODEVENTO.Equals(codEvento)).ToList();
         }
-
+        /// <summary>
+        /// Este metodo permite validar si un catador en especifico se encuentra habilitado
+        /// </summary>
+        /// <param name="codCatador"></param>
+        /// <returns>retorna un catador si se encuentra habilitado o null en caso contrario o si el codigo
+        /// del catador no existe</returns>
         public CATADOR catadorHabilitado(string codCatador)
         {
             CATADOR catador = this.db.CATADOR.Where(x => x.CODIGO.Equals(codCatador)).FirstOrDefault();
@@ -858,7 +880,8 @@ namespace Persistencia.Repositorios
             return comentarios.ToArray();
         }
         /// <summary>
-        /// 
+        /// Este metodo se encarga de obtener todos los valores de una cata, guardando su respectivo valor de la cata
+        /// junto con su correspondiente atributo, esto para todas las catas realizadas en un panel
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns></returns>
@@ -884,10 +907,11 @@ namespace Persistencia.Repositorios
             return datosFinales;
         }
         /// <summary>
-        /// 
+        /// Este metodo permite listar todas las catas que existen en un panel, es decir todas las catas que los diferentes
+        /// catadores realizaron
         /// </summary>
         /// <param name="codPanel"></param>
-        /// <returns></returns>
+        /// <returns>una lista de todas las catas que se realizaron para un determinado panel</returns>
         private IList<CATA> obtenerCatas(string codPanel)
         {
             List<CATACION> cataciones = this.db.CATACION.Where(x => x.CODPANEL.Equals(codPanel)).ToList();
@@ -902,17 +926,17 @@ namespace Persistencia.Repositorios
             return catas;
         }
         /// <summary>
-        /// 
+        /// Este metodo permite validar que un panel exista, de este modo se garantiza que el usuario no ingrese paneles inexistentes
         /// </summary>
         /// <param name="codPanel"></param>
-        /// <returns></returns>
+        /// <returns>verdadero si el panel existe, falso en caso contrario</returns>
         public bool existePanel(string codPanel)
         {
             PANEL panel = this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault();
             return panel == null;
         }
         /// <summary>
-        /// 
+        /// Este metodo permite obtener todas las catas que fueron de la misma catacion
         /// </summary>
         /// <param name="codCatacion"></param>
         /// <returns></returns>
@@ -921,7 +945,7 @@ namespace Persistencia.Repositorios
             return this.db.CATA.Where(x => x.CODCATACION.Equals(codCatacion)).ToList();
         }
         /// <summary>
-        /// 
+        /// Este metodo se encarga de obtener la cantidad de catas que 
         /// </summary>
         /// <param name="codPanel"></param>
         /// <returns></returns>
@@ -930,10 +954,11 @@ namespace Persistencia.Repositorios
             return this.obtenerCatas(codPanel).Count();
         }
         /// <summary>
-        /// 
+        /// Este metodo permite cambiar en la base de datos el estado de unc atdor en especifico, es decir cambiar el valor
+        /// del estado de INHABILITADO a HABILITADO
         /// </summary>
         /// <param name="codCatador"></param>
-        /// <returns></returns>
+        /// <returns>retorna verdadero si no existieron problemas en la base datos, falso en caso contrario</returns>
         public bool habilitarCatador(string codCatador)
         {
             try
@@ -948,26 +973,27 @@ namespace Persistencia.Repositorios
             }
         }
         /// <summary>
-        /// 
+        /// este metodo se encarga de listar todos los catadores, cuyo estado sea habilitado
         /// </summary>
-        /// <returns></returns>
+        /// <returns>una lista con los catadores inhabilitados</returns>
         public List<CATADOR> getCatadoresInhabilitados()
         {
             return this.db.CATADOR.Where(x => x.ESTADO.Equals("INHABILITADO")).ToList();
         }
         /// <summary>
-        /// 
+        /// este metodo se encarga de listar todos los catadores, cuyo estado sea habilitado
         /// </summary>
-        /// <returns></returns>
+        /// <returns>una lista con los catdores habilitados</returns>
         public List<CATADOR> getCatadoresHabilitados()
         {
             return this.db.CATADOR.Where(x => x.ESTADO.Equals("HABILITADO")).ToList();
         }
         /// <summary>
-        /// 
+        /// Este metodo se encarga de listar los valores asociados al patron de un tipo de cafe en especifico, esto con el fin
+        /// de presentar al usuario los valores de la regla, ademas de permitir en el grafico visualizar dichos valores
         /// </summary>
         /// <param name="tipoCafe"></param>
-        /// <returns></returns>
+        /// <returns>Retorna un arreglo de numeros correspondientes al patron del cafe</returns>
         private double[] getValoresDefectoCafe(string tipoCafe)
         {
             string[] defecto = this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().VALOR_DEFECTO.Split(';');
@@ -981,20 +1007,22 @@ namespace Persistencia.Repositorios
             return valores;
         }
         /// <summary>
-        /// 
+        /// Este metodo se encarga de listar los atributos que un tipo de cafe posee, es decir, retorna los atributos asociados
+        /// como por ejemplo, aroma, amargo, etc.
         /// </summary>
         /// <param name="tipoCafe"></param>
-        /// <returns></returns>
+        /// <returns>los atributos del cafe</returns>
         private string[] getAtributosCafe(string tipoCafe)
         {
             char[] charSeparators = new char[] { ';' };
             return this.db.ATRIBUTOSCAFE.Where(x => x.TIPOCAFE.Equals(tipoCafe)).FirstOrDefault().DATOS.Split(';');
         }
         /// <summary>
-        /// 
+        /// Este metodo se encarga de obtener el tipo de cafe de un panel, es valido aclarar que existen solo 4 tipos de cafe
+        /// entre los cuales se encuentran (VERDE, SOLUBLE, EXTRACTO, TOSTADO)
         /// </summary>
         /// <param name="codPanel"></param>
-        /// <returns></returns>
+        /// <returns>El tipo de cafe del panel</returns>
         private string getTipoCafe(string codPanel)
         {
             return this.db.PANEL.Where(x => x.CODPANEL.Equals(codPanel)).FirstOrDefault().TIPOCAFE.ToString();
@@ -1006,10 +1034,11 @@ namespace Persistencia.Repositorios
         /// <summary>
         /// Este metodo permite construir un array de bytes, el cual en su interior contendra la informacion de una imagen. 
         /// Dicha imagen a su vez esta conformada por una grafico de estrella generado a partir de el promedio de las cataciones
-        /// 
+        /// que se realizaron para ese panel. La imagen obtenida se almacena en memoria volatil y finalmente es transformada en un
+        /// array de bytes para ser retornada esa informacion
         /// </summary>
         /// <param name="codPanel"></param>
-        /// <returns></returns>
+        /// <returns>un array de bytes con la imagen del panel</returns>
         public byte[] GenerarImagen(string codPanel)
         {
             Chart grafico = new Chart();
